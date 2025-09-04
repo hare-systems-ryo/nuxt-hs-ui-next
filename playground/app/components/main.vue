@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// playground\components\main.vue
+// playground\app\components\main.vue
 // ----------------------------------------------------------------------------
-// Main
-// MainMain
+// AppComponentsMain
+// AppComponentsMainAppComponentsMain
 ---------------------------------------------------------------------------- */
 
 import { useElementSize } from '@vueuse/core';

@@ -1,22 +1,22 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 /* ----------------------------------------------------------------------------
 // src\runtime\components\misc\breadcrumb.vue
 // ----------------------------------------------------------------------------
-// Breadcrumb
-// BreadcrumbBreadcrumb
------------------------------------------------------------------------------ */
+// MiscBreadcrumb
+// MiscBreadcrumbMiscBreadcrumb
+---------------------------------------------------------------------------- */
 
 // [ tailwind ]
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 // [ NUXT ]
-import { computed } from '#imports';
+import { computed } from "#imports";
 // [ utils ]
-import { type ClassType, ClassTypeToString } from '../../utils/class-style';
+import { type ClassType, ClassTypeToString } from "../../utils/class-style";
 
-import Card from '../layout/card.vue';
-import CardItem from '../layout/card-item.vue';
-import type { MultiLang } from '../../utils/multi-lang';
-import { useHsMultiLang } from '../../composables/use-hs-multi-lang';
+import Card from "../layout/card.vue";
+import CardItem from "../layout/card-item.vue";
+import type { MultiLang } from "../../utils/multi-lang";
+import { useHsMultiLang } from "../../composables/use-hs-multi-lang";
 // ----------------------------------------------------------------------------
 
 interface Props {
@@ -26,9 +26,9 @@ interface Props {
   classUnlink?: ClassType;
 }
 const props = withDefaults(defineProps<Props>(), {
-  class: '',
-  classLink: '',
-  classUnlink: '',
+  class: "",
+  classLink: "",
+  classUnlink: "",
 });
 // ----------------------------------------------------------------------------
 const multiLang = useHsMultiLang();
@@ -48,15 +48,26 @@ const classStyleUnlink = computed(() => {
 
 <template>
   <Card :class="classStyle">
-    <CardItem class="px-1 py-1 sm:px-4 sm:py-1 min-w-0 h-full flex-c" theme="back" variant="body">
+    <CardItem
+      class="px-1 py-1 sm:px-4 sm:py-1 min-w-0 h-full flex-c"
+      theme="back"
+      variant="body"
+    >
       <div class="flex flex-wrap gap-[2px] sm:gap-[4px] max-w-full">
         <template v-for="(item, index) in props.links" :key="index">
           <div class="truncate min-w-0 w-full sm:w-auto">
-            <NuxtLink v-if="item.to !== undefined" :to="item.to" :class="[classStyleLink, { hasBefore: index !== 0 }]">
+            <NuxtLink
+              v-if="item.to !== undefined"
+              :to="item.to"
+              :class="[classStyleLink, { hasBefore: index !== 0 }]"
+            >
               <i v-if="item.icon" :class="item.icon"></i>
               {{ tx(item.label) }}
             </NuxtLink>
-            <span v-else :class="[classStyleUnlink, { hasBefore: index !== 0 }]">
+            <span
+              v-else
+              :class="[classStyleUnlink, { hasBefore: index !== 0 }]"
+            >
               <i v-if="item.icon" :class="item.icon"></i>
               {{ tx(item.label) }}
             </span>
@@ -72,8 +83,8 @@ const classStyleUnlink = computed(() => {
   padding-left: calc(1em + 4px);
 }
 .hasBefore::before {
-  content: '\f054';
-  font-family: 'Font Awesome 6 Free';
+  content: "\f054";
+  font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: #4b5563;
   position: absolute;
@@ -85,7 +96,7 @@ const classStyleUnlink = computed(() => {
 }
 
 .hov::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: auto auto 0 0;
   width: 0;
@@ -96,4 +107,4 @@ const classStyleUnlink = computed(() => {
 .hov:hover::before {
   width: 100%;
 }
-</style>
+</style> -->

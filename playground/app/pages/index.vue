@@ -1,13 +1,20 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// playground\app.vue
+// playground\app\pages\index.vue
 // ----------------------------------------------------------------------------
-// App
-// AppApp
+// AppPages
+// AppPagesAppPages
 ---------------------------------------------------------------------------- */
+const hsMisc = useHsMisc();
 
+onMounted(() => {
+  hsMisc.init();
+});
 </script>
 
 <template>
-  <Main></Main>
+  <Container fluid>
+    <Main></Main>
+    <!-- <Breadcrumb :links="linkList"></Breadcrumb> -->
+  </Container>
 </template>

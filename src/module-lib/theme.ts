@@ -7,31 +7,38 @@ import {} from '~/src/module-lib/theme';
 
 import { addTemplate } from '@nuxt/kit';
 export const AddTheme = (theme: Record<string, string>) => {
+  const themeColor = JSON.stringify(theme, null, 2);
+  const themekey = Object.keys(theme || {});
+  const Theme = themekey.reduce((ret, key) => {
+    ret[key] = key;
+    return ret;
+  }, {} as Record<string, string>);
+
   addTemplate({
     filename: 'runtime/theme.mjs',
     getContents: () => `
-export const Theme = ${JSON.stringify(theme, null, 2)};
+export const Theme = ${JSON.stringify(Theme, null, 2)};
+const themeColor = ${themeColor};
 export function GetColorCode(key){
-  return Theme[key] ?? '#000000';
+  return themeColor[key] ?? '#000000';
 }
 `,
   });
   addTemplate({
     filename: 'types/theme.d.ts',
     getContents: () => {
-      const keys = Object.keys(theme || {});
-      const union = keys.length ? keys.map((k) => `'${k}'`).join(' | ') : 'never';
+      const union = themekey.length ? themekey.map((k) => `'${k}'`).join(' | ') : 'never';
       return `
 declare module '#build/runtime/theme' {
-  export type Theme = ${union};
-  export const Theme: Record<Theme, string>;
-  export function GetColorCode(key: Theme): string;
+  export type ThemeColor = ${union};
+  export const Theme: Record<ThemeColor, ThemeColor>;
+  export function GetColorCode(key: ThemeColor): string;
 }
 declare module '#build/runtime/theme-internal' {
-  export const theme: Record<string, string>;
   export function GetColorCode(key: string): string;
 }
-export type Theme = ${union};
+export type ThemeColor = ${union};
+export type Theme = typeof ${JSON.stringify(Theme, null, 2)};
 export {}
 `;
     },

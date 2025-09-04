@@ -1,10 +1,10 @@
-<!-- <script lang="ts">
+<script lang="ts">
 /* ----------------------------------------------------------------------------
 // src\runtime\components\layout\card-item.vue
 // ----------------------------------------------------------------------------
-// LayoutCardItem
-// LayoutCardItemLayoutCardItem
----------------------------------------------------------------------------- */
+// CardItem
+// CardItemCardItem
+----------------------------------------------------------------------------- */
 
 // [ utils ]
 import { tv } from '../../utils/tv';
@@ -79,7 +79,7 @@ const cardItemTv = tv({
 import { computed } from '#imports';
 // [ utils ]
 import { type ClassType, ClassTypeToString } from '../../utils/class-style';
-import { GetGolorCode } from '../../utils/theme';
+import { type ThemeColor, GetColorCode } from '../../utils/theme';
 // [ Components ]
 import Btn from '../form/btn.vue';
 import Accordion from './accordion.vue';
@@ -90,7 +90,7 @@ interface Props {
   variant?: 'header' | 'body' | 'footer';
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   accordion?: boolean | undefined;
-  theme?: Theme | undefined;
+  theme?: ThemeColor | undefined;
   scroll?: boolean;
   open?: boolean | undefined;
   cross?: boolean;
@@ -125,7 +125,7 @@ const bgTheme = computed(() => {
 const styleMain = computed(() => {
   return [
     //
-    `--main-color:${GetGolorCode(bgTheme.value)};`,
+    `--main-color:${GetColorCode(bgTheme.value)};`,
   ];
 });
 const classTv = computed(() => {
@@ -177,4 +177,4 @@ const classTvBtn = computed(() => {
       </div>
     </Accordion>
   </template>
-</template> -->
+</template>
