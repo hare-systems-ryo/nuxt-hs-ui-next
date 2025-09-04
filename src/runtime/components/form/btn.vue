@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\btn.vue
 // ----------------------------------------------------------------------------
-// Btn
-// BtnBtn
------------------------------------------------------------------------------ */
+// FormBtn
+// FormBtnFormBtn
+---------------------------------------------------------------------------- */
 
 // [ utils ]
 import { tv } from '../../utils/tv';
@@ -15,6 +15,7 @@ const buttonTv = tv({
   slots: {
     base: [
       //
+      'relative',
       `inline-flex items-center`,
       `rounded`,
       'touch-manipulation	',
@@ -243,6 +244,7 @@ import { Sleep } from '../../utils/com';
 import { type ThemeColor, GetColorCode } from '../../utils/theme';
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
+import { useHsPinia } from '../../composables/use-pinia';
 
 import BtnLineLoading from './btn-line-loading.vue';
 // ----------------------------------------------------------------------------
@@ -295,7 +297,7 @@ type Emits = {
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
-const fcFocus = useHsFocus();
+const fcFocus = useHsFocus(useHsPinia());
 
 const uid = useId();
 emit('id', uid);

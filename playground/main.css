@@ -1,10 +1,8 @@
-/* @import "tailwindcss"; */
-
-/* @import "tailwindcss" source("../src/runtime"); */
-@import "tailwindcss";
-
 @import "@nuxt/ui";
 
+@import "tailwindcss";
+@source "../node_modules/nuxt-hs-ui/dist";
+@source "../src";
 
 @theme static {
     /* breakpoint */

@@ -9,7 +9,6 @@ import {} from '~/src/runtime/composables/use-hs-is-mobile';
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useRequestHeaders } from '#app';
-// import { useRoute } from "#app";
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------

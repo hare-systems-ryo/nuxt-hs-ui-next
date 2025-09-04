@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   modules: [
     // '@nuxtjs/color-mode',
     '@nuxt/ui',
+    '@vueuse/nuxt',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     [

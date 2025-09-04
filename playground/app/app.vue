@@ -15,10 +15,10 @@ onMounted(() => {
 <template>
   <NuxtLayout>
     <Teleport to="body">
-      <!-- <Toast />
+      <Toast />
       <WindowLoader />
       <ModalBg />
-      <Dialog /> -->
+      <Dialog />
     </Teleport>
     <NuxtPage />
   </NuxtLayout>

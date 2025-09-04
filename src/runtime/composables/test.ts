@@ -6,13 +6,13 @@ import {} from '~/src/runtime/composables/test';
 ----------------------------------------------------------------------------- */
 
 import { defineStore } from 'pinia';
-import type { Theme } from '../../runtime/utils/theme';
+import type { ThemeColor } from '../../runtime/utils/theme';
 
 import { ref } from 'vue';
 export const useStore = defineStore(
   'store',
   () => {
-    const theme = ref<Theme>('main1');
+    const theme = ref<ThemeColor>('main1');
     return { theme };
   },
   {

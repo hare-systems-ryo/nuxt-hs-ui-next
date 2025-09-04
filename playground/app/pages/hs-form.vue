@@ -1,7 +1,10 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-pages\test-vui.vue
------------------------------------------------------------------------------ */
+// playground\app\pages\hs-form.vue
+// ----------------------------------------------------------------------------
+// AppPagesHsForm
+// AppPagesHsFormAppPagesHsForm
+---------------------------------------------------------------------------- */
 
 definePageMeta({
   layout: "default",
@@ -20,6 +23,6 @@ const linkList = [
   <Container fluid>
     <Breadcrumb :links="linkList"></Breadcrumb>
     <div class="py-1"></div>
-    <!-- <TestForm /> -->
+    <TestForm />
   </Container>
 </template>

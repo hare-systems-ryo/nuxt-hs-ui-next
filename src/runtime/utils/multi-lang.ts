@@ -20,7 +20,7 @@ export const GetTextByMultiLang = (
     return String(text);
   }
   if (lang in (text as any)) {
-    return (text as { [key: string]: string })[lang];
+    return (text as { [key: string]: string })[lang] || '';
   } else if (fallBackLang !== undefined && fallBackLang in (text as any)) {
     // フォールバック
     if (showLog === true) {

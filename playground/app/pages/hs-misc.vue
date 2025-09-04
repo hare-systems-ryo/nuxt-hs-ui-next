@@ -1,7 +1,10 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// playground\pages\hs-misc.vue
------------------------------------------------------------------------------ */
+// playground\app\pages\hs-misc.vue
+// ----------------------------------------------------------------------------
+// AppPagesHsMisc
+// AppPagesHsMiscAppPagesHsMisc
+---------------------------------------------------------------------------- */
 
 definePageMeta({
   layout: 'default',
@@ -19,6 +22,6 @@ const linkList = [
   <Container fluid>
     <Breadcrumb :links="linkList"></Breadcrumb>
     <div class="py-1"></div>
-    <!-- <TestMisc /> -->
+    <TestMisc />
   </Container>
 </template>

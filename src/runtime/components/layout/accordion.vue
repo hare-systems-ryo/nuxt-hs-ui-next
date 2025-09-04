@@ -55,9 +55,13 @@ const overflowClass = computed(() => {
 </script>
 
 <template>
-  <div class="Accordion" :class="classStyle" :style="`--hsui-accordion-span:${props.span}ms`">
-    <!-- :aria-hidden="!props.open" -->
-    <div :class="overflowClass" class="overflow-y-hidden bg-amber-300"><slot /></div>
+  <div
+    class="Accordion"
+    :class="classStyle"
+    :style="`--hsui-accordion-span:${props.span}ms`"
+    :inert="!props.open"
+  >
+    <div :class="overflowClass" class="overflow-y-hidden"><slot /></div>
   </div>
 </template>
 
@@ -69,8 +73,5 @@ const overflowClass = computed(() => {
   &.open {
     grid-template-rows: 1fr;
   }
-  // > div {
-  //   overflow: hidden; // ❷
-  // }
 }
 </style>

@@ -18,6 +18,7 @@ interface StoreState {
   isReady: boolean;
 }
 // ----------------------------------------------------------------------------
+
 export const useHsMisc = defineStore('HsMisc', () => {
   const state = reactive<StoreState>({
     isInit: false,

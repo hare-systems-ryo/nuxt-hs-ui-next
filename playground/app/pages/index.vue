@@ -5,7 +5,7 @@
 // AppPages
 // AppPagesAppPages
 ---------------------------------------------------------------------------- */
-const hsMisc = useHsMisc();
+const hsMisc = useHsMisc(useHsPinia());
 
 onMounted(() => {
   hsMisc.init();

@@ -47,43 +47,70 @@ const { width } = useElementSize(el);
 // const vColor = computed(() => {
 //   return GetColorCode(value.value);
 // });
-const open = ref(false);
+const open = ref(true);
 </script>
 
 <template>
   <UContainer ref="el" class="mt-10 @container">
     <div>{{ width }}</div>
-    <Test class="content-start"></Test>
     <div class="flex">
       <div class="flex-c bg-accent1 mt-2 inline-block p-3 border rounded text-white" @click="open = !open">
         {{ open }}
       </div>
     </div>
-    <Accordion :open="open" class="bg-/20 mt-2">
-      <div class="py-1 bg-main0">main0</div>
-      <div class="py-1 bg-main1">main1</div>
-      <div class="py-1 bg-main2">main2</div>
-      <div class="py-1 bg-main3">main3</div>
-      <div class="py-1 bg-accent1">accent1</div>
-      <div class="py-1 bg-accent2">accent2</div>
-      <div class="py-1 bg-info">info</div>
-      <div class="py-1 bg-success">success</div>
-      <div class="py-1 bg-warn">warn</div>
-      <div class="py-1 bg-error">error</div>
-      <div class="py-1 bg-link">link</div>
-      <div class="py-1 bg-download">download</div>
-      <div class="py-1 bg-dark">dark</div>
-      <div class="py-1 bg-back1">back1</div>
-      <div class="py-1 bg-back2">back2</div>
-      <div class="py-1 bg-back3">back3</div>
-    </Accordion>
+    <div class="grid grid-cols-2">
+      <Accordion :open="open" class="mt-2">
+        <div class="py-1 bg-main0">main0</div>
+        <div class="py-1 bg-main1">main1</div>
+        <div class="py-1 bg-main2">main2</div>
+        <div class="py-1 bg-main3">main3</div>
+        <div class="py-1 bg-accent1">accent1</div>
+        <div class="py-1 bg-accent2">accent2</div>
+        <div class="py-1 bg-info">info</div>
+        <div class="py-1 bg-success">success</div>
+        <div class="py-1 bg-warn">warn</div>
+        <div class="py-1 bg-error">error</div>
+        <div class="py-1 bg-link">link</div>
+        <div class="py-1 bg-download">download</div>
+        <div class="py-1 bg-dark">dark</div>
+        <div class="py-1 bg-back1">back1</div>
+        <div class="py-1 bg-back2">back2</div>
+        <div class="py-1 bg-back3">back3</div>
+      </Accordion>
+      <Accordion :open="open" class="mt-2">
+        <!-- <div class="py-1 text-main0">main0</div>
+        <div class="py-1 text-main1">main1</div>
+        <div class="py-1 text-main2">main2</div>
+        <div class="py-1 text-main3">main3</div>
+        <div class="py-1 text-accent1">accent1</div>
+        <div class="py-1 text-accent2">accent2</div>
+        <div class="py-1 text-info">info</div>
+        <div class="py-1 text-success">success</div>
+        <div class="py-1 text-warn">warn</div>
+        <div class="py-1 text-error">error</div>
+        <div class="py-1 text-link">link</div>
+        <div class="py-1 text-download">download</div>
+        <div class="py-1 text-dark">dark</div>
+        <div class="py-1 text-back1">back1</div>
+        <div class="py-1 text-back2">back2</div>
+        <div class="py-1 text-back3">back3</div> -->
+      </Accordion>
+    </div>
+    <div class="relative container-type-inline-size">
+      grid grid-cols-1 @800:grid-cols-4
+      <div class="grid grid-cols-1 600:grid-cols-4">
+        <div class="bg-main2">main2</div>
+        <div class="bg-main3">main2</div>
+      </div>
+    </div>
+
+    <div class="@sm:text-[2em]">@sm:text-[2em]</div>
+    <div class="@800:text-[2em]">@800:text-[2em]</div>
+    <div class="800:text-[2em]">800:text-[2em]</div>
+    <div class="800:bg-green-400">800:bg-green-400</div>
+    <div class="bg-main2 @800:bg-green-400">bg-main2 @800:bg-green-400</div>
     <!-- 
-      <div class="bg-main2">main2</div>
-      <div class="@sm:text-[2em]">@sm:text-[2em]</div>
-      <div class="@1000:text-[2em]">@1000:text-[2em]</div>
-      <div class="1000:text-[2em]">1000:text-[2em]</div>
-      <div class="1000:bg-green-400">1000:bg-green-400</div>
-      <div class="bg-main2 @1000:bg-green-400">bg-main2 @1000:bg-green-400</div> 
+   
       -->
     <!-- <div>{{ value }}</div> -->
     <!-- <div class="grid gap-4">

@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\layout\card-item.vue
 // ----------------------------------------------------------------------------
-// CardItem
-// CardItemCardItem
------------------------------------------------------------------------------ */
+// LayoutCardItem
+// LayoutCardItemLayoutCardItem
+---------------------------------------------------------------------------- */
 
 // [ utils ]
 import { tv } from '../../utils/tv';
@@ -14,7 +14,7 @@ const cardItemTv = tv({
   slots: {
     base: [
       //
-      `p-2`,
+      `p-2 relative`,
       'bg-[var(--main-color)]',
     ],
     btn: [`border-[1px]`],
@@ -59,7 +59,7 @@ const cardItemTv = tv({
       return {
         theme: theme,
         class: {
-          base: [['back', 'white', 'warn'].includes(theme) ? `text-black ` : 'text-white '],
+          base: [['back1', 'white', 'warn'].includes(theme) ? `text-black ` : 'text-white '],
         },
       } as any;
     }),
@@ -120,7 +120,7 @@ const bgTheme = computed(() => {
   if (props.theme !== undefined) return props.theme;
   if (props.variant == 'header') return Theme.main1;
   if (props.variant == 'footer') return Theme.main2;
-  return Theme.back;
+  return Theme.back1;
 });
 const styleMain = computed(() => {
   return [

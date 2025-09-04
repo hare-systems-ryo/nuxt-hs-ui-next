@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\btn-line-loading.vue
 // ----------------------------------------------------------------------------
-// BtnLineLoading
-// BtnLineLoadingBtnLineLoading
------------------------------------------------------------------------------ */
+// FormBtnLineLoading
+// FormBtnLineLoadingFormBtnLineLoading
+---------------------------------------------------------------------------- */
 
 // [ NUXT ]
 import { computed } from "#imports";

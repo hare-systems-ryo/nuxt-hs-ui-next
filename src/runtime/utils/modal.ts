@@ -5,8 +5,6 @@
 import {} from '~/src/runtime/utils/modal';
 ----------------------------------------------------------------------------- */
 
-import type { Ref } from 'vue';
-
 /** --------------------------------------------
 使用方法
 
@@ -91,7 +89,7 @@ export const InitModalControl = <T = any>(state?: T): ModalControl<T> => {
  * @param modal ModalControlが含まれるReactiveオブジェクト
  * @param nextTick Vue の nextTick関数
  */
-export const InitModals = (modal: Ref<Record<string, ModalControl>>, nextTick: any) => {
+export const InitModals = (modal: any, nextTick: any) => {
   Object.keys(modal).forEach((key) => {
     const m: ModalControl = (modal as any)[key];
     m.show = async () => {

@@ -1,6 +1,6 @@
 /* ---- tailwind v4 entry for your module ---- */
 /* @import "tailwindcss"; */
-@import "tailwindcss" source("../");
+/* @import "tailwindcss" source("../"); */
 /*  */
 /* @source "../../../node_modules/nuxt-hs-ui/dist"; */
 /* @source "../components"; */

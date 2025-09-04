@@ -13,6 +13,7 @@ import { GenerateUniqeKey } from '../utils/com';
 import type { MultiLang } from '../utils/multi-lang';
 // [ types ]
 import { type Message, Theme } from '../types/toast';
+import { useHsPinia } from '../composables/use-pinia';
 // ----------------------------------------------------------------------------
 interface State {
   state: {
@@ -23,7 +24,7 @@ interface State {
 }
 // ----------------------------------------------------------------------------
 const toastShow = (message: MultiLang, title: MultiLang, hideAfter: number, theme: Theme) => {
-  const toast = useHsToast();
+  const toast = useHsToast(useHsPinia());
   const newToast: Message = {
     key: GenerateUniqeKey(),
     isShow: true,

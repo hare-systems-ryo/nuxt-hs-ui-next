@@ -1,7 +1,10 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// playground\pages\hs-interactive.vue
------------------------------------------------------------------------------ */
+// playground\app\pages\hs-interactive.vue
+// ----------------------------------------------------------------------------
+// AppPagesHsInteractive
+// AppPagesHsInteractiveAppPagesHsInteractive
+---------------------------------------------------------------------------- */
 
 definePageMeta({
   layout: "default",
@@ -20,6 +23,6 @@ const linkList = [
   <Container fluid>
     <Breadcrumb :links="linkList"></Breadcrumb>
     <div class="py-1"></div>
-    <!-- <TestInteractive /> -->
+    <TestInteractive />
   </Container>
 </template>

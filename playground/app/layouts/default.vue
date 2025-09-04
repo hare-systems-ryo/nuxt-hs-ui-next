@@ -7,7 +7,7 @@
 ---------------------------------------------------------------------------- */
 // const fixedHeader = "shadow-lg fixed left-0 top-0 right-0 z-50";
 // const fixedContent = "mt-[60px]";
-const multiLang = useHsMultiLang();
+const multiLang = useHsMultiLang(useHsPinia());
 const toggleLang = () => {
   if (multiLang.lang === 'ja') {
     multiLang.lang = 'en';
@@ -17,8 +17,8 @@ const toggleLang = () => {
 };
 </script>
 <template>
-  <div class="">
-    <header class="bg-main1 text-white flex items-center h-[60px] px-2">
+  <div class="layout bg-back3">
+    <header class="bg-main1 text-white flex items-center h-[60px] px-2 relative">
       <Btn to="/" theme="white" variant="text" class="py-0 min-h-auto">
         <div class="text-[20px] leading-[1.5em] sm:text-[24px]">
           <span class="hidden sm:inline">Module</span>
@@ -27,7 +27,7 @@ const toggleLang = () => {
       </Btn>
       <div class="flex grid-cols-3 gap-3 ms-3">
         <Btn to="/hs-form" theme="white" variant="text" class=""> Form </Btn>
-        <Btn to="/hs-interactive" theme="white" variant="text" class=""> Interactive </Btn> -->
+        <Btn to="/hs-interactive" theme="white" variant="text" class=""> Interactive </Btn>
         <Btn to="/hs-layout" theme="white" variant="text" class=""> Layout </Btn>
         <Btn to="/hs-misc" theme="white" variant="text" class=""> MISC </Btn>
         <Btn theme="white" variant="text" class="" @click="toggleLang()">
@@ -42,3 +42,17 @@ const toggleLang = () => {
     <div class="py-10" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+}
+
+.footer {
+  position: sticky;
+  top: 100vh;
+  top: 100dvh;
+}
+</style>
