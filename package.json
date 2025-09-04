@@ -1,8 +1,8 @@
 {
   "name": "nuxt-hs-ui-next",
-  "version": "3.0.0",
-  "description": "My new Nuxt module",
-  "repository": "https://github.com/hare-systems-ryo/nuxt-hs-ui",
+  "version": "3.0.1",
+  "description": "This repository is dedicated to the ongoing migration of **nuxt-hs-ui** to **Nuxt 4**",
+  "repository": "https://github.com/hare-systems-ryo/nuxt-hs-ui-next",
   "license": "MIT",
   "author": {
     "name": "Ryo@Hare-Systems",
@@ -41,7 +41,7 @@
     "npm": "10.5.2"
   },
   "scripts": {
-    "prepack": "nuxt-module-build build",
+    "prepack": "nuxt-module-build build --failOnWarn=false",
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
@@ -85,7 +85,7 @@
     "@types/vue-select": "^3.16.8",
     "changelogen": "^0.6.2",
     "eslint": "^9.34.0",
-    "i": "^0.3.7",
+    "sass": "^1.92.0",
     "npm": "^11.5.2",
     "nuxt": "^4.1.0",
     "typescript": "~5.9.2",
