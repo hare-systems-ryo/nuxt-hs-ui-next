@@ -1,0 +1,14 @@
+{
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": { "vue": "html" },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  // まだ @source が赤線になる場合は残す
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "files.associations": {
+    "tailwind-extends.css": "postcss"
+  }
+}
