@@ -16,17 +16,22 @@ export const Theme = theme as Record<ThemeColor, ThemeColor>;
 type RGB = { r: number; g: number; b: number };
 type RGBA = RGB & { a: number };
 
-export function TextColor(bgHex: string, over: string = '#ffffff'): '#000000' | '#ffffff' {
-  const bg = parseHex(bgHex);
-  const base = parseHex(over);
+export function GetTextColor(bgHex: string, over: string = '#ffffff'): '#000000' | '#ffffff' {
+  try {
+    const bg = parseHex(bgHex);
+    const base = parseHex(over);
 
-  const opaque: RGB = bg.a < 1 ? compositeOver(bg, base) : { r: bg.r, g: bg.g, b: bg.b };
+    const opaque: RGB = bg.a < 1 ? compositeOver(bg, base) : { r: bg.r, g: bg.g, b: bg.b };
 
-  const L = relativeLuminance(opaque);
-  const contrastWithBlack = (L + 0.05) / 0.05; // black luminance = 0
-  const contrastWithWhite = 1.05 / (L + 0.05); // white luminance = 1
+    const L = relativeLuminance(opaque);
+    const contrastWithBlack = (L + 0.05) / 0.05; // black luminance = 0
+    const contrastWithWhite = 1.05 / (L + 0.05); // white luminance = 1
 
-  return contrastWithBlack >= contrastWithWhite ? '#000000' : '#ffffff';
+    return contrastWithBlack >= contrastWithWhite ? '#000000' : '#ffffff';
+  } catch (err) {
+    console.error('GetTextColor', err);
+    return '#000000';
+  }
 }
 
 // ----------------------------------------------------------------------------

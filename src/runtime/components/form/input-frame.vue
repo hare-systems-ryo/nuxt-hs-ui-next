@@ -144,7 +144,7 @@ const inputClass = computed(() => {
   return [
     twMerge(
       'px-1',
-      'truncate',
+      'truncate relative',
       //
       'w-full',
       // 'max-w-full max-h-full w-full',
@@ -181,7 +181,7 @@ const hasHeader = computed(() => {
   <div ref="el" class="hc-ui-input-frame" :class="baseClass">
     <div
       v-if="$slots['left-icons']"
-      class="icons left-icons flex-none text-accent1"
+      class="icons left-icons flex-none text-accent1 relative"
       :class="iconDisabled ? 'disabled' : ''"
     >
       <slot name="left-icons" :disabled="iconDisabled" />
@@ -189,27 +189,27 @@ const hasHeader = computed(() => {
     <div class="flex-1 flex flex-col overflow-hidden justify-start">
       <div v-if="hasHeader && !props.headerless" class="flex-none flex items-end" :class="headerClass">
         <div
-          class="hc-input-label grow-0 shrink-1 truncate leading-[1.5em]"
+          class="hc-input-label grow-0 shrink-1 truncate leading-[1.5em] relative"
           :title="label"
           @click.stop="emit('header-label-click')"
         >
           <slot name="label-prepend" />{{ label }}<slot name="label-append" />
         </div>
         <div class="flex-1"></div>
-        <div class="flex-none flex gap-2">
+        <div class="flex-none flex gap-2 relative">
           <slot name="header-right" :default-class="headerIconClass" />
           <div v-if="props.require && !props.readonly" :class="headerIconClass" class="text-white bg-error">
             <span data-type="require">{{ tx(props.requireText) }}</span>
           </div>
         </div>
       </div>
-      <div class="hc-input-body flex-1 flex flex-col justify-center">
+      <div class="hc-input-body flex-1 flex flex-col justify-center relative">
         <div :class="inputClass"><slot /></div>
       </div>
     </div>
     <div
       v-if="$slots['right-icons'] || props.warn"
-      class="icons right-icons flex-none"
+      class="icons right-icons flex-none relative"
       :class="iconDisabled ? 'disabled' : ''"
     >
       <slot name="right-icons" :disabled="iconDisabled" />

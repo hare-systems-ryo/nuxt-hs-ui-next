@@ -30,7 +30,7 @@ import Card from '../layout/card.vue';
 import CardItem from '../layout/card-item.vue';
 import Btn from '../form/btn.vue';
 
-import { TextColor, GetColorCode } from '../../utils/theme';
+import { GetTextColor, GetColorCode } from '../../utils/theme';
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -232,7 +232,7 @@ const bgColorCode = computed(() => {
 });
 const textColorCode = computed(() => {
   if (!activeItem.value) return '#FFFFFF';
-  return TextColor(bgColorCode.value);
+  return GetTextColor(bgColorCode.value);
 });
 const headerStyle = computed(() => {
   return ['--color-bg:' + bgColorCode.value, '--color-text:' + textColorCode.value];
