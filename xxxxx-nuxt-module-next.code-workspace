@@ -9,7 +9,7 @@
     "files.autoSave": "afterDelay",
     "files.exclude": {
       "**/.nuxt": true,
-      "**/dist": true,
+      // "**/dist": true,
       "**/node_modules": true
       // "**/node_modules": false //モジュールの中身を見るときはこれを有効に
     }

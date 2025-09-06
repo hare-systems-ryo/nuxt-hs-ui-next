@@ -6,7 +6,7 @@
 // AppComponentsTestFormItemRadioAppComponentsTestFormItemRadio
 ---------------------------------------------------------------------------- */
 
-import type { SelectItem } from "../../../../../src/runtime/utils/select-item";
+import type { SelectItem } from "../../../../../../src/runtime/utils/select-item";
 
 const state = ref<{
   testString: {

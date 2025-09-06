@@ -19,80 +19,10 @@
       "import": "./dist/runtime/assets/tailwind.config.js",
       "require": "./dist/runtime/assets/tailwind.config.js"
     },
-    "./utils/class-style": {
-      "types": "./dist/runtime/utils/class-style.d.ts",
-      "import": "./dist/runtime/utils/class-style.js",
-      "require": "./dist/runtime/utils/class-style.js"
-    },
-    "./utils/com": {
-      "types": "./dist/runtime/utils/com.d.ts",
-      "import": "./dist/runtime/utils/com.js",
-      "require": "./dist/runtime/utils/com.js"
-    },
-    "./utils/dayjs": {
-      "types": "./dist/runtime/utils/dayjs.d.ts",
-      "import": "./dist/runtime/utils/dayjs.js",
-      "require": "./dist/runtime/utils/dayjs.js"
-    },
-    "./utils/float": {
-      "types": "./dist/runtime/utils/float.d.ts",
-      "import": "./dist/runtime/utils/float.js",
-      "require": "./dist/runtime/utils/float.js"
-    },
-    "./utils/modal": {
-      "types": "./dist/runtime/utils/modal.d.ts",
-      "import": "./dist/runtime/utils/modal.js",
-      "require": "./dist/runtime/utils/modal.js"
-    },
-    "./utils/multi-lang-object": {
-      "types": "./dist/runtime/utils/multi-lang-object.d.ts",
-      "import": "./dist/runtime/utils/multi-lang-object.js",
-      "require": "./dist/runtime/utils/multi-lang-object.js"
-    },
-    "./utils/multi-lang": {
-      "types": "./dist/runtime/utils/multi-lang.d.ts",
-      "import": "./dist/runtime/utils/multi-lang.js",
-      "require": "./dist/runtime/utils/multi-lang.js"
-    },
-    "./utils/number": {
-      "types": "./dist/runtime/utils/number.d.ts",
-      "import": "./dist/runtime/utils/number.js",
-      "require": "./dist/runtime/utils/number.js"
-    },
-    "./utils/object": {
-      "types": "./dist/runtime/utils/object.d.ts",
-      "import": "./dist/runtime/utils/object.js",
-      "require": "./dist/runtime/utils/object.js"
-    },
-    "./utils/select-item": {
-      "types": "./dist/runtime/utils/select-item.d.ts",
-      "import": "./dist/runtime/utils/select-item.js",
-      "require": "./dist/runtime/utils/select-item.js"
-    },
-    "./utils/stop-watch": {
-      "types": "./dist/runtime/utils/stop-watch.d.ts",
-      "import": "./dist/runtime/utils/stop-watch.js",
-      "require": "./dist/runtime/utils/stop-watch.js"
-    },
-    "./utils/string": {
-      "types": "./dist/runtime/utils/string.d.ts",
-      "import": "./dist/runtime/utils/string.js",
-      "require": "./dist/runtime/utils/string.js"
-    },
-    "./utils/tabulator": {
-      "types": "./dist/runtime/utils/tabulator.d.ts",
-      "import": "./dist/runtime/utils/tabulator.js",
-      "require": "./dist/runtime/utils/tabulator.js"
-    },
-    "./utils/theme": {
-      "types": "./dist/runtime/utils/theme.d.ts",
-      "import": "./dist/runtime/utils/theme.js",
-      "require": "./dist/runtime/utils/theme.js"
-    },
-    "./utils/wareki": {
-      "types": "./dist/runtime/utils/wareki.d.ts",
-      "import": "./dist/runtime/utils/wareki.js",
-      "require": "./dist/runtime/utils/wareki.js"
+    "./utils/*": {
+      "types": "./dist/runtime/utils/*.d.ts",
+      "import": "./dist/runtime/utils/*.js",
+      "default": "./dist/runtime/utils/*.js"
     }
   },
   "main": "./dist/module.mjs",
