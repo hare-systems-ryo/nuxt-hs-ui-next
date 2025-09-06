@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.6
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.5...v3.0.6)
+
+### 🩹 Fixes
+
+- Correct export settings for theme configuration ([468d42b](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/468d42b))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.5
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.4...v3.0.5)
