@@ -49,7 +49,7 @@ const classStyleUnlink = computed(() => {
 <template>
   <Card :class="classStyle">
     <CardItem class="px-1 py-1 min-w-0 h-full" :theme="props.theme" variant="body">
-      <div class="flex flex-wrap gap-[2px] max-w-full relative">
+      <div class="flex flex-wrap gap-[2px] max-w-full relative flex-c min-h-full">
         <template v-for="(item, index) in props.links" :key="index">
           <div class="truncate min-w-0 w-auto relative text-link">
             <NuxtLink v-if="item.to !== undefined" :to="item.to" :class="[classStyleLink, { hasBefore: index !== 0 }]">

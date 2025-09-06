@@ -59,7 +59,7 @@ const cardItemTv = tv({
       return {
         theme: theme,
         class: {
-          base: [['back1', 'white', 'warn'].includes(theme) ? `text-black ` : 'text-white '],
+          base: [['back1', 'white', 'warn'].includes(theme) ? `` : 'text-white '],
         },
       } as any;
     }),
