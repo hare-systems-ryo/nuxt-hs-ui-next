@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.7
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.6...v3.0.7)
+
+### 🩹 Fixes
+
+- Adjust vertical alignment in banks breadcrumb layout ([f53e7f2](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/f53e7f2))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.6
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.5...v3.0.6)
