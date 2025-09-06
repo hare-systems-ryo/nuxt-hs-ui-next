@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.9
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.8...v3.0.9)
+
+### 🩹 Fixes
+
+- Correct label alignment issue in unselected Select component ([9905f6c](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/9905f6c))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.8
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.7...v3.0.8)
