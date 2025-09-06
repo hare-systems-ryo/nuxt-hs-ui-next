@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\modal-bg.vue
 // ----------------------------------------------------------------------------
-// ModalBg
-// ModalBgModalBg
------------------------------------------------------------------------------ */
+// InteractiveModalBg
+// InteractiveModalBgInteractiveModalBg
+---------------------------------------------------------------------------- */
 
 // [ tailwind ]
 import { twMerge } from 'tailwind-merge';

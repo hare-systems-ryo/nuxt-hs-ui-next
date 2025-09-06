@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\misc\view-name-display.vue
 // ----------------------------------------------------------------------------
-// ViewNameDisplay
-// ViewNameDisplayViewNameDisplay
------------------------------------------------------------------------------ */
+// MiscViewNameDisplay
+// MiscViewNameDisplayMiscViewNameDisplay
+---------------------------------------------------------------------------- */
 
 // [ NUXT ]
 import { ref, computed, onMounted } from '#imports';

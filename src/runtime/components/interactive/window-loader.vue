@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\window-loader.vue
 // ----------------------------------------------------------------------------
-// WindowLoader
-// WindowLoaderWindowLoader
------------------------------------------------------------------------------ */
+// InteractiveWindowLoader
+// InteractiveWindowLoaderInteractiveWindowLoader
+---------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------
 const WindowLoader = useHsWindowLoader();

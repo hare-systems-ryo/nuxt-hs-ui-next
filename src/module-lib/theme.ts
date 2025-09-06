@@ -15,7 +15,7 @@ export const AddTheme = (theme: Record<string, string>) => {
   }, {} as Record<string, string>);
 
   addTemplate({
-    filename: 'runtime/theme.mjs',
+    filename: 'nuxt-hs-ui-next/runtime/theme.mjs',
     getContents: () => `
 export const Theme = ${JSON.stringify(Theme, null, 2)};
 const themeColor = ${themeColor};
@@ -25,20 +25,23 @@ export function GetColorCode(key){
 `,
   });
   addTemplate({
-    filename: 'types/theme.d.ts',
+    filename: 'nuxt-hs-ui-next/types/theme.d.ts',
     getContents: () => {
       const union = themekey.length ? themekey.map((k) => `'${k}'`).join(' | ') : 'never';
       return `
-declare module '#build/runtime/theme' {
+declare module '#build/nuxt-hs-ui-next/runtime/theme' {
   export type ThemeColor = ${union};
   export const Theme: Record<ThemeColor, ThemeColor>;
   export function GetColorCode(key: ThemeColor): string;
 }
-declare module '#build/runtime/theme-internal' {
+declare module '#build/nuxt-hs-ui-next/runtime/theme-internal' {
   export function GetColorCode(key: string): string;
 }
 export type ThemeColor = ${union};
-export type Theme = typeof ${JSON.stringify(Theme, null, 2)};
+ const theme = ${JSON.stringify(Theme, null, 2)
+   .replace(/"(\w*)":/g, '$1:')
+   .replace(/"/g, "'")};
+export type Theme =typeof  theme
 export {}
 `;
     },

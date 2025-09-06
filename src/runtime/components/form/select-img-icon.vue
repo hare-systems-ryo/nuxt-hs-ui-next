@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\select-img-icon.vue
 // ----------------------------------------------------------------------------
-// SelectImgIcon
-// SelectImgIconSelectImgIcon
------------------------------------------------------------------------------ */
+// FormSelectImgIcon
+// FormSelectImgIconFormSelectImgIcon
+---------------------------------------------------------------------------- */
 
 // [ tailwind ]
 import { twMerge } from "tailwind-merge";

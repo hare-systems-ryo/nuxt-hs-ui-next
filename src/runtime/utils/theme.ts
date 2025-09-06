@@ -5,12 +5,11 @@
 import {} from '~/src/runtime/utils/theme';
 ----------------------------------------------------------------------------- */
 
-import { GetColorCode as _GetColorCode } from '#build/runtime/theme';
-
-import type { Theme } from '#build/types/theme';
-export const GetColorCode = (theme: Theme): string => _GetColorCode(theme) as string;
-export type { ThemeColor } from '#build/runtime/theme';
-export { Theme } from '#build/runtime/theme';
+import { GetColorCode as _GetColorCode } from '#build/nuxt-hs-ui-next/runtime/theme.mjs';
+import type { ThemeColor } from '#build/nuxt-hs-ui-next/types/theme';
+export const GetColorCode = (theme: ThemeColor): string => _GetColorCode(theme) as string;
+export type { ThemeColor } from '#build/nuxt-hs-ui-next/types/theme';
+export { Theme } from '#build/nuxt-hs-ui-next/runtime/theme.mjs';
 
 type RGB = { r: number; g: number; b: number };
 type RGBA = RGB & { a: number };

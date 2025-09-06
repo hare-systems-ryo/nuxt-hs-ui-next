@@ -1,10 +1,10 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// playground\components\test\layout\item\container.vue
+// playground\app\components\test\layout\item\container.vue
 // ----------------------------------------------------------------------------
-// TestLayoutItemContainer
-// TestLayoutItemContainerTestLayoutItemContainer
------------------------------------------------------------------------------ */
+// AppComponentsTestLayoutItemContainer
+// AppComponentsTestLayoutItemContainerAppComponentsTestLayoutItemContainer
+---------------------------------------------------------------------------- */
 </script>
 <template>
   <div class="py-2 -mx-2 bg-yellow-100">

@@ -2,9 +2,9 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\block-loading.vue
 // ----------------------------------------------------------------------------
-// BlockLoading
-// BlockLoadingBlockLoading
------------------------------------------------------------------------------ */
+// InteractiveBlockLoading
+// InteractiveBlockLoadingInteractiveBlockLoading
+---------------------------------------------------------------------------- */
 
 // [ NUXT ]
 import { computed } from '#imports';
