@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.10
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.9...v3.0.10)
+
+### 💅 Refactors
+
+- Unify dayjs reference to apply consistent locale settings ([b8f2bc2](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/b8f2bc2))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.9
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.8...v3.0.9)
