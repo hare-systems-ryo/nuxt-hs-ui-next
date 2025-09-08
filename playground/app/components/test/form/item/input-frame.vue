@@ -5,7 +5,8 @@
 // AppComponentsTestFormItemInputFrame
 // AppComponentsTestFormItemInputFrameAppComponentsTestFormItemInputFrame
 ---------------------------------------------------------------------------- */
-import dayjs from 'dayjs/esm/index';
+
+import { dayjs } from '../../../../../../src/runtime/utils/dayjs';
 
 const ts = ref('');
 

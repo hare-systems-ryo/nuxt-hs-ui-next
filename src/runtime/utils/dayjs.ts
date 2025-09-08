@@ -4,7 +4,7 @@
 // [ src > runtime > utils > * ]
 import {} from '~/src/runtime/utils/dayjs';
 ----------------------------------------------------------------------------- */
-import dayjs from 'dayjs/esm/index';
+import _dayjs from 'dayjs/esm/index';
 import utc from 'dayjs/esm/plugin/utc';
 import timezone from 'dayjs/esm/plugin/timezone';
 import advancedFormat from 'dayjs/esm/plugin/advancedFormat';
@@ -12,9 +12,10 @@ import advancedFormat from 'dayjs/esm/plugin/advancedFormat';
 import ja from 'dayjs/esm/locale/ja.js';
 import en from 'dayjs/esm/locale/en.js';
 
-export type Dayjs = dayjs.Dayjs;
-export type QUnitType = dayjs.QUnitType;
-export type OpUnitType = dayjs.OpUnitType;
+export const dayjs = _dayjs;
+export type Dayjs = _dayjs.Dayjs;
+export type QUnitType = _dayjs.QUnitType;
+export type OpUnitType = _dayjs.OpUnitType;
 let init = false;
 
 export const DayjsInit = (f = false, defaultTimezone = 'Asia/Tokyo') => {

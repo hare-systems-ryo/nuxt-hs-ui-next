@@ -6,7 +6,7 @@ import {} from '~/src/runtime/composables/use-hs-multi-lang';
 ----------------------------------------------------------------------------- */
 
 // [dayjs]
-import dayjs from 'dayjs/esm/index';
+import { dayjs } from '../utils/dayjs';
 import ja from 'dayjs/esm/locale/ja.js';
 import en from 'dayjs/esm/locale/en.js';
 import { defineStore } from 'pinia';

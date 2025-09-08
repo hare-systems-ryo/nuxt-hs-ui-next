@@ -7,7 +7,6 @@
 ---------------------------------------------------------------------------- */
 
 // [ node-modules ]
-import dayjs from 'dayjs/esm/index';
 // flatpickr cdn 経由で使用する
 import flatpickr from 'flatpickr';
 // import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
@@ -30,6 +29,8 @@ import { Sleep } from '../../utils/com';
 import type { ClassType } from '../../utils/class-style';
 import { GetTimeShiftValue, Dayjs, DayjsInit } from '../../utils/dayjs';
 import type { MultiLang } from '../../utils/multi-lang';
+import { dayjs } from '../../utils/dayjs';
+
 // [ utils ]
 
 import { ja } from '../../types/flatpickr/ja';

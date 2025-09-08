@@ -6,13 +6,15 @@ import {} from '~/src/runtime/composables/use-hs-dialog';
 ----------------------------------------------------------------------------- */
 
 // [ node_modules ]
-import dayjs from 'dayjs/esm/index';
 import { defineStore } from 'pinia';
+// [ src > runtime > utils > * ]
 // ----------------------------------------------------------------------------
 // [ utils ]
 import { GenerateUniqeKey } from '../utils/com';
 import type { MultiLang } from '../utils/multi-lang';
 import { Theme } from '../utils/theme';
+import { dayjs } from '../utils/dayjs';
+
 // [ types ]
 import { DialogItem, InitDialogOption, DialogResult, type DialogOption } from '../types/dialog';
 // ----------------------------------------------------------------------------

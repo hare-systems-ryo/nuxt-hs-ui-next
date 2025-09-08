@@ -479,6 +479,8 @@ const isMobile = useHsIsMobile(useHsPinia());
 // safari ios 勝手にスクロール対策
 
 .v-select {
+  position: relative;
+
   > div {
     border-width: 0 !important;
   }
@@ -492,6 +494,7 @@ const isMobile = useHsIsMobile(useHsPinia());
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     flex: 1 1 auto;
+    width: 100%;
   }
   .vs__selected,
   .vs__selected-options {
