@@ -181,9 +181,9 @@ onMounted(() => {
       </div>
       <div class="grid grid-cols-1 600:grid-cols-2 gap-1">
         <Select v-model:data="state.testString.data" :list="state.testString.list" size="s" label="" searchable />
-        <div class="flex-c">{{ state.testString.data }}</div>
+        <div class="flex items-center">{{ state.testString.data }}</div>
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" label="" />
-        <div class="flex-c">{{ state.testNumber.data }}</div>
+        <div class="flex items-center">{{ state.testNumber.data }}</div>
         <!-- <Select
           v-model:data="valueA"
           :diff="valueB"

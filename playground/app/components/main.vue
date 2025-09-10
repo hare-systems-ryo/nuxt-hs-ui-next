@@ -54,7 +54,7 @@ const open = ref(true);
   <UContainer ref="el" class="mt-10 @container">
     <div>{{ width }}</div>
     <div class="flex">
-      <div class="flex-c bg-accent1 mt-2 inline-block p-3 border rounded text-white" @click="open = !open">
+      <div class="flex items-center bg-accent1 mt-2 inline-block p-3 border rounded text-white" @click="open = !open">
         {{ open }}
       </div>
     </div>
@@ -115,17 +115,17 @@ const open = ref(true);
     <!-- <div>{{ value }}</div> -->
     <!-- <div class="grid gap-4">
       <div class="flex gap-1 relative">
-        <div class="flex-c">store.theme</div>
+        <div class="flex items-center">store.theme</div>
         <UInput v-model="store.theme" />
-        <div class="flex-c">{{ store.theme }}</div>
-        <div class="flex-c">{{ sColor }}</div>
+        <div class="flex items-center">{{ store.theme }}</div>
+        <div class="flex items-center">{{ sColor }}</div>
         <div class="bg-[var(--color)] absolute left-0 right-0 bottom-0 h-[2px]" :style="`--color:${sColor}`"></div>
       </div>
       <div class="flex gap-1 relative">
-        <div class="flex-c">value</div>
+        <div class="flex items-center">value</div>
         <UInput v-model="value" />
-        <div class="flex-c">{{ value }}</div>
-        <div class="flex-c">{{ vColor }}</div>
+        <div class="flex items-center">{{ value }}</div>
+        <div class="flex items-center">{{ vColor }}</div>
         <div class="bg-[var(--color)] absolute left-0 right-0 bottom-0 h-[2px]" :style="`--color:${vColor}`"></div>
       </div>
     </div> -->

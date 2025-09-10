@@ -269,7 +269,7 @@ const headerStyle = computed(() => {
             {{ tx(activeItem.data.message) }}
           </div>
           <div :class="btnBaseStyle">
-            <div class="flex-cc">
+            <div class="flex items-center justify-center">
               <Btn
                 v-if="activeItem.data.option.btnLeft.isShow"
                 :class="[btnStyle, activeItem.data.option.btnLeft.variant === 'outlined' ? 'bg-white' : '']"
@@ -282,7 +282,7 @@ const headerStyle = computed(() => {
                 {{ tx(activeItem.data.option.btnLeft.title) }}
               </Btn>
             </div>
-            <div class="flex-cc">
+            <div class="flex items-center justify-center">
               <Btn
                 v-if="activeItem.data.option.btnRight.isShow"
                 :class="[btnStyle, activeItem.data.option.btnRight.variant === 'outlined' ? 'bg-white' : '']"

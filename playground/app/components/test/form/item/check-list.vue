@@ -52,8 +52,8 @@ const listA = [
             class-img-tag="object-cover"
             image
           />
-          <div class="h-[44px] w-4 bg-red-600 flex-cc text-white"></div>
-          <div class="h-[48px] w-4 bg-red-600 flex-cc text-white"></div>
+          <div class="h-[44px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
+          <div class="h-[48px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
           <div class="">{{ valueA }}</div>
         </div>
       </div>

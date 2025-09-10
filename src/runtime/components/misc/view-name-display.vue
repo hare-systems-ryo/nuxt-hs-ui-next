@@ -57,7 +57,7 @@ const styleVisibleTarget = computed(() => {
   <div class="relative">
     <div ref="targetScrollElm" class="absolute top-0 pointer-events-none" :style="styleScrollTarget"></div>
     <div ref="targetVisibleElm" class="absolute top-0 pointer-events-none" :style="styleVisibleTarget"></div>
-    <div class="view-name-display flex-cc" :class="{ isShow: !targetIsVisible && isMounted }">
+    <div class="view-name-display flex items-center justify-center" :class="{ isShow: !targetIsVisible && isMounted }">
       <div class="view-name elevation-4 cursor-pointer bg-white" @click.stop="scroll()">
         <div class="hover:bg-orange-700/10 min-h-full min-w-full px-2 py-1">
           {{ tx(props.componentName).value }}

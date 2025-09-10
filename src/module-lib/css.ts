@@ -23,7 +23,6 @@ export const AddCss = (
       'tabulator-custom.css',
       'vue-select.css',
       'main.css',
-      'tailwind-extends.css', // ← 最後に置く（上書き効かせる）
     ],
   }: {
     moduleName?: string;

@@ -8,8 +8,8 @@
 
 import { useInterval } from '@vueuse/core';
 const counter = useInterval(200);
-import { Theme } from '../../../../../../src/runtime/utils/theme';
-const ThemeList = Object.keys(Theme) as Theme[];
+import { type ThemeColor, Theme } from '../../../../../../src/runtime/utils/theme';
+const ThemeList = Object.keys(Theme) as ThemeColor[];
 const c = () => {
   console.log('click');
 };
@@ -42,7 +42,7 @@ const disabled = ref(true);
         <div class="h-[4px] bg-green-500"></div>
         <div class="flex gap-2">
           <Btn theme="accent1" variant="flat" class="flex-1" size="m" @click="c"> c </Btn>
-          <div class="flex-none h-[44px] w-10 bg-red-500 text-white flex-cc">44px</div>
+          <div class="flex-none h-[44px] w-10 bg-red-500 text-white flex items-center justify-center">44px</div>
         </div>
         <div class="h-[4px] bg-green-500"></div>
       </div>
@@ -51,19 +51,19 @@ const disabled = ref(true);
       <div class="">Size</div>
       <div class="flex gap-1 items-start mt-3">
         <Btn theme="accent1" variant="outlined" size="xs">BTN [xs] </Btn>
-        <div class="h-[32px] w-4 bg-red-600 flex-cc text-white"></div>
+        <div class="h-[32px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
 
         <Btn theme="accent1" variant="outlined" size="s">BTN [s]--| </Btn>
-        <div class="h-[38px] w-4 bg-red-600 flex-cc text-white"></div>
+        <div class="h-[38px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
 
         <Btn theme="accent1" variant="outlined" size="m">BTN [m]--| </Btn>
-        <div class="h-[48px] w-4 bg-red-600 flex-cc text-white"></div>
+        <div class="h-[48px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
 
         <Btn theme="accent1" variant="outlined" size="l">BTN [l]--| </Btn>
-        <div class="h-[60px] w-4 bg-red-600 flex-cc text-white"></div>
+        <div class="h-[60px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
 
         <Btn theme="accent1" variant="outlined" size="xl">BTN [xl]--| </Btn>
-        <div class="h-[60px] w-4 bg-red-600 flex-cc text-white"></div>
+        <div class="h-[60px] w-4 bg-red-600 flex items-center justify-center text-white"></div>
       </div>
       <!-- ------------------------------------------------ -->
       <div class="py-2"></div>
