@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.11
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.10...v3.0.11)
+
+### 🏡 Chore
+
+- Remove incompatible Tailwind CSS extensions after v4 upgrade ([2b0bb0a](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/2b0bb0a))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.10
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.9...v3.0.10)
