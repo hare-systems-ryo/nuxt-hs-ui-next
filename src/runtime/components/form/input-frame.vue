@@ -94,7 +94,7 @@ const baseClass = computed(() => {
   return [
     twMerge(
       //
-      'flex max-w-full',
+      'flex max-w-full relative',
       'border-[1px] border-[#183C5E]',
       'bg-white',
       props.size === 's' ? 'h-[44px]' : '',
@@ -186,8 +186,8 @@ const hasHeader = computed(() => {
     >
       <slot name="left-icons" :disabled="iconDisabled" />
     </div>
-    <div class="flex-1 flex flex-col overflow-hidden justify-start">
-      <div v-if="hasHeader && !props.headerless" class="flex-none flex items-end" :class="headerClass">
+    <div class="flex-1 flex flex-col overflow-hidden justify-start relative">
+      <div v-if="hasHeader && !props.headerless" class="flex-none flex items-end relative" :class="headerClass">
         <div
           class="hc-input-label grow-0 shrink-1 truncate leading-[1.5em] relative"
           :title="label"
@@ -213,7 +213,7 @@ const hasHeader = computed(() => {
       :class="iconDisabled ? 'disabled' : ''"
     >
       <slot name="right-icons" :disabled="iconDisabled" />
-      <div v-if="props.warn" @click="toast.Warning(props.warn, '', props.warnTimeOut)">
+      <div v-if="props.warn" class="relative" @click="toast.Warning(props.warn, '', props.warnTimeOut)">
         <i class="fa-solid fa-triangle-exclamation text-error cursor-pointer"></i>
       </div>
     </div>
