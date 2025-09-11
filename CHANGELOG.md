@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.21
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.20...v3.0.21)
+
+### 🩹 Fixes
+
+- Adjust calendar modal position to avoid overlapping input control ([3e6faef](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/3e6faef))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.20
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.19...v3.0.20)
