@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.17
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.16...v3.0.17)
+
+### 🩹 Fixes
+
+- Apply additional fix for mobile DatePicker issue ([c640e1f](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/c640e1f))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.16
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.15...v3.0.16)
