@@ -230,6 +230,7 @@ const state = reactive<State>({
     maxDate: undefined,
     plugins: [],
     disableMobile: true,
+    clickOpens: false,
   },
 });
 
@@ -492,6 +493,8 @@ const setValue = () => {
 
 //  アイコン系イベント
 const datePickerToggle = () => {
+  console.log('datePickerToggle');
+
   if (props.readonly === true) return;
   if (props.disabled === true) return;
   if (state.picker === null) return;
@@ -699,17 +702,6 @@ const manualInputBlur = () => {
   }
 };
 
-const openBtnClick = () => {
-  if (props.readonly) return;
-  if (props.disabled) return;
-  if (!hsIsMobile.isMobile) {
-    inputElement.value?.focus();
-    return;
-  }
-  hsFocus.state.id = uid;
-  datePickerToggle();
-};
-
 const openBtnFocus = () => {
   if (props.readonly) return;
   if (props.disabled) return;
@@ -763,7 +755,7 @@ const computedIsFocusOpenBtn = computed(() => {
         :disabled="disabled"
         class="open-btn"
         :class="!disabled ? 'cursor-pointer hover:bg-accent1/[0.1] active:bg-accent1/[0.2]' : ''"
-        @click.stop.prevent="openBtnClick()"
+        @click.stop="datePickerToggle()"
         @focus="openBtnFocus"
         @blur="focusState.openBtn = false"
       >
@@ -778,10 +770,8 @@ const computedIsFocusOpenBtn = computed(() => {
       class="nac-c-input-p relative"
       :class="[{ disabled: props.disabled, readonly: props.readonly }, inputBoxClass]"
       @click="manualInputClick"
-      @dblclick="datePickerToggle()"
     >
       <!---->
-      <!-- -->
       <!--  -->
       <input
         :ref="(e) => setRef(e)"
