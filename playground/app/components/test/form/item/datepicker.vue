@@ -10,6 +10,7 @@ const valueB = ref<string | null>(null);
 const modeAll = ref<string | null>(null);
 // const modeMonth = ref<string | null>(null);
 const modeTime = ref<string | null>(null);
+const disabled = ref(false);
 </script>
 <template>
   <Card class="mt-4">
@@ -25,6 +26,27 @@ const modeTime = ref<string | null>(null);
           <Datepicker v-model:data="valueB" :diff="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
           <Datepicker v-model:data="valueB" :diff="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
         </div>
+      </div>
+      <div class="py-1"></div>
+      <div class="grid gap-1 my-1">
+        <Btn theme="accent1" variant="outlined" size="xs" @click="disabled = !disabled">
+          {{ disabled }} -> {{ !disabled }}
+        </Btn>
+        <Datepicker
+          v-model:data="valueB"
+          :diff="valueA"
+          show-format="YYYY-MM-DD(ddd)"
+          :disabled="!disabled"
+          class=""
+          label="ge"
+        />
+        <!-- <Datepicker
+          v-model:data="valueB"
+          :diff="valueA"
+          show-format="YYYY-MM-DD(ddd)"
+          :disabled="disabled"
+          label="ge"
+        /> -->
       </div>
       <!--  -->
       <div class="grid grid-cols-2 gap-1 my-1">

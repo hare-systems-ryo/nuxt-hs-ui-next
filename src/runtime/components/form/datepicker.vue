@@ -426,8 +426,10 @@ const resetPicekr = () => {
   if (flag.value) return;
   try {
     flag.value = true;
-    state.picker.destroy();
-    state.picker = false;
+    if (state.picker) {
+      state.picker.destroy();
+    }
+    state.picker = null;
     focusState.isOpenFlatpickr = false;
     dayjs.locale(multiLang.lang);
     if (props.minDate !== null) {
@@ -606,7 +608,19 @@ watch(computedActivate, (value) => {
     emit('blur', inputElement.value);
   }
 });
-
+watch(
+  () => props.disabled,
+  (flag) => {
+    if (flag) {
+      if (state.picker) {
+        state.picker.destroy();
+      }
+      state.picker = null;
+    } else {
+      resetPicekr();
+    }
+  }
+);
 onMounted(async () => {
   await Sleep(1);
   // setTimeout(() => {
@@ -769,14 +783,8 @@ const computedIsFocusOpenBtn = computed(() => {
     >
       <!---->
       <!-- -->
-      <input
-        :ref="(e) => setRef(e)"
-        type="text"
-        class="flatpickr-body"
-        :disabled="props.disabled"
-        tabindex="-1"
-        @keydown="keyDown"
-      />
+      <!-- :disabled="props.disabled" -->
+      <input :ref="(e) => setRef(e)" type="text" class="flatpickr-body" tabindex="-1" @keydown="keyDown" />
       <input
         ref="manualElm"
         v-model="manualData"
@@ -787,9 +795,9 @@ const computedIsFocusOpenBtn = computed(() => {
         @blur="manualInputBlur()"
         @focus="manualInputfocus()"
       />
-      <span :class="!manualInput ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'">{{
-        displayText
-      }}</span>
+      <span :class="!manualInput ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'">
+        {{ displayText }}
+      </span>
       <span
         v-if="props.data === null && !props.hideTodayBtn && !props.readonly"
         class="today"
@@ -798,6 +806,7 @@ const computedIsFocusOpenBtn = computed(() => {
       >
         {{ props.mode === 'time' ? 'Now' : 'Today' }}
       </span>
+      {{ props.disabled }}
     </div>
     <template #right-icons>
       <template v-if="!props.hideDeleteBtn && !props.readonly">
