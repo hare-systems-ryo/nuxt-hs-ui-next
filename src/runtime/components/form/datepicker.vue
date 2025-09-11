@@ -461,7 +461,9 @@ const setValue = () => {
   // console.log('setValue');
   try {
     if (props.data == null) {
-      state.picker.setDate(null);
+      if (state.picker) {
+        state.picker.setDate(null);
+      }
       state.date = null;
       return;
     }
@@ -471,14 +473,18 @@ const setValue = () => {
     if (d.isValid() === true) {
       if (checkDate(props.data) === true) {
         state.date = d.toDate();
-        state.picker.setDate(state.date);
+        if (state.picker) {
+          state.picker.setDate(state.date);
+        }
         return;
       }
     }
     throw new Error('変換失敗');
   } catch (err) {
     console.error(err);
-    state.picker.setDate(null);
+    if (state.picker) {
+      state.picker.setDate(null);
+    }
     state.date = null;
     updateValue(null);
   }
@@ -610,15 +616,8 @@ watch(computedActivate, (value) => {
 });
 watch(
   () => props.disabled,
-  (flag) => {
-    if (flag) {
-      if (state.picker) {
-        state.picker.destroy();
-      }
-      state.picker = null;
-    } else {
-      resetPicekr();
-    }
+  () => {
+    resetPicekr();
   }
 );
 onMounted(async () => {
