@@ -97,10 +97,36 @@ const valueA = ref<string | null>('2024-12-16');
       </div>
       <div class="">activeList : {{ storeModal.state.activeList }}</div>
       <div class="">activeId : {{ String(storeModal.activeId) }}</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
+      <div class="py-10">-</div>
     </CardItem>
     <!--  -->
-    <Modal :show="modal.testA.isShow" closeable @close="modal.testA.close()">
-      <Card ref="focusTargetElm1" class="max-h-full">
+    <Modal :show="modal.testA.isShow" closeable :mounted="false" @close="modal.testA.close()">
+      <Card ref="focusTargetElm1" class="max-h-full my-auto w-[300px]">
         <CardItem class="bg-main1 text-white" variant="header">
           Modal
           <Btn color="main1" variant="flat" class="border-white" @click="modal.testA.close()"> Close </Btn>
@@ -111,21 +137,21 @@ const valueA = ref<string | null>('2024-12-16');
           <Select :data="1" :diff="1" :list="listNumber" size="s" label="基本的な使い方" />
           <div class="py-10">Modal</div>
           <div class="py-10">Modal</div>
+          <!-- <div class="py-10">Modal</div> -->
+          <!-- <div class="py-10">Modal</div> -->
+          <!-- <div class="py-10">Modal</div> -->
+          <!-- <div class="py-10">Modal</div>
           <div class="py-10">Modal</div>
           <div class="py-10">Modal</div>
           <div class="py-10">Modal</div>
-          <div class="py-10">Modal</div>
-          <div class="py-10">Modal</div>
-          <div class="py-10">Modal</div>
-          <div class="py-10">Modal</div>
-          <div class="py-10">Modal</div>
+          <div class="py-10">Modal</div> -->
           <div class="py-10">Modal</div>
           <div class="bg-error">bottom</div>
         </CardItem>
       </Card>
     </Modal>
     <!--  -->
-    <Modal :show="modal.testB.isShow">
+    <!-- <Modal :show="modal.testB.isShow">
       <Card ref="focusTargetElm2" class="max-h-full max-w-full w-[500px]">
         <CardItem class="bg-main2 text-white" variant="header">
           Modal
@@ -142,7 +168,7 @@ const valueA = ref<string | null>('2024-12-16');
           <div class="py-10">Modal</div>
         </CardItem>
       </Card>
-    </Modal>
+    </Modal> -->
   </Card>
 </template>
 <style lang="scss" scoped></style>

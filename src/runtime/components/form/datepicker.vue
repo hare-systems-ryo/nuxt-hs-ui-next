@@ -499,6 +499,11 @@ const datePickerToggle = () => {
   if (props.disabled === true) return;
   if (state.picker === null) return;
   if (focusState.isClosingFlatpickr) return;
+  if (focusState.isOpenFlatpickr) {
+    hsFocus.state.id = '';
+    state.picker.close();
+    return;
+  }
   hsFocus.state.id = uid;
   state.picker.open();
 };
@@ -624,6 +629,7 @@ watch(
   }
 );
 onMounted(async () => {
+  // console.log('datepicker onMounted', useId());
   await Sleep(1);
   // setTimeout(() => {
   initFlatPickerOption();
@@ -631,6 +637,7 @@ onMounted(async () => {
   // }, 1);
 });
 onUnmounted(async () => {
+  // console.log('datepicker onUnmounted', useId());
   await Sleep(1);
   if (state.picker != null) {
     state.picker.destroy();
@@ -767,7 +774,7 @@ const computedIsFocusOpenBtn = computed(() => {
       </button>
     </template>
     <div
-      class="nac-c-input-p relative"
+      class="nac-c-input-p relative min-h-[20px]"
       :class="[{ disabled: props.disabled, readonly: props.readonly }, inputBoxClass]"
       @click="manualInputClick"
     >
