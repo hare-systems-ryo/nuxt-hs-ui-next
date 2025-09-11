@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.15
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.14...v3.0.15)
+
+### 🏡 Chore
+
+- Remove unused and redundant code ([c588166](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/c588166))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.14
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.13...v3.0.14)
