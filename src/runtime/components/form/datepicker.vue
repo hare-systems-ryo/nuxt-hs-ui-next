@@ -783,8 +783,16 @@ const computedIsFocusOpenBtn = computed(() => {
     >
       <!---->
       <!-- -->
-      <!-- :disabled="props.disabled" -->
-      <input :ref="(e) => setRef(e)" type="text" class="flatpickr-body" tabindex="-1" @keydown="keyDown" />
+      <!--  -->
+      <input
+        :ref="(e) => setRef(e)"
+        type="text"
+        class="flatpickr-body"
+        :class="[props.disabled ? 'pointer-events-none' : '']"
+        tabindex="-1"
+        :disabled="props.disabled"
+        @keydown="keyDown"
+      />
       <input
         ref="manualElm"
         v-model="manualData"
@@ -806,7 +814,6 @@ const computedIsFocusOpenBtn = computed(() => {
       >
         {{ props.mode === 'time' ? 'Now' : 'Today' }}
       </span>
-      {{ props.disabled }}
     </div>
     <template #right-icons>
       <template v-if="!props.hideDeleteBtn && !props.readonly">
