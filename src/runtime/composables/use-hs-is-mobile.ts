@@ -16,6 +16,7 @@ export const useHsIsMobile = defineStore(
   'HsIsMobile',
   () => {
     const isMobile = ref<boolean | null>(null);
+    const isIPhone = ref<boolean | null>(null);
     const GetUa = () => {
       try {
         if (import.meta.client) {
@@ -28,7 +29,11 @@ export const useHsIsMobile = defineStore(
         return '';
       }
     };
-
+    const checkIsIPhone = () => {
+      if (import.meta.server && isIPhone.value !== null) return;
+      const ua = GetUa();
+      isIPhone.value = /iPhone/.test(ua);
+    };
     const checkIsMobile = () => {
       if (import.meta.server && isMobile.value !== null) return;
       const ua = GetUa();
@@ -39,8 +44,13 @@ export const useHsIsMobile = defineStore(
       isMobile.value = isOldIPad || isIpad || isiOS || isAndroid;
     };
     checkIsMobile();
+    checkIsIPhone();
+    const init = () => {
+      checkIsMobile();
+      checkIsIPhone();
+    };
     // console.log("isMobile", isMobile.value);
-    return { isMobile };
+    return { isMobile, init, isIPhone };
   },
   {
     persist: true,

@@ -80,6 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
 type Emits = {
   // ----------------------------
   'header-label-click': [];
+  ref: [elm: HTMLElement];
   // ----------------------------
 };
 const emit = defineEmits<Emits>();
@@ -174,11 +175,14 @@ const hasHeader = computed(() => {
   if (slots['header-right']) return true;
   return false;
 });
+const setRef = (e: HTMLElement) => {
+  emit('ref', e);
+};
 // ----------------------------------------------------------------------------
 </script>
 
 <template>
-  <div ref="el" class="hc-ui-input-frame" :class="baseClass">
+  <div :ref="(e:any) => setRef(e)" class="hc-ui-input-frame" :class="baseClass">
     <div
       v-if="$slots['left-icons']"
       class="icons left-icons flex-none text-accent1 relative"

@@ -8,7 +8,7 @@
 
 // [ tailwind ]
 // [ NUXT ]
-import { reactive, ref, watch, computed, useId, nextTick } from '#imports';
+import { reactive, ref, watch, computed, useId, nextTick, onMounted } from '#imports';
 
 // import { createPopper } from "@popperjs/core";
 
@@ -347,6 +347,9 @@ const inputElement = ref<HTMLElement | null>(null);
 // };
 //       :calculate-position="withPopper"
 const isMobile = useHsIsMobile(useHsPinia());
+onMounted(() => {
+  isMobile.init();
+});
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 </script>

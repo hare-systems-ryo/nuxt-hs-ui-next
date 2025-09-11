@@ -9,7 +9,7 @@
 // [ tailwind ]
 import { twMerge } from 'tailwind-merge';
 // [ NUXT ]
-import { reactive, ref, watch, computed, useId, nextTick } from '#imports';
+import { reactive, ref, watch, computed, useId, nextTick, onMounted } from '#imports';
 // [ utils ]
 import type { ClassType } from '../../utils/class-style';
 import type { MultiLang } from '../../utils/multi-lang';
@@ -25,6 +25,9 @@ import InputFrame from './input-frame.vue';
 // ----------------------------------------------------------------------------
 const hsFocus = useHsFocus(useHsPinia());
 const hsIsMobile = useHsIsMobile(useHsPinia());
+onMounted(() => {
+  hsIsMobile.init();
+});
 // ----------------------------------------------------------------------------
 // [ Props ]
 type Props = {

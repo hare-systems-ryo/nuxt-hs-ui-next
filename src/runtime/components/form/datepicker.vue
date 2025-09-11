@@ -63,6 +63,9 @@ const Toast = useHsToast(useHsPinia());
 const multiLang = useHsMultiLang(useHsPinia());
 const tx = multiLang.tx;
 const hsIsMobile = useHsIsMobile(useHsPinia());
+onMounted(() => {
+  hsIsMobile.init();
+});
 // ----------------------------------------------------------------------------
 // [ vueuse ]
 const isMounted = useMounted();
@@ -411,9 +414,11 @@ const generateFlatPickerOption = () => {
         state.option.locale = en;
         break;
     }
-    // state.option.position = 'above';
-    // state.option.static = true;
-    state.picker = flatpickr(inputElement.value, state.option);
+
+    state.picker = flatpickr(inputElement.value, {
+      positionElement: posTarget.value,
+      ...state.option,
+    });
     state.picker.config.onChange.push(onChange);
     state.picker.config.onOpen.push(onOpen);
     state.picker.config.onClose.push(onClose);
@@ -622,12 +627,7 @@ watch(computedActivate, (value) => {
     emit('blur', inputElement.value);
   }
 });
-watch(
-  () => props.disabled,
-  () => {
-    resetPicekr();
-  }
-);
+
 onMounted(async () => {
   // console.log('datepicker onMounted', useId());
   await Sleep(1);
@@ -724,6 +724,7 @@ const computedIsFocusOpenBtn = computed(() => {
   return false;
 });
 
+const posTarget = ref();
 //  ---------------------------------------------------------------------------------
 </script>
 
@@ -748,6 +749,7 @@ const computedIsFocusOpenBtn = computed(() => {
     :warn-time-out="props.warnTimeOut"
     :size="props.size"
     :headerless="props.headerless"
+    @ref="(e) => (posTarget = e)"
   >
     <template v-if="slots.overlay" #overlay>
       <slot name="overlay"></slot>
