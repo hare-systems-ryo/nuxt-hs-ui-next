@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.13
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.12...v3.0.13)
+
+### 🩹 Fixes
+
+- Adjust DatePicker position on mobile devices ([c529c95](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/c529c95))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.12
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.11...v3.0.12)
