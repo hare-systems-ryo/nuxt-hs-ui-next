@@ -20,9 +20,11 @@ import { useHsPinia } from '../../composables/use-pinia';
 // ----------------------------------------------------------------------------
 type Props = {
   class?: ClassType;
+  target?: string;
 };
 const props = withDefaults(defineProps<Props>(), {
   class: '',
+  target: 'body',
 });
 
 const hsModal = useHsModal(useHsPinia());
@@ -32,15 +34,10 @@ const zIndex = computed(() => {
   return Math.max(...hsModal.state.activeList.map((row) => row.zIndex)) - 1;
 });
 const zIndexUiModal = computed(() => {
-  if (hsModal.state.activeList.length === 0) return 0;
+  if (hsModal.state.activeList.length === 0) return 1;
   return Math.max(...hsModal.state.activeList.map((row) => row.zIndex)) + 2;
 });
 
-// onMounted(() => {
-//   watchEffect(() => {
-//     document.documentElement.style.setProperty('--ui-z-modal', String(zIndexUiModal.value));
-//   });
-// });
 useHead({
   style: [
     {
@@ -72,10 +69,10 @@ const isShow = computed(() => {
 
 const classStyle = computed(() => {
   return twMerge(
-    'transition-opacity',
+    // 'transition-opacity',
     'fixed',
     'inset-0',
-    'transition-opacity',
+    // 'transition-opacity',
     bg.value,
     // isShow.value ? 'pointer-events-auto' : 'pointer-events-none',
     isShow.value ? 'opacity-100' : 'opacity-0',
@@ -89,10 +86,12 @@ const closeAll = () => {
 </script>
 
 <template>
-  <Teleport to="body">
-    <!--  -->
-    <div class="ModalBg" :class="classStyle" :style="{ zIndex: zIndex }" @click.stop="closeAll()" />
-  </Teleport>
+  <ClientOnly>
+    <Teleport :to="target">
+      <!--  -->
+      <div class="ModalBg" :class="classStyle" :style="{ zIndex: zIndex }" @click.stop="closeAll()" />
+    </Teleport>
+  </ClientOnly>
 </template>
 
 <style>

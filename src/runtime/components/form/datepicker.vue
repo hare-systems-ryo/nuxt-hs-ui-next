@@ -7,40 +7,17 @@
 ---------------------------------------------------------------------------- */
 
 // [ node-modules ]
-import {
-  // CalendarDate,
-  // type DateRange,
-  type DateValue,
-  fromDate,
-  toCalendarDate,
-  getLocalTimeZone,
-} from '@internationalized/date';
+import { type DateValue, fromDate, toCalendarDate, getLocalTimeZone } from '@internationalized/date';
 
 // [ NUXT ]
-import {
-  reactive,
-  ref,
-  watch,
-  computed,
-  useId,
-  onMounted,
-  nextTick,
-  // onUnmounted,
-  shallowRef,
-  // useHead,
-} from '#imports';
+import { reactive, ref, watch, computed, useId, onMounted, nextTick, shallowRef } from '#imports';
 // [ utils ]
-// import { Sleep } from '../../utils/com';
 import type { ClassType } from '../../utils/class-style';
 import { GetTimeShiftValue, Dayjs, DayjsInit } from '../../utils/dayjs';
 import type { MultiLang } from '../../utils/multi-lang';
 import { dayjs } from '../../utils/dayjs';
 import { Theme, type ThemeColor, GetColorCode } from '../../utils/theme';
 
-// [ utils ]
-
-// import { ja } from '../../types/flatpickr/ja';
-// import { en } from '../../types/flatpickr/default';
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
 import { useHsToast } from '../../composables/use-hs-toast';
@@ -49,7 +26,6 @@ import { useHsPinia } from '../../composables/use-pinia';
 import { useHsIsMobile } from '../../composables/use-hs-is-mobile';
 // [ Components ]
 import InputFrame from './input-frame.vue';
-
 // ----------------------------------------------------------------------------
 // [ nac-stroe ]
 DayjsInit();
@@ -87,6 +63,7 @@ type Props = {
   /** 言語設定
    * * 例 'ja-JP'  'en-US'" */
   locale?: string | undefined;
+  portal?: string | false | true | HTMLElement;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -139,6 +116,7 @@ const props = withDefaults(defineProps<Props>(), {
   hasShift: true,
   locale: undefined,
   theme: Theme.accent1,
+  portal: true,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -742,47 +720,58 @@ const posTarget = ref();
       <slot name="right-icons" :disabled="disabled" />
     </template>
   </InputFrame>
-  <UPopover v-model:open="open" arrow :reference="openBtn" :content="content">
-    <template #content>
-      <div
-        class="calender-modal min-w-[200px]"
-        :style="{
-          '--selected-color': themeColor,
-          '--error-color': themeErrorColor,
-          '--ui-primary': themeColor,
-          '--ui-secondary': themeWeekColor,
-        }"
-      >
-        <UCalendar
-          v-if="props.mode !== 'time'"
-          :model-value="calendarValue"
-          class="p-2"
-          :locale="displayLocale"
-          :min-value="calendarMinValue"
-          :max-value="calendarMaxValue"
-          color="secondary"
-          :ui="{}"
-          @update:model-value="(v:any) => changeCalender(v)"
-        />
-        <div v-if="props.mode === 'all' || props.mode === 'time'" class="grid grid-cols-2 gap-1 p-1">
-          <USelect
-            :model-value="HH"
-            :items="listHH"
-            class=""
-            placeholder="HH"
-            @update:model-value="(v:any) => hhValueChange(v)"
+  <ClientOnly>
+    <UPopover
+      v-model:open="open"
+      arrow
+      :reference="openBtn"
+      :portal="props.portal"
+      :open-delay="10"
+      :same-width="false"
+      strategy="absolute"
+      :content="content"
+    >
+      <template #content>
+        <div
+          class="calender-modal min-w-[200px]"
+          :style="{
+            '--selected-color': themeColor,
+            '--error-color': themeErrorColor,
+            '--ui-primary': themeColor,
+            '--ui-secondary': themeWeekColor,
+          }"
+        >
+          <UCalendar
+            v-if="props.mode !== 'time'"
+            :model-value="calendarValue"
+            class="p-2"
+            :locale="displayLocale"
+            :min-value="calendarMinValue"
+            :max-value="calendarMaxValue"
+            color="secondary"
+            :ui="{}"
+            @update:model-value="(v:any) => changeCalender(v)"
           />
-          <USelect
-            :model-value="MM"
-            :items="listMM"
-            class=""
-            placeholder="mm"
-            @update:model-value="(v:any) => mmValueChange(v)"
-          />
+          <div v-if="props.mode === 'all' || props.mode === 'time'" class="grid grid-cols-2 gap-1 p-1">
+            <USelect
+              :model-value="HH"
+              :items="listHH"
+              class=""
+              placeholder="HH"
+              @update:model-value="(v:any) => hhValueChange(v)"
+            />
+            <USelect
+              :model-value="MM"
+              :items="listMM"
+              class=""
+              placeholder="mm"
+              @update:model-value="(v:any) => mmValueChange(v)"
+            />
+          </div>
         </div>
-      </div>
-    </template>
-  </UPopover>
+      </template>
+    </UPopover>
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
@@ -855,13 +844,6 @@ const posTarget = ref();
   [data-selected] {
     background: var(--selected-color) !important;
     color: white !important;
-    // :hover:not([data-selected]):not([data-disabled]) {
-    //   @media (hover: hover) {
-    //     @supports (color: color-mix(in lab, red, red)) {
-    //       background-color: color-mix(in oklab, var(--selected-color) 20%, transparent);
-    //     }
-    //   }
-    // }
   }
   [data-reka-calendar-cell-trigger]:hover:not([data-selected]):not([data-disabled]) {
     @media (hover: hover) {
@@ -876,16 +858,4 @@ const posTarget = ref();
     }
   }
 }
-
-// :deep([data-selected]) {
-//   &:hover {
-//     @media (hover: hover) {
-//       &:not([data-selected]) {
-//         @supports (color: color-mix(in lab, red, red)) {
-//           background-color: color-mix(in oklab, var(--selected-color) 20%, transparent);
-//         }
-//       }
-//     }
-//   }
-// }
 </style>

@@ -9,7 +9,7 @@
 // [ tailwind ]
 import { twMerge } from 'tailwind-merge';
 // [ NUXT ]
-import { useId, computed, watch, onUnmounted, ref, useHead } from '#imports';
+import { useId, computed, watch, onUnmounted, ref } from '#imports';
 // [ utils ]
 import { type ClassType, ClassTypeToString } from '../../utils/class-style';
 // [ composables ]
@@ -26,6 +26,7 @@ interface Props {
   /** 背景クリックで閉じれる場合に背景色を切り替える機能
    *   - closeイベントとセットで使う */
   closeable?: boolean;
+  target?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   class: '',
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   mounted: true,
   zIndex: undefined,
   closeable: false,
+  target: 'body',
 });
 
 type Emits = {
@@ -60,14 +62,7 @@ if (props.show) {
     hsModal.add(id, props.closeable);
   }
 }
-useHead({
-  style: [
-    {
-      key: 'flatpickr-z',
-      textContent: computed(() => `.flatpickr-calendar{ z-index:${zOrder.value + 1} !important; }`),
-    },
-  ],
-});
+
 watch(
   () => props.show,
   (show) => {
@@ -97,7 +92,6 @@ const classStyle = computed(() => {
     [
       //
       'p-2',
-      'transition-opacity',
       'fixed',
       'inset-0',
       'flex',
@@ -117,7 +111,7 @@ const classInner = computed(() => {
     'flex-col',
     'items-center',
     'overflow-auto',
-    'transition-opacity',
+    // 'transition-opacity',
     props.closeable ? 'cursor-pointer' : '',
     props.show ? 'pointer-events-all' : 'pointer-events-none',
     // "bg-red-600",
@@ -142,7 +136,7 @@ const downStop = () => {
 
 <template>
   <ClientOnly>
-    <Teleport to="body">
+    <Teleport :to="target">
       <div
         v-if="mounted"
         :id="id"
@@ -163,9 +157,7 @@ const downStop = () => {
 </template>
 
 <style lang="scss">
-.Modal {
-  > * > * {
-    cursor: default;
-  }
+.Modal > div > * {
+  cursor: default;
 }
 </style>
