@@ -7,11 +7,15 @@
 ---------------------------------------------------------------------------- */
 
 // [ node-modules ]
-// flatpickr cdn 経由で使用する
-import flatpickr from 'flatpickr';
-// import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
-// [ vueuse ]
-import { useMounted } from '@vueuse/core';
+import {
+  // CalendarDate,
+  // type DateRange,
+  type DateValue,
+  fromDate,
+  toCalendarDate,
+  getLocalTimeZone,
+} from '@internationalized/date';
+
 // [ NUXT ]
 import {
   reactive,
@@ -21,20 +25,22 @@ import {
   useId,
   onMounted,
   nextTick,
-  onUnmounted,
+  // onUnmounted,
+  shallowRef,
   // useHead,
 } from '#imports';
 // [ utils ]
-import { Sleep } from '../../utils/com';
+// import { Sleep } from '../../utils/com';
 import type { ClassType } from '../../utils/class-style';
 import { GetTimeShiftValue, Dayjs, DayjsInit } from '../../utils/dayjs';
 import type { MultiLang } from '../../utils/multi-lang';
 import { dayjs } from '../../utils/dayjs';
+import { Theme, type ThemeColor, GetColorCode } from '../../utils/theme';
 
 // [ utils ]
 
-import { ja } from '../../types/flatpickr/ja';
-import { en } from '../../types/flatpickr/default';
+// import { ja } from '../../types/flatpickr/ja';
+// import { en } from '../../types/flatpickr/default';
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
 import { useHsToast } from '../../composables/use-hs-toast';
@@ -43,17 +49,6 @@ import { useHsPinia } from '../../composables/use-pinia';
 import { useHsIsMobile } from '../../composables/use-hs-is-mobile';
 // [ Components ]
 import InputFrame from './input-frame.vue';
-
-// useHead({
-//   script: [
-//     //
-//     // https://npmcdn.com/flatpickr@4.6.13/dist/plugins/monthSelect/index.js
-//     //{ src: `https://npmcdn.com/flatpickr/dist/flatpickr.min.js` },
-//     { src: `https://npmcdn.com/flatpickr/dist/plugins/monthSelect` },
-//     { src: `https://npmcdn.com/flatpickr/dist/l10n/ja.js` },
-//     { src: `https://npmcdn.com/flatpickr/dist/l10n/default.js` },
-//   ],
-// });
 
 // ----------------------------------------------------------------------------
 // [ nac-stroe ]
@@ -67,22 +62,18 @@ onMounted(() => {
   hsIsMobile.init();
 });
 // ----------------------------------------------------------------------------
-// [ vueuse ]
-const isMounted = useMounted();
-// ----------------------------------------------------------------------------
 // flatpickr
-// const MonthSelectPlugin: any = monthSelectPlugin;
-const timeDateFormat = 'YYYY-MM-DD HH:mm:ss.SSS';
 const timeOutputDateFormat = 'HH:mm:ss.SSS';
 const timeShowDateFormat = 'HH:mm';
+const timeDateFormat = 'YYYY-MM-DD HH:mm:ss.SSS';
 // ----------------------------------------------------------------------------
 // [ Props ]
 type Props = {
+  theme?: ThemeColor;
   // ----------------------------------------------------------------------------
   // Input 種類別
   textAlign?: 'left' | 'center' | 'right';
   mode?: 'all' | 'date' | 'time';
-  // mode?: "all" | "date" | "time" | "month";
   /** mode=time の場合、[HH:mm:ss.SSS] に固定 */
   dataFormat?: string;
   /** mode=time の場合、[HH:mm] に固定 */
@@ -93,6 +84,9 @@ type Props = {
   hideTodayBtn?: boolean;
   disableMobile?: boolean;
   hasShift?: boolean;
+  /** 言語設定
+   * * 例 'ja-JP'  'en-US'" */
+  locale?: string | undefined;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -143,6 +137,8 @@ const props = withDefaults(defineProps<Props>(), {
   hideDeleteBtn: false,
   disableMobile: false,
   hasShift: true,
+  locale: undefined,
+  theme: Theme.accent1,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -200,6 +196,20 @@ type Emits = {
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
+const themeColor = computed(() => {
+  return GetColorCode(props.theme);
+});
+// ----------------------------------------------------------------------------
+const themeWeekColor = computed(() => {
+  return GetColorCode(Theme.main1);
+});
+
+// ----------------------------------------------------------------------------
+const themeErrorColor = computed(() => {
+  return GetColorCode(Theme.error);
+});
+
+// ----------------------------------------------------------------------------
 const slots = defineSlots<{
   default(props: { msg: string }): any;
   overlay?(): any;
@@ -210,80 +220,59 @@ const slots = defineSlots<{
 // ----------------------------------------------------------------------------
 // [ getCurrentInstance ]
 const uid = useId();
-
 // ----------------------------------------------------------------------------
-// [ reactive ]
-
-interface State {
-  picker: any;
-  // FormControl値
-  date: Date | null;
-  // text: string;
-  option: any;
-}
-const state = reactive<State>({
-  // text: '',
-  picker: null,
-  date: null,
-  option: {
-    dateFormat: 'Z',
-    locale: ja,
-    time_24hr: true,
-    minDate: undefined,
-    maxDate: undefined,
-    plugins: [],
-    disableMobile: true,
-    clickOpens: false,
-  },
-});
-
-onMounted(() => {
-  state.option.maxDate = dayjs(props.maxDate).isValid() === true ? dayjs(props.maxDate).toISOString() : undefined;
-  state.option.minDate = dayjs(props.minDate).isValid() === true ? dayjs(props.minDate).toISOString() : undefined;
-});
+// 現在の表示系
 const shiftM = GetTimeShiftValue(Dayjs());
 const getShiftDayjs = (date: any) => {
   if (props.hasShift && shiftM !== 0) {
-    return dayjs(date).subtract(shiftM, 'minute');
+    return dayjs().subtract(shiftM, 'minute');
   }
   return dayjs(date);
 };
-
-const inputBoxClass = computed(() => {
-  if (props.textAlign === 'left') {
-    return 'display-left';
-  } else if (props.textAlign === 'center') {
-    return 'display-center';
-  } else {
-    return 'display-right';
-  }
-});
-const displayText = computed(() => {
+// ----------------------------------------------------------------------------
+const dataDasyjs = computed(() => {
   const lang = multiLang.lang;
   dayjs.locale(lang);
   if (props.data === null) {
+    return null;
+  } else if (props.mode === 'time') {
+    return getShiftDayjs(dayjs().format('YYYY-MM-DD ') + props.data);
+  } else {
+    return getShiftDayjs(props.data);
+  }
+});
+const minDayjs = computed(() => {
+  if (props.minDate === null) {
+    return null;
+  } else if (props.mode === 'time') {
+    return getShiftDayjs(dayjs().format('YYYY-MM-DD ') + props.minDate);
+  } else {
+    return getShiftDayjs(props.minDate);
+  }
+});
+const maxDayjs = computed(() => {
+  if (props.maxDate === null) {
+    return null;
+  } else if (props.mode === 'time') {
+    return getShiftDayjs(dayjs().format('YYYY-MM-DD ') + props.maxDate);
+  } else {
+    return getShiftDayjs(props.maxDate);
+  }
+});
+// ----------------------------------------------------------------------------
+
+const displayText = computed(() => {
+  if (dataDasyjs.value === null) {
     return '';
   } else if (props.mode === 'time') {
-    return getShiftDayjs(dayjs().format('YYYY-MM-DD ') + props.data).format(timeShowDateFormat);
+    return dataDasyjs.value.format(timeShowDateFormat);
   } else {
-    return getShiftDayjs(props.data).format(props.showFormat);
+    return dataDasyjs.value.format(props.showFormat);
   }
 });
 
 // ----------------------------------------------------------------------------
-watch(
-  () =>
-    computed(() => {
-      return [props.minDate, props.maxDate, multiLang.lang];
-    }).value,
-  async () => {
-    // console.log('computed', props.minDate, props.maxDate, isMounted.value);
-    if (!isMounted.value) return;
-    await Sleep(1);
-    resetPicekr();
-  }
-);
-
+// データ更新系
 const checkDate = (date: any) => {
   // console.log(props.minDate);
   const d = getShiftDayjs(date);
@@ -297,242 +286,6 @@ const checkDate = (date: any) => {
   return true;
 };
 
-const keyDown = (event: any) => {
-  const before = props.data;
-  // console.log('keyDown', state.picker);
-  if (event.key === 'Enter') {
-    datePickerToday();
-    return;
-  }
-  if (event.key === 'Backspace') {
-    iconEventDelete();
-    return;
-  }
-  let move = 0;
-  if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-    move--;
-  }
-  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-    move++;
-  }
-  if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-    // Flatpickerにフォーカスを奪われるキーイベントはフォーカスを取り戻す予約
-    setTimeout(() => {
-      // console.log('フォーカス戻す');
-      if (inputElement.value != null) {
-        inputElement.value.focus();
-      }
-    }, 150);
-  }
-  if (move !== 0) {
-    let m = props.data == null ? getShiftDayjs(dayjs()) : getShiftDayjs(props.data);
-    if (move < 0) {
-      m = m.subtract(1, 'd');
-    } else {
-      m = m.add(1, 'd');
-    }
-    if (props.data !== '') {
-      if (checkDate(m) === false) {
-        // console.log('行き過ぎ');
-        return false;
-      }
-    } else if (move < 0) {
-      m = getShiftDayjs(props.maxDate).subtract(1, 'd');
-    } else {
-      m = getShiftDayjs(props.minDate).add(1, 'd');
-    }
-    emit('update:data', m.format(props.dataFormat));
-    nextTick(() => {
-      emit('value-change', m.format(props.dataFormat), before);
-    });
-    return false;
-  }
-};
-
-// ----------------------------------------------------------------------------
-// [ flatpicker関連 ]
-const initFlatPickerOption = () => {
-  if (props.mode === 'all' || props.mode === 'time') {
-    state.option.enableTime = true;
-    if (props.mode === 'time') {
-      state.option.noCalendar = true;
-    }
-  }
-  if (props.disableMobile) {
-    state.option.disableMobile = true;
-  }
-  // if (props.mode === "month") {
-  //   state.option.disableMobile = true;
-  //   state.option.plugins = [
-  //     new MonthSelectPlugin({
-  //       shorthand: true, // デフォルトはfalse
-  //       dateFormat: "m.y", // デフォルトは"F Y"
-  //       altFormat: "F Y", // デフォルトは"F Y"
-  //       theme: "dark", // デフォルトは"light"
-  //     }),
-  //   ];
-  // }
-};
-
-const onOpen = () => {
-  focusState.isOpenFlatpickr = true;
-};
-
-const onClose = () => {
-  focusState.isOpenFlatpickr = false;
-  focusState.isClosingFlatpickr = true;
-  setTimeout(() => {
-    focusState.isClosingFlatpickr = false;
-  }, 200);
-};
-
-const onChange = (selectedDates: any) => {
-  let value = null;
-  if (selectedDates.length === 0) {
-    value = null;
-  } else {
-    const d = selectedDates[0];
-    if (d == null) {
-      value = null;
-    } else {
-      value = d;
-    }
-  }
-  updateValue(value);
-};
-
-const generateFlatPickerOption = () => {
-  // console.log('generatePicker', elmInput.value);
-  if (inputElement.value != null) {
-    dayjs.locale(multiLang.lang);
-    switch (multiLang.lang) {
-      case 'jp':
-      case 'ja':
-        state.option.locale = ja;
-        break;
-      default:
-        state.option.locale = en;
-        break;
-    }
-
-    state.picker = flatpickr(inputElement.value, {
-      positionElement: posTarget.value,
-      ...state.option,
-    });
-    state.picker.config.onChange.push(onChange);
-    state.picker.config.onOpen.push(onOpen);
-    state.picker.config.onClose.push(onClose);
-    setValue();
-    // MonthSelectPlugin();
-  }
-};
-const flag = ref(false);
-
-const resetPicekr = () => {
-  if (flag.value) return;
-  try {
-    flag.value = true;
-    if (state.picker) {
-      state.picker.destroy();
-    }
-    state.picker = null;
-    focusState.isOpenFlatpickr = false;
-    dayjs.locale(multiLang.lang);
-    if (props.minDate !== null) {
-      state.option.minDate = dayjs(props.minDate).isValid() === true ? dayjs(props.minDate).toISOString() : undefined;
-    } else {
-      state.option.minDate = null;
-    }
-    if (props.maxDate !== null) {
-      state.option.maxDate = dayjs(props.maxDate).isValid() === true ? dayjs(props.maxDate).toISOString() : undefined;
-    } else {
-      state.option.maxDate = null;
-    }
-    generateFlatPickerOption();
-  } catch (error) {
-    console.error('resetPicekr()', error);
-  } finally {
-    flag.value = false;
-  }
-};
-emit('reset-piceker-func', resetPicekr);
-watch(
-  () => props.data,
-  () => {
-    setValue();
-  }
-);
-
-const setValue = () => {
-  // console.log('setValue');
-  try {
-    if (props.data == null) {
-      if (state.picker) {
-        state.picker.setDate(null);
-      }
-      state.date = null;
-      return;
-    }
-    const date = props.mode === 'time' ? dayjs().format('YYYY-MM-DD ') + props.data : props.data;
-    const d = getShiftDayjs(date);
-    // console.log('setValue', date);
-    if (d.isValid() === true) {
-      if (checkDate(props.data) === true) {
-        state.date = d.toDate();
-        if (state.picker) {
-          state.picker.setDate(state.date);
-        }
-        return;
-      }
-    }
-    throw new Error('変換失敗');
-  } catch (err) {
-    console.error(err);
-    if (state.picker) {
-      state.picker.setDate(null);
-    }
-    state.date = null;
-    updateValue(null);
-  }
-};
-
-//  アイコン系イベント
-const datePickerToggle = () => {
-  console.log('datePickerToggle');
-
-  if (props.readonly === true) return;
-  if (props.disabled === true) return;
-  if (state.picker === null) return;
-  if (focusState.isClosingFlatpickr) return;
-  if (focusState.isOpenFlatpickr) {
-    hsFocus.state.id = '';
-    state.picker.close();
-    return;
-  }
-  hsFocus.state.id = uid;
-  state.picker.open();
-};
-
-const datePickerToday = () => {
-  if (props.readonly === true) return;
-  if (props.disabled === true) return;
-  if (state.date !== null) return;
-  const inputValue = dayjs();
-  // if (props.mode === "month") {
-  //   inputValue = inputValue.startOf("month");
-  // }
-  const d = getShiftDayjs(inputValue);
-  if (checkDate(d.format('YYYY-MM-DD')) === false) {
-    Toast.Warning(props.uiText.error.inputRangeMessage, props.uiText.error.inputRangeTitle, props.warnTimeOut);
-    return;
-  }
-  if (props.mode === 'time') {
-    updateValue(inputValue.format(timeDateFormat));
-  } else {
-    updateValue(inputValue.format(props.dataFormat));
-  }
-};
-
 const updateValue = async (text: string | null) => {
   // console.log('updateValue', text);
   const before = props.data;
@@ -541,6 +294,13 @@ const updateValue = async (text: string | null) => {
     await nextTick();
     emit('value-change', null, before);
     return;
+  }
+  if (props.mode === 'all' || props.mode === 'date') {
+    const d = getShiftDayjs(dayjs(text));
+    if (checkDate(d.format('YYYY-MM-DD')) === false) {
+      Toast.Warning(props.uiText.error.inputRangeMessage, props.uiText.error.inputRangeTitle, props.warnTimeOut);
+      return;
+    }
   }
   if (props.mode === 'all') {
     emit('update:data', dayjs(text).format(props.dataFormat));
@@ -561,16 +321,39 @@ const updateValue = async (text: string | null) => {
   }
 };
 
+const datePickerToday = () => {
+  if (props.readonly === true) return;
+  if (props.disabled === true) return;
+  //   if (state.date !== null) return;
+  const inputValue = dayjs();
+
+  const d = getShiftDayjs(inputValue);
+  if (checkDate(d.format('YYYY-MM-DD')) === false) {
+    Toast.Warning(props.uiText.error.inputRangeMessage, props.uiText.error.inputRangeTitle, props.warnTimeOut);
+    return;
+  }
+  // console.log(inputValue.format(''));
+  updateValue(inputValue.format(''));
+};
+
+const inputBoxClass = computed(() => {
+  if (props.textAlign === 'left') {
+    return 'display-left';
+  } else if (props.textAlign === 'center') {
+    return 'display-center';
+  } else {
+    return 'display-right';
+  }
+});
+
 const iconEventDelete = () => {
   const before = props.data;
   if (props.readonly === true) return;
   if (props.disabled === true) return;
-  if (state.date != null) {
-    emit('update:data', null);
-    nextTick(() => {
-      emit('value-change', null, before);
-    });
-  }
+  emit('update:data', null);
+  nextTick(() => {
+    emit('value-change', null, before);
+  });
 };
 
 // [ ref ]
@@ -579,12 +362,140 @@ onMounted(() => {
   emit('ref', inputElement.value as HTMLInputElement);
 });
 
-const setRef = (elm: any) => {
-  inputElement.value = elm;
-  emit('ref', elm);
+const tabindex = computed(() => {
+  if (props.disabled === true) return -1;
+  return props.tabindex;
+});
+
+// 更新の有無判定
+const isChangeData = computed(() => {
+  if (props.diff === undefined) return false;
+  if (props.diff === null && props.data === '') return false;
+  if (props.diff === '' && props.data === null) return false;
+  if (props.diff !== props.data) return true;
+  return false;
+});
+
+//  ---------------------------------------------------------------------------------
+// カレンダーモーダル制御
+const open = ref(false);
+// Popupの表示位置のターゲット
+const openBtn = ref<HTMLElement | null>();
+// 表示中カレンダーの値
+const calendarValue = shallowRef<DateValue | null>(null);
+const displayLocale = computed(() => {
+  if (props.locale) return props.locale;
+  return multiLang.lang === 'ja' ? 'ja-JP' : 'en-US';
+});
+//  -------------------------------------------------
+const calendarMinValue = computed(() => {
+  if (!minDayjs.value) return null;
+  return toCalendarDate(fromDate(minDayjs.value.toDate(), getLocalTimeZone()));
+});
+const calendarMaxValue = computed(() => {
+  if (!maxDayjs.value) return null;
+  return toCalendarDate(fromDate(maxDayjs.value.toDate(), getLocalTimeZone()));
+});
+//  -------------------------------------------------
+const HH = shallowRef<string | null>(null);
+const MM = shallowRef<string | null>(null);
+//  -------------------------------------------------
+const listHH = Array.from({ length: 23 })
+  .fill(null)
+  .map((row, index) => {
+    return `${index + 1 < 10 ? `0${index + 1}` : index + 1}`;
+  });
+
+const listMM = Array.from({ length: 59 })
+  .fill(null)
+  .map((row, index) => {
+    return `${index + 1 < 10 ? `0${index + 1}` : index + 1}`;
+  });
+//  -------------------------------------------------
+
+const toggleModal = () => {
+  if (props.readonly) return;
+  if (props.disabled) return;
+  const openState = !open.value;
+
+  if (openState) {
+    hsFocus.state.id = uid;
+    if (dataDasyjs.value !== null) {
+      if (props.mode !== 'time') {
+        const calDate = toCalendarDate(fromDate(dataDasyjs.value.toDate(), getLocalTimeZone()));
+        calendarValue.value = calDate;
+      }
+      if (props.mode === 'all' || props.mode === 'time') {
+        // const calDate = toCalendarDate(fromDate(displayTs.value.toDate(), getLocalTimeZone()));
+        HH.value = dataDasyjs.value.format('HH');
+        MM.value = dataDasyjs.value.format('mm');
+      } else {
+        HH.value = null;
+        MM.value = null;
+      }
+    } else {
+      calendarValue.value = null;
+      HH.value = null;
+      MM.value = null;
+    }
+  }
+  open.value = openState;
+};
+function toJSDate(v: DateValue, tz: string): Date {
+  return 'timeZone' in v || 'offset' in v ? (v as any).toDate() : (v as any).toDate(tz);
+}
+
+const changeCalender = (date: DateValue | null) => {
+  const TZ = getLocalTimeZone();
+  // console.log('changeCalender', { date, TZ });
+  const t = date ? Dayjs(toJSDate(date, TZ)).tz(TZ) : null;
+  if (!t) {
+    calendarValue.value = null;
+    updateValue(null);
+    return;
+  }
+  if (props.mode === 'all' || props.mode === 'time') {
+    // console.log('changeCalender', { date, TZ }, t.format('YYYY-MM-DD') + ` ${HH.value || '00'}:${MM.value || '00'}`);
+    // const calDate = toCalendarDate(fromDate(displayTs.value.toDate(), getLocalTimeZone()));
+    updateValue(t.format('YYYY-MM-DD') + ` ${HH.value || '00'}:${MM.value || '00'}`);
+  } else {
+    updateValue(t.format(''));
+  }
+  calendarValue.value = date;
 };
 
-// [ focus, blur ]
+//  -------------------------------------------------
+const hhValueChange = (value: string) => {
+  //
+  if (/^[0-5]\d$/.test(value)) {
+    HH.value = value;
+    if (!MM.value) MM.value = '00';
+    if (!calendarValue.value) {
+      calendarValue.value = toCalendarDate(fromDate(new Date(), getLocalTimeZone()));
+    }
+  } else {
+    HH.value = null;
+    MM.value = null;
+    calendarValue.value = null;
+  }
+  changeCalender(calendarValue.value);
+};
+const mmValueChange = (value: string) => {
+  //
+  if (/^(?:[01]\d|2[0-3])$/.test(value)) {
+    MM.value = value;
+    if (!HH.value) HH.value = '00';
+    if (!calendarValue.value) {
+      calendarValue.value = toCalendarDate(fromDate(new Date(), getLocalTimeZone()));
+    }
+  } else {
+    HH.value = null;
+    MM.value = null;
+    calendarValue.value = null;
+  }
+  changeCalender(calendarValue.value);
+};
+//  ---------------------------------------------------------------------------------
 
 interface FocusState {
   isOpenFlatpickr: boolean;
@@ -607,11 +518,18 @@ const computedActivate = computed(() => {
   if (props.disabled === true) return false;
   if (props.readonly === true) return false;
   if (hsFocus.state.id !== uid) return false;
+  if (open.value === true) return true;
   if (focusState.isOpenFlatpickr) return true;
   if (focusState.manualInput) return true;
   if (focusState.openBtn) return true;
   return false;
 });
+watch(
+  () => hsFocus.state.id,
+  () => {
+    open.value = false;
+  }
+);
 
 /**
  * focus, blur イベント
@@ -627,38 +545,13 @@ watch(computedActivate, (value) => {
     emit('blur', inputElement.value);
   }
 });
-
-onMounted(async () => {
-  // console.log('datepicker onMounted', useId());
-  await Sleep(1);
-  // setTimeout(() => {
-  initFlatPickerOption();
-  generateFlatPickerOption();
-  // }, 1);
-});
-onUnmounted(async () => {
-  // console.log('datepicker onUnmounted', useId());
-  await Sleep(1);
-  if (state.picker != null) {
-    state.picker.destroy();
-    state.picker = null;
-  }
-});
-const tabindex = computed(() => {
-  if (props.disabled === true) return -1;
-  return props.tabindex;
-});
-
-// 更新の有無判定
-const isChangeData = computed(() => {
-  if (props.diff === undefined) return false;
-  if (props.diff === null && props.data === '') return false;
-  if (props.diff === '' && props.data === null) return false;
-  if (props.diff !== props.data) return true;
-  return false;
-});
-
-const openBtn = ref<HTMLElement | null>();
+const openBtnFocus = () => {
+  if (props.readonly) return;
+  if (props.disabled) return;
+  hsFocus.state.id = uid;
+  focusState.openBtn = true;
+};
+//  ---------------------------------------------------------------------------------
 const manualElm = ref<HTMLInputElement | null>();
 const manualData = ref('');
 const manualInput = ref(false);
@@ -666,12 +559,13 @@ const manualInputClick = () => {
   if (props.readonly) return;
   if (props.disabled) return;
   if (hsIsMobile.isMobile) {
-    datePickerToggle();
+    toggleModal();
     return;
   }
   manualInput.value = true;
   manualElm.value?.focus();
 };
+
 const manualInputfocus = () => {
   if (props.readonly) return;
   if (props.disabled) return;
@@ -686,20 +580,25 @@ const manualInputfocus = () => {
 const manualInputBlur = () => {
   if (props.readonly) return;
   if (props.disabled) return;
+  const TZ = getLocalTimeZone();
   try {
-    const data = manualData.value
-      .replace(/\//g, '-')
-      .replace(/-(\d)-/g, '-0$1-')
-      .replace(/-(\d)$/g, '-0$1');
-    const dataFormat = props.showFormat.replace(/\//g, '-');
-    const dt = dayjs(data, dataFormat);
-    // console.log('manualInputBlur', { data, dataFormat, dt });
-    if (dt.isValid() === false) {
-      updateValue(null);
-      return;
+    if (props.mode === 'all' || props.mode === 'date') {
+      const d = dayjs(manualData.value, props.showFormat, true);
+      if (!d.isValid()) {
+        updateValue(null);
+        return;
+      }
+      updateValue(d.tz(TZ).format(props.dataFormat));
+    } else if (props.mode === 'time') {
+      const inputValue = manualData.value.replace(/[-:]/g, '').replace(/(\d{2})(\d{2})/, '$1:$2');
+      const nowDt = dayjs().format('YYYY-MM-DD');
+      const d = dayjs(nowDt + ' ' + inputValue, timeDateFormat, true);
+      if (!d.isValid()) {
+        updateValue(null);
+        return;
+      }
+      updateValue(d.tz(TZ).format(timeDateFormat));
     }
-    updateValue(dt.format(props.dataFormat));
-    // console.log('manualInputBlur', data);
   } catch (err) {
     console.error('manualInputBlur', err);
   } finally {
@@ -709,12 +608,8 @@ const manualInputBlur = () => {
   }
 };
 
-const openBtnFocus = () => {
-  if (props.readonly) return;
-  if (props.disabled) return;
-  hsFocus.state.id = uid;
-  focusState.openBtn = true;
-};
+//  ---------------------------------------------------------------------------------
+
 const computedIsFocusOpenBtn = computed(() => {
   if (props.disabled === true) return false;
   if (props.readonly === true) return false;
@@ -724,13 +619,33 @@ const computedIsFocusOpenBtn = computed(() => {
   return false;
 });
 
+const KEEP_OPEN_SELECTOR = '[data-keep-popover-open]';
+// Nuxt UI UPopover用
+const content = {
+  align: 'start',
+  sideOffset: 8,
+  onPointerDownOutside: (e: any) => {
+    const t = e.target as HTMLElement;
+    // console.log('onFocusOutside', t);
+    if (t.closest(KEEP_OPEN_SELECTOR)) {
+      e.preventDefault(); // ← このクリックでは閉じない
+    }
+  },
+  onFocusOutside: (e: any) => {
+    const t = e.target as HTMLElement;
+    // console.log('onFocusOutside', t);
+    if (t.closest(KEEP_OPEN_SELECTOR)) e.preventDefault();
+  },
+};
+
 const posTarget = ref();
 //  ---------------------------------------------------------------------------------
 </script>
 
 <template>
   <InputFrame
-    :class="props.class"
+    v-bind="$attrs"
+    :class="['HsDatePicker', props.class]"
     :class-header="props.classHeader"
     :class-input="[props.classInput]"
     :focus="computedActivate"
@@ -756,6 +671,8 @@ const posTarget = ref();
     </template>
     <template v-if="!props.readonly" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
+      <!-- <UButton label="" color="neutral" variant="subtle" /> -->
+
       <button
         ref="openBtn"
         data-sep="right"
@@ -764,10 +681,19 @@ const posTarget = ref();
         :disabled="disabled"
         class="open-btn"
         :class="!disabled ? 'cursor-pointer hover:bg-accent1/[0.1] active:bg-accent1/[0.2]' : ''"
-        @click.stop="datePickerToggle()"
+        data-keep-popover-open
         @focus="openBtnFocus"
         @blur="focusState.openBtn = false"
+        @click.stop="toggleModal"
       >
+        <!-- @click.stop="toggleModal" -->
+        <!-- -->
+        <!---->
+
+        <!-- -->
+        <!--  -->
+        <!-- @click.stop="datePickerToggle()" -->
+
         <div
           class="absolute inset-[4px] border-main2 border pointer-events-none transition-all rounded-sm"
           :class="computedIsFocusOpenBtn ? 'opacity-100' : 'opacity-0'"
@@ -778,19 +704,8 @@ const posTarget = ref();
     <div
       class="nac-c-input-p relative min-h-[20px]"
       :class="[{ disabled: props.disabled, readonly: props.readonly }, inputBoxClass]"
-      @click="manualInputClick"
+      @click.stop="manualInputClick"
     >
-      <!---->
-      <!--  -->
-      <input
-        :ref="(e) => setRef(e)"
-        type="text"
-        class="flatpickr-body"
-        :class="[props.disabled ? 'pointer-events-none' : '']"
-        tabindex="-1"
-        :disabled="props.disabled"
-        @keydown="keyDown"
-      />
       <input
         ref="manualElm"
         v-model="manualData"
@@ -798,6 +713,7 @@ const posTarget = ref();
         class="absolute inset-0"
         :class="[manualInput ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0', inputBoxClass]"
         :tabindex="-1"
+        :name="'HsDatePicker-manual-input-' + uid"
         @blur="manualInputBlur()"
         @focus="manualInputfocus()"
       />
@@ -815,16 +731,58 @@ const posTarget = ref();
     </div>
     <template #right-icons>
       <template v-if="!props.hideDeleteBtn && !props.readonly">
-        <div
+        <button
           :class="!disabled ? 'text-error cursor-pointer hover:bg-error/[0.1] active:bg-error/[0.2]' : ''"
-          @click="iconEventDelete()"
+          tabindex="-1"
+          @click.stop="iconEventDelete()"
         >
           <i class="fa-solid fa-delete-left"></i>
-        </div>
+        </button>
       </template>
       <slot name="right-icons" :disabled="disabled" />
     </template>
   </InputFrame>
+  <UPopover v-model:open="open" arrow :reference="openBtn" :content="content">
+    <template #content>
+      <div
+        class="calender-modal min-w-[200px]"
+        :style="{
+          '--selected-color': themeColor,
+          '--error-color': themeErrorColor,
+          '--ui-primary': themeColor,
+          '--ui-secondary': themeWeekColor,
+        }"
+      >
+        <UCalendar
+          v-if="props.mode !== 'time'"
+          :model-value="calendarValue"
+          class="p-2"
+          :locale="displayLocale"
+          :min-value="calendarMinValue"
+          :max-value="calendarMaxValue"
+          color="secondary"
+          :ui="{}"
+          @update:model-value="(v:any) => changeCalender(v)"
+        />
+        <div v-if="props.mode === 'all' || props.mode === 'time'" class="grid grid-cols-2 gap-1 p-1">
+          <USelect
+            :model-value="HH"
+            :items="listHH"
+            class=""
+            placeholder="HH"
+            @update:model-value="(v:any) => hhValueChange(v)"
+          />
+          <USelect
+            :model-value="MM"
+            :items="listMM"
+            class=""
+            placeholder="mm"
+            @update:model-value="(v:any) => mmValueChange(v)"
+          />
+        </div>
+      </div>
+    </template>
+  </UPopover>
 </template>
 
 <style lang="scss" scoped>
@@ -859,10 +817,6 @@ const posTarget = ref();
   }
 }
 
-:deep(.flatpickr-mobile) {
-  position: absolute;
-  opacity: 0;
-}
 .nac-c-input-p {
   display: flex;
   align-items: center;
@@ -887,4 +841,51 @@ const posTarget = ref();
     }
   }
 }
+.calender-modal:deep(*) {
+  [data-reka-calendar-cell-trigger] {
+    cursor: pointer;
+    &[data-today]:not([data-selected]) {
+      color: var(--selected-color) !important;
+    }
+    &[data-disabled] {
+      background-color: #afafaf !important;
+      color: white !important;
+    }
+  }
+  [data-selected] {
+    background: var(--selected-color) !important;
+    color: white !important;
+    // :hover:not([data-selected]):not([data-disabled]) {
+    //   @media (hover: hover) {
+    //     @supports (color: color-mix(in lab, red, red)) {
+    //       background-color: color-mix(in oklab, var(--selected-color) 20%, transparent);
+    //     }
+    //   }
+    // }
+  }
+  [data-reka-calendar-cell-trigger]:hover:not([data-selected]):not([data-disabled]) {
+    @media (hover: hover) {
+      // @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--selected-color) 20%, transparent);
+      // }
+    }
+  }
+  [data-reka-calendar-cell-trigger]:hover:not([data-selected])[data-disabled] {
+    @media (hover: hover) {
+      background-color: color-mix(in oklab, var(--error-color) 50%, transparent);
+    }
+  }
+}
+
+// :deep([data-selected]) {
+//   &:hover {
+//     @media (hover: hover) {
+//       &:not([data-selected]) {
+//         @supports (color: color-mix(in lab, red, red)) {
+//           background-color: color-mix(in oklab, var(--selected-color) 20%, transparent);
+//         }
+//       }
+//     }
+//   }
+// }
 </style>

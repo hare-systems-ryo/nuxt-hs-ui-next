@@ -151,14 +151,10 @@ const downStop = () => {
         :class="classStyle"
         :style="{ zIndex: zOrder, opacity: props.show ? 1 : 0 }"
       >
-        <div
-          :class="classInner"
-          @mousedown.self="down = true"
-          @mouseup.self="downStop"
-          @mousedown.stop
-          @mouseup.stop
-          @click.stop=""
-        >
+        <div :class="classInner" @mousedown.self="down = true" @mouseup.self="downStop">
+          <!-- @click.stop="" -->
+          <!-- @mousedown.stop @mouseup.stop -->
+
           <slot />
         </div>
       </div>

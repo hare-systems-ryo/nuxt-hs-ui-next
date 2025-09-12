@@ -30,12 +30,12 @@ export const useHsIsMobile = defineStore(
       }
     };
     const checkIsIPhone = () => {
-      if (import.meta.server && isIPhone.value !== null) return;
+      if (import.meta.server) return;
       const ua = GetUa();
-      isIPhone.value = /iPhone/.test(ua);
+      isIPhone.value = /iphone/.test(ua);
     };
     const checkIsMobile = () => {
-      if (import.meta.server && isMobile.value !== null) return;
+      if (import.meta.server) return;
       const ua = GetUa();
       const isOldIPad = /\(ipad.*os/.test(ua);
       const isIpad = /macintosh/.test(ua) && navigator !== undefined && navigator.maxTouchPoints > 1;
@@ -43,8 +43,7 @@ export const useHsIsMobile = defineStore(
       const isAndroid = /android|mobile/i.test(ua);
       isMobile.value = isOldIPad || isIpad || isiOS || isAndroid;
     };
-    checkIsMobile();
-    checkIsIPhone();
+
     const init = () => {
       checkIsMobile();
       checkIsIPhone();

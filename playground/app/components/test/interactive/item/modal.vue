@@ -91,6 +91,7 @@ const valueA = ref<string | null>('2024-12-16');
   <Card class="">
     <CardItem variant="header"> Modal </CardItem>
     <CardItem variant="body">
+      <Datepicker v-model:data="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
       <div class="flex gap-2">
         <Btn theme="link" variant="outlined" @click="modal.testA.show()"> Modal1 </Btn>
         <Btn theme="link" variant="outlined" @click="modal.testB.show()"> Modal2 </Btn>
@@ -180,7 +181,7 @@ const valueA = ref<string | null>('2024-12-16');
       </Card>
     </Modal>
     <!--  -->
-    <!-- <Modal :show="modal.testB.isShow">
+    <Modal :show="modal.testB.isShow">
       <Card ref="focusTargetElm2" class="max-h-full max-w-full w-[500px]">
         <CardItem class="bg-main2 text-white" variant="header">
           Modal
@@ -197,7 +198,7 @@ const valueA = ref<string | null>('2024-12-16');
           <div class="py-10">Modal</div>
         </CardItem>
       </Card>
-    </Modal> -->
+    </Modal>
   </Card>
 </template>
 <style lang="scss" scoped></style>

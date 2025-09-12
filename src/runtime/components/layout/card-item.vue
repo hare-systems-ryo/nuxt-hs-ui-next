@@ -76,10 +76,13 @@ const cardItemTv = tv({
 ----------------------------------------------------------------------------- */
 
 // [ NUXT ]
-import { computed } from '#imports';
+import { computed, useId } from '#imports';
 // [ utils ]
 import { type ClassType, ClassTypeToString } from '../../utils/class-style';
 import { type ThemeColor, GetColorCode } from '../../utils/theme';
+// [ composables ]
+import { useHsFocus } from '../../composables/use-hs-focus';
+import { useHsPinia } from '../../composables/use-pinia';
 // [ Components ]
 import Btn from '../form/btn.vue';
 import Accordion from './accordion.vue';
@@ -110,10 +113,12 @@ const props = withDefaults(defineProps<Props>(), {
 type Emits = {
   ref: [e: HTMLElement];
   'update:open': [value: boolean];
-  'bg-click': [];
   toggle: [];
 };
 const emit = defineEmits<Emits>();
+
+const uid = useId();
+const hsFocus = useHsFocus(useHsPinia());
 
 // ----------------------------------------------------------------------------
 const bgTheme = computed(() => {
@@ -144,11 +149,16 @@ const classTvBase = computed(() => {
 const classTvBtn = computed(() => {
   return classTv.value.btn();
 });
+const toggleOpen = () => {
+  hsFocus.state.id = uid;
+  emit('update:open', !props.open);
+  emit('toggle');
+};
 </script>
 
 <template>
   <template v-if="props.accordion === undefined">
-    <div :ref="(e:any) => emit('ref', e)" :style="styleMain" :class="classTvBase" @click.stop="emit('bg-click')">
+    <div :ref="(e:any) => emit('ref', e)" :style="styleMain" :class="classTvBase">
       <slot />
       <Btn
         v-if="props.open !== undefined || props.cross"
@@ -156,10 +166,7 @@ const classTvBtn = computed(() => {
         variant="outlined"
         :class="classTvBtn"
         :size="props.size"
-        @click.stop="
-          emit('update:open', !props.open);
-          emit('toggle');
-        "
+        @click.stop="toggleOpen"
       >
         <i
           v-if="props.open !== undefined && !props.cross"

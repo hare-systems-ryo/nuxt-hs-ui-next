@@ -42,3 +42,10 @@
     --color-back2    : #D5D9DD;
     --color-back3    : #BCCCD5;
 }
+
+/* 
+
+#vue-tracer-overlay {
+    background-color: red;
+    opacity         : 50% !important;
+} */

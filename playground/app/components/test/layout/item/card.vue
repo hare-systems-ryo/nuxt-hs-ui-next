@@ -6,6 +6,7 @@
 // AppComponentsTestLayoutItemCardAppComponentsTestLayoutItemCard
 ---------------------------------------------------------------------------- */
 
+const valueA = ref<string | null>('2024-12-16');
 const showCardItem = ref(true);
 </script>
 <template>
@@ -40,6 +41,8 @@ const showCardItem = ref(true);
           </CardItem>
           <CardItem :accordion="showCardItem" variant="body">
             <div>プロパティ accordion が開閉対象</div>
+
+            <Datepicker v-model:data="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
           </CardItem>
           <CardItem variant="footer"> Footer </CardItem>
         </Card>
