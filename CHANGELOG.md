@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.25
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.24...v3.0.25)
+
+### 🩹 Fixes
+
+- Wrap UPopover in ClientOnly to avoid hydration error in DatePicker ([6b2558a](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/6b2558a))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.24
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.23...v3.0.24)
