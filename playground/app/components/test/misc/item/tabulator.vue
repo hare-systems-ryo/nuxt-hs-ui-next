@@ -30,7 +30,7 @@ const activeRow = computed(() => {
 });
 const listRefresh = () => {
   //
-  console.log(list.value);
+  // console.log(list.value);
   // list.value[2].text = "BBB+2";
   // // ----------------------------
   const temp = ObjectCopy(list.value);

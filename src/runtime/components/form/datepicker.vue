@@ -13,10 +13,10 @@ import { type DateValue, fromDate, toCalendarDate, getLocalTimeZone } from '@int
 import { reactive, ref, watch, computed, useId, onMounted, nextTick, shallowRef } from '#imports';
 // [ utils ]
 import type { ClassType } from '../../utils/class-style';
-import { GetTimeShiftValue, Dayjs, DayjsInit } from '../../utils/dayjs';
+import { GetTimeShiftValue, Dayjs, DayjsInit, dayjs } from '../../utils/dayjs';
 import type { MultiLang } from '../../utils/multi-lang';
-import { dayjs } from '../../utils/dayjs';
 import { Theme, type ThemeColor, GetColorCode } from '../../utils/theme';
+import { IntNullable } from '../../utils/number';
 
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
@@ -375,49 +375,55 @@ const calendarMaxValue = computed(() => {
   return toCalendarDate(fromDate(maxDayjs.value.toDate(), getLocalTimeZone()));
 });
 //  -------------------------------------------------
-const HH = shallowRef<string | null>(null);
-const MM = shallowRef<string | null>(null);
+const HH = shallowRef<number | null>(null);
+const MM = shallowRef<number | null>(null);
 //  -------------------------------------------------
-const listHH = Array.from({ length: 23 })
+const pad2 = (n: number) => String(n).padStart(2, '0');
+const listHH = Array.from({ length: 24 })
   .fill(null)
   .map((row, index) => {
-    return `${index + 1 < 10 ? `0${index + 1}` : index + 1}`;
+    return { id: index, label: pad2(index) };
   });
 
-const listMM = Array.from({ length: 59 })
+const listMM = Array.from({ length: 60 })
   .fill(null)
   .map((row, index) => {
-    return `${index + 1 < 10 ? `0${index + 1}` : index + 1}`;
+    return { id: index, label: pad2(index) };
   });
 //  -------------------------------------------------
 
 const toggleModal = () => {
   if (props.readonly) return;
   if (props.disabled) return;
-  const openState = !open.value;
 
-  if (openState) {
-    hsFocus.state.id = uid;
-    if (dataDasyjs.value !== null) {
-      if (props.mode !== 'time') {
-        const calDate = toCalendarDate(fromDate(dataDasyjs.value.toDate(), getLocalTimeZone()));
-        calendarValue.value = calDate;
-      }
-      if (props.mode === 'all' || props.mode === 'time') {
-        // const calDate = toCalendarDate(fromDate(displayTs.value.toDate(), getLocalTimeZone()));
-        HH.value = dataDasyjs.value.format('HH');
-        MM.value = dataDasyjs.value.format('mm');
-      } else {
-        HH.value = null;
-        MM.value = null;
-      }
-    } else {
-      calendarValue.value = null;
-      HH.value = null;
-      MM.value = null;
-    }
+  const openState = !open.value;
+  if (!openState) {
+    open.value = false;
+    return;
   }
-  open.value = openState;
+  hsFocus.state.id = uid;
+  if (dataDasyjs.value === null) {
+    calendarValue.value = null;
+    HH.value = null;
+    MM.value = null;
+    open.value = true;
+    return;
+  }
+  if (props.mode !== 'time') {
+    const calDate = toCalendarDate(fromDate(dataDasyjs.value.toDate(), getLocalTimeZone()));
+    calendarValue.value = calDate;
+  } else {
+    calendarValue.value = null;
+  }
+  if (props.mode === 'all' || props.mode === 'time') {
+    // const calDate = toCalendarDate(fromDate(displayTs.value.toDate(), getLocalTimeZone()));
+    HH.value = dataDasyjs.value.hour();
+    MM.value = dataDasyjs.value.minute();
+  } else {
+    HH.value = null;
+    MM.value = null;
+  }
+  open.value = true;
 };
 function toJSDate(v: DateValue, tz: string): Date {
   return 'timeZone' in v || 'offset' in v ? (v as any).toDate() : (v as any).toDate(tz);
@@ -425,17 +431,20 @@ function toJSDate(v: DateValue, tz: string): Date {
 
 const changeCalender = (date: DateValue | null) => {
   const TZ = getLocalTimeZone();
-  // console.log('changeCalender', { date, TZ });
+  // console.log('changeCalender', { HH: HH.value, MM: MM.value, date, TZ });
   const t = date ? Dayjs(toJSDate(date, TZ)).tz(TZ) : null;
   if (!t) {
     calendarValue.value = null;
+    HH.value = null;
+    MM.value = null;
     updateValue(null);
     return;
   }
+  if (!HH.value) HH.value = 0;
+  if (!MM.value) MM.value = 0;
   if (props.mode === 'all' || props.mode === 'time') {
     // console.log('changeCalender', { date, TZ }, t.format('YYYY-MM-DD') + ` ${HH.value || '00'}:${MM.value || '00'}`);
-    // const calDate = toCalendarDate(fromDate(displayTs.value.toDate(), getLocalTimeZone()));
-    updateValue(t.format('YYYY-MM-DD') + ` ${HH.value || '00'}:${MM.value || '00'}`);
+    updateValue(t.format('YYYY-MM-DD') + ` ${pad2(HH.value || 0)}:${pad2(MM.value || 0)}`);
   } else {
     updateValue(t.format(''));
   }
@@ -443,11 +452,12 @@ const changeCalender = (date: DateValue | null) => {
 };
 
 //  -------------------------------------------------
-const hhValueChange = (value: string) => {
-  //
-  if (/^[0-5]\d$/.test(value)) {
+const hhValueChange = (_value: number) => {
+  const value = IntNullable(_value);
+  // console.log('hhValueChange', value);
+  if (value && value >= 0 && value <= 23) {
     HH.value = value;
-    if (!MM.value) MM.value = '00';
+    if (!MM.value) MM.value = 0;
     if (!calendarValue.value) {
       calendarValue.value = toCalendarDate(fromDate(new Date(), getLocalTimeZone()));
     }
@@ -458,11 +468,12 @@ const hhValueChange = (value: string) => {
   }
   changeCalender(calendarValue.value);
 };
-const mmValueChange = (value: string) => {
-  //
-  if (/^(?:[01]\d|2[0-3])$/.test(value)) {
-    MM.value = value;
-    if (!HH.value) HH.value = '00';
+const mmValueChange = (_value: number) => {
+  const value = IntNullable(_value);
+  // console.log('mmValueChange', value);
+  if (value && value >= 0 && value <= 59) {
+    HH.value = value;
+    if (!HH.value) HH.value = 0;
     if (!calendarValue.value) {
       calendarValue.value = toCalendarDate(fromDate(new Date(), getLocalTimeZone()));
     }
@@ -753,20 +764,58 @@ const posTarget = ref();
             @update:model-value="(v:any) => changeCalender(v)"
           />
           <div v-if="props.mode === 'all' || props.mode === 'time'" class="grid grid-cols-2 gap-1 p-1">
-            <USelect
-              :model-value="HH"
-              :items="listHH"
-              class=""
-              placeholder="HH"
-              @update:model-value="(v:any) => hhValueChange(v)"
-            />
-            <USelect
-              :model-value="MM"
-              :items="listMM"
-              class=""
-              placeholder="mm"
-              @update:model-value="(v:any) => mmValueChange(v)"
-            />
+            <template v-if="hsIsMobile.isMobile">
+              <USelect
+                :model-value="HH"
+                :items="listHH"
+                class=""
+                value-key="id"
+                placeholder="HH"
+                :search-input="{
+                  placeholder: 'HH',
+                  type: 'number',
+                }"
+                @update:model-value="(v:any) => hhValueChange(v)"
+              />
+              <USelect
+                :model-value="MM"
+                :items="listMM"
+                class=""
+                value-key="id"
+                placeholder="mm"
+                :search-input="{
+                  placeholder: 'mm',
+                  type: 'number',
+                }"
+                @update:model-value="(v:any) => mmValueChange(v)"
+              />
+            </template>
+            <template v-else>
+              <USelectMenu
+                :model-value="HH"
+                :items="listHH"
+                class=""
+                value-key="id"
+                placeholder="HH"
+                :search-input="{
+                  placeholder: 'HH',
+                  type: 'number',
+                }"
+                @update:model-value="(v:any) => hhValueChange(v)"
+              />
+              <USelectMenu
+                :model-value="MM"
+                :items="listMM"
+                class=""
+                value-key="id"
+                placeholder="mm"
+                :search-input="{
+                  placeholder: 'mm',
+                  type: 'number',
+                }"
+                @update:model-value="(v:any) => mmValueChange(v)"
+              />
+            </template>
           </div>
         </div>
       </template>

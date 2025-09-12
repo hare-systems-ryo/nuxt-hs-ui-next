@@ -11,7 +11,7 @@ const counter = useInterval(200);
 import { type ThemeColor, Theme } from '../../../../../../src/runtime/utils/theme';
 const ThemeList = Object.keys(Theme) as ThemeColor[];
 const c = () => {
-  console.log('click');
+  console.info('click');
 };
 const loading = ref(false);
 const disabled = ref(true);
