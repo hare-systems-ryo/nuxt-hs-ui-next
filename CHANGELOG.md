@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.23
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.22...v3.0.23)
+
+### 💅 Refactors
+
+- Replaced Flatpickr with NuxtUI calendar to fix DatePicker issue on iPhone ([16b5968](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/16b5968))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.22
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.21...v3.0.22)
