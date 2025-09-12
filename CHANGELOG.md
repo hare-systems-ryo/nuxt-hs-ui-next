@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.26
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.25...v3.0.26)
+
+### 🩹 Fixes
+
+- Resolved issue preventing minute selection in Datepicker ([57dda65](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/57dda65))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.25
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.24...v3.0.25)
