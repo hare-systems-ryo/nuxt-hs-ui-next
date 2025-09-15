@@ -77,6 +77,11 @@ export default defineNuxtModule<ModuleOptions>({
     addComponentsDir({
       path: resolve('runtime/components/form'),
       prefix: options.prefix.form,
+      pattern: '**/*.vue',
+      ignore: [
+        '**/_*/**', // 深さ問わず、"_xxx" という名前のフォルダ配下を全部除外
+        '**/*/_**', // 深さ問わず、"_xxx" という名前のフォルダ配下を全部除外
+      ],
     });
     addComponentsDir({
       path: resolve('runtime/components/layout'),

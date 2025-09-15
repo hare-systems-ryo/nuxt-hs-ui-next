@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\layout\item\accordion.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestLayoutItemAccordion
-// AppComponentsTestLayoutItemAccordionAppComponentsTestLayoutItemAccordion
+// TestLayoutItemAccordion
+// TestLayoutItemAccordionTestLayoutItemAccordion
 ---------------------------------------------------------------------------- */
 const isOpen = ref(true);
 </script>

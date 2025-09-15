@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\misc\item\view-name-display.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestMiscItemViewNameDisplay
-// AppComponentsTestMiscItemViewNameDisplayAppComponentsTestMiscItemViewNameDisplay
+// TestMiscItemViewNameDisplay
+// TestMiscItemViewNameDisplayTestMiscItemViewNameDisplay
 ---------------------------------------------------------------------------- */
 </script>
 <template>

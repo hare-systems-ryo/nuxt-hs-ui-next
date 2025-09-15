@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\index.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractive
-// AppComponentsTestInteractiveAppComponentsTestInteractive
+// TestInteractive
+// TestInteractiveTestInteractive
 ---------------------------------------------------------------------------- */
 
 const router = useRouter();

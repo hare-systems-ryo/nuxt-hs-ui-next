@@ -2,41 +2,45 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\select-img-icon.vue
 // ----------------------------------------------------------------------------
-// FormSelectImgIcon
-// FormSelectImgIconFormSelectImgIcon
+// SelectImgIcon
+// SelectImgIconSelectImgIcon
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 // [ NUXT ]
-import { computed } from "#imports";
+import { computed } from '#imports';
 // [ utils ]
-import { type ClassType, ClassTypeToString } from "../../utils/class-style";
+import { type ClassType, ClassTypeToString } from '../../utils/class-style';
 // ----------------------------------------------------------------------------
 type Props = {
   imgUrl?: string | null;
   classImg?: ClassType;
   classImgTag?: ClassType;
+  imgMode?: 'cover' | 'contain';
 };
 
 const props = withDefaults(defineProps<Props>(), {
   imgUrl: null,
-  classImg: "",
-  classImgTag: "",
+  classImg: '',
+  classImgTag: '',
+  imgMode: 'contain',
 });
 
 const imgClass = computed(() => {
   return twMerge(
     //
-    "border border-gray-700",
-    "h-[18px] w-[36px]",
+    'border border-gray-700',
+    'h-[18px] w-[36px]',
     ClassTypeToString(props.classImg)
   );
 });
 
 const imgTagClass = computed(() => {
   return twMerge(
-    "object-contain w-full h-full",
+    'object-contain w-full h-full', //
+    props.imgMode === 'contain' ? 'object-contain' : '',
+    props.imgMode === 'cover' ? 'object-cover' : '',
     ClassTypeToString(props.classImgTag)
   );
 });

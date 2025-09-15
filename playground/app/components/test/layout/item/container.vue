@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\layout\item\container.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestLayoutItemContainer
-// AppComponentsTestLayoutItemContainerAppComponentsTestLayoutItemContainer
+// TestLayoutItemContainer
+// TestLayoutItemContainerTestLayoutItemContainer
 ---------------------------------------------------------------------------- */
 </script>
 <template>

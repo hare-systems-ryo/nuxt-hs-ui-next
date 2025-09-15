@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\select.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemSelect
-// AppComponentsTestFormItemSelectAppComponentsTestFormItemSelect
+// TestFormItemSelect
+// TestFormItemSelectTestFormItemSelect
 ---------------------------------------------------------------------------- */
 
 import type { SelectItem } from '../../../../../../src/runtime/utils/select-item';
@@ -12,6 +12,13 @@ const state = ref<{
   testString: {
     data: string | null;
     diff: string | null;
+    label: string;
+    list: SelectItem<string>[];
+  };
+  testStringB: {
+    data: string | null;
+    diff: string | null;
+    label: string;
     list: SelectItem<string>[];
   };
   testNumber: {
@@ -24,157 +31,127 @@ const state = ref<{
     data: null,
     diff: null,
     list: [
-      // { id: `a`, text: "id:a" },
-      // { id: `b`, text: "id:b" },
-      // { id: `c`, text: "id:c" },
+      {
+        id: `beige`,
+        text: 'beige  \n beige \nigebeigebeigebeigebeigebeige',
+        imgUrl: '/assets/code-color-group/beige.png',
+      },
+      {
+        id: `gold`,
+        text: 'gold goldgoldgoldgoldgoldgoldgoldgoldgoldgoldgoldgoldgold',
+        imgUrl: '/assets/code-color-group/gold.png',
+      },
+      { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
     ],
+    label: 'Select',
+  },
+  testStringB: {
+    data: null,
+    diff: null,
+    list: [
+      { id: `beige`, text: 'beige', imgUrl: '/assets/code-color-group/beige.png', hidden: true },
+      { id: `gold`, text: 'gold', imgUrl: '/assets/code-color-group/gold.png' },
+      { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
+    ],
+    label: 'Select',
   },
   testNumber: {
     data: 1,
     diff: null,
-    list: [
-      { id: 1, text: 'id:1' },
-      { id: 2, text: 'id:2' },
-      { id: 3, text: 'id:3' },
-    ],
+    list: Array.from({ length: 30 })
+      .fill(null)
+      .map((r, i) => ({ id: i, text: `id:${i}`, hidden: i == 2 })),
+    // [
+    //   { id: 1, text: 'id:1' },
+    //   { id: 2, text: 'id:2' },
+    //   { id: 3, text: 'id:3' },
+    // ],
   },
 });
-onMounted(() => {
-  state.value.testString.list.push(
-    ...Array.from({ length: 20 })
-      .fill(null)
-      .map((row, index) => {
-        return {
-          id: index.toString(36),
-          text: 'id:' + index.toString(36),
-        };
-      })
-  );
-  loading.value = false;
-});
-
-const valueA = ref<number | null>(null);
-const valueAtext = computed(() => {
-  if (valueA.value === null) return 'null';
-  return valueA.value;
-});
-const valueB = ref<number | null>(null);
-const valueBtext = computed(() => {
-  if (valueB.value === null) return 'null';
-  return valueB.value;
-});
-// const listA: SelectItem[] = Array.from({ length: 100 })
-//   .fill(null)
-//   .map((row, index) => {
-//     return {
-//       id: index,
-//       text: `ID:{inxex}`,
-//     };
-//   });
-// [
-// {
-//   id: 1,
-//   text: {
-//     ja: "id:1 日本語",
-//     en: "id:1 英語",
-//   },
-//   order: 1,
-//   imgUrl: "/assets/code-color-group/gray.png",
-//   appendIcon: "fa-solid fa-arrow-up-wide-short w-[1em] text-center",
-// },
-// {
-//   id: 2,
-//   text: {
-//     ja: "id:2 日本語",
-//     en: "id:2 英語",
-//   },
-//   order: 2,
-//   imgUrl: "/assets/code-color-group/green.png",
-//   appendIcon: "fa-solid fa-arrow-up-wide-short w-[1em] text-center",
-// },
-// ];
-// const listB: SelectItem[] = [
-//   {
-//     id: 1,
-//     text: "id:1",
-//     order: 3,
-//     hidden: true,
-//     appendIcon: "fa-solid fa-arrow-up-wide-short w-[1em] text-center",
-//   },
-//   {
-//     id: 2,
-//     text: "id:2",
-//     order: 2,
-//     deleted: true,
-//     appendIcon: "fa-solid fa-arrow-up-wide-short w-[1em] text-center",
-//   },
-//   {
-//     id: 3,
-//     text: "id:3",
-//     order: 1,
-//     appendIcon: "fa-solid fa-arrow-up-wide-short w-[1em] text-center",
-//   },
-// ];
-const listString = ref<SelectItem<string>[]>([]);
-// <i class=""></i>
-// const listNumber: SelectItem[] = [
-//   { id: 1, text: "id:1" },
-//   { id: 2, text: "id:2" },
-//   { id: 3, text: "id:3" },
-// ];
-const listStringData = ref<string | null>(null);
-// const listStringDiff = ref<string | null>(null);
-// const listNumberData = ref<number | null>(null);
-// const listNumberDiff = ref<number | null>(null);
-const loading = ref(true);
-onMounted(() => {
-  setTimeout(() => {
-    listStringData.value = 'TN';
-    loading.value = true;
-    setTimeout(() => {
-      listString.value.push(
-        ...[
-          {
-            id: 'SR',
-            text: {
-              ja: 'スリナム',
-              en: 'SURINAME',
-            },
-          },
-          {
-            id: 'TN',
-            text: {
-              ja: 'チュニジア',
-              en: 'TUNISIA',
-            },
-          },
-        ]
-      );
-      loading.value = false;
-    }, 2000);
-  }, 2000);
-});
+const disabled = ref(false);
+const readonly = ref(false);
+const nullable = ref(false);
 </script>
 <template>
   <Card class="mt-4">
     <CardItem class="" variant="header"> Select </CardItem>
-    <CardItem class="" variant="body">
+    <CardItem class="grid gap-4" variant="body">
       <!-- ------------------------------------------------ -->
+      <div class="">
+        <CheckBox v-model:data="disabled" label="disabled" />
+        <CheckBox v-model:data="readonly" label="readonly" />
+        <CheckBox v-model:data="nullable" label="nullable" />
+      </div>
+      <div class="">
+        <TextBox v-model:data="state.testString.label" label="label" />
+      </div>
       <div class="grid grid-cols-2 gap-1">
-        <div class="border border-main2 p-1">valueA = {{ valueAtext }}</div>
+        <div class="grid gap-1">
+          <div class="">Select data</div>
+          <Select
+            v-model:data="state.testString.data"
+            :list="state.testString.list"
+            size="s"
+            img
+            img-mode="cover"
+            :disabled="disabled"
+            :readonly="readonly"
+            :nullable="nullable"
+          />
+          <Select
+            v-model:data="state.testString.data"
+            :list="state.testStringB.list"
+            size="s"
+            nullable
+            :label="{ ja: 'ほげ', en: 'hoge' }"
+            headerless
+            searchable
+            img
+            img-mode="cover"
+          />
+          <div class="">value = {{ state.testString.data }}</div>
+        </div>
+        <div class="">
+          <div class="">Select diff</div>
+          <Select
+            v-model:data="state.testString.diff"
+            :list="state.testStringB.list"
+            size="s"
+            :label="state.testString.label"
+            img
+            :nullable="nullable"
+          />
+          <div class="">value = {{ state.testString.diff }}</div>
+        </div>
+        <div class="">
+          <div class="">Select</div>
+          <!-- <Select
+            v-model:data="state.testString.data"
+            :list="state.testString.list"
+            size="s"
+            label="Select"
+            searchable
+          /> -->
+          <div class="">value = {{ state.testString.data }}</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-1">
+        <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" searchable nullable />
+        <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" nullable />
+      </div>
+
+      <!-- ------------------------------------------------ -->
+
+      <!--
+      
+      ------------------------------------------------ 
+       
+
+        <div class="grid grid-cols-2 gap-1">
         <div class="border border-main2 p-1">valueB = {{ valueBtext }}</div>
       </div>
-      <!-- ------------------------------------------------ -->
       <div class="p-1"></div>
-      <!-- <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div> -->
+      
       <div>
         <div class="">通常</div>
         <div class="">data = {{ valueAtext }} :: diff = {{ valueBtext }}</div>
@@ -184,30 +161,37 @@ onMounted(() => {
         <div class="flex items-center">{{ state.testString.data }}</div>
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" label="" />
         <div class="flex items-center">{{ state.testNumber.data }}</div>
-        <!-- <Select
-          v-model:data="valueA"
-          :diff="valueB"
-          :list="listA"
-          size="s"
-          label="基本的な使い方(Null許容)"
-          nullable
-        /> -->
       </div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
-      <div class="p-20"></div>
 
-      <!-- ------------------------------------------------ -->
+
+
+  <div>
+        <div class="">文字列がIDキー</div>
+        <div class="">listStringData = {{ listStringData }}</div>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <Select
+          v-model:data="listStringData"
+          :list="listString"
+          :loading="loading"
+          size="s"
+          label="IDが文字列 listStringData"
+        />
+        <Select
+          v-model:data="listNumberData"
+          :diff="listNumberDiff"
+          :list="listNumber"
+          size="s"
+          label="IDが数値 listNumberData"
+        /> 
+      </div>
+
+
+
+      
+      ------------------------------------------------ 
+      
+      -->
       <!-- <div class="p-1"></div>
       <div>
         <div class="">画像付き</div>
@@ -257,28 +241,7 @@ onMounted(() => {
           </div>
         </div>
       </div> -->
-      <div>
-        <div class="">文字列がIDキー</div>
-        <div class="">listStringData = {{ listStringData }}</div>
-        <!-- <div class="">listNumberData = {{ listNumberData }}</div> -->
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <Select
-          v-model:data="listStringData"
-          :list="listString"
-          :loading="loading"
-          size="s"
-          label="IDが文字列 listStringData"
-        />
-        <!-- <Select
-          v-model:data="listNumberData"
-          :diff="listNumberDiff"
-          :list="listNumber"
-          size="s"
-          label="IDが数値 listNumberData"
-        /> -->
-      </div>
-      <div class=""></div>
+
       <!-- ------------------------------------------------ -->
     </CardItem>
   </Card>

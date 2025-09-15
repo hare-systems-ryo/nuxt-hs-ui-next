@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\item\alert.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractiveItemAlert
-// AppComponentsTestInteractiveItemAlertAppComponentsTestInteractiveItemAlert
+// TestInteractiveItemAlert
+// TestInteractiveItemAlertTestInteractiveItemAlert
 ---------------------------------------------------------------------------- */
 import { Theme } from "../../../../../../src/runtime/utils/theme";
 const ThemeList = Object.keys(Theme) as Theme[];

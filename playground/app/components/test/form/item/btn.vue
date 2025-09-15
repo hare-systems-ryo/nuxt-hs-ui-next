@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\btn.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemBtn
-// AppComponentsTestFormItemBtnAppComponentsTestFormItemBtn
+// TestFormItemBtn
+// TestFormItemBtnTestFormItemBtn
 ---------------------------------------------------------------------------- */
 
 import { useInterval } from '@vueuse/core';

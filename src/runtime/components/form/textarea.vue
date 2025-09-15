@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\textarea.vue
 // ----------------------------------------------------------------------------
-// FormTextarea
-// FormTextareaFormTextarea
+// Textarea
+// TextareaTextarea
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]
@@ -286,7 +286,9 @@ const onFocus = () => {
   if (props.disabled === true) return;
   if (props.readonly === true) return;
   focusState.isActivate = true;
-  hsFocus.state.id = uid;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
 };
 const onBlur = () => {
   focusState.isActivate = false;

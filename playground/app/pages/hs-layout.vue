@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\pages\hs-layout.vue
 // ----------------------------------------------------------------------------
-// AppPagesHsLayout
-// AppPagesHsLayoutAppPagesHsLayout
+// PagesHsLayout
+// PagesHsLayoutPagesHsLayout
 ---------------------------------------------------------------------------- */
 
 definePageMeta({

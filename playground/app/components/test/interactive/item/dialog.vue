@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\item\dialog.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractiveItemDialog
-// AppComponentsTestInteractiveItemDialogAppComponentsTestInteractiveItemDialog
+// TestInteractiveItemDialog
+// TestInteractiveItemDialogTestInteractiveItemDialog
 ---------------------------------------------------------------------------- */
 const dialogResult1 = ref<string>("");
 const dialogResult2 = ref<string>("");

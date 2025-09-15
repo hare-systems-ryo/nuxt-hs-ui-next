@@ -46,23 +46,31 @@ onMounted(() => {
 
 -------------------------------------------- */
 
-type OptionalFunction<T> = ((state: T) => undefined | boolean) | ((state: T) => Promise<undefined | boolean>) | null;
+// type OptionalFunction<T> = ((state?: T) => undefined | boolean) | ((state?: T) => Promise<undefined | boolean>);
+type OptionalFunction<T> =
+  | ((state?: T) => void)
+  | ((state?: T) => boolean)
+  | ((state?: T) => Promise<boolean>)
+  | ((state?: T) => Promise<void>);
+
+type OptionalAfterFunction<T> = (state?: T) => Promise<void> | void;
+
 export interface ModalControl<T = any> {
   show: () => Promise<undefined>;
   /**
    * showBefore モーダルが開く前に実行される関数
    * - true をreturnするとモーダルを開く処理は中止される
    */
-  showBefore: OptionalFunction<T>;
-  showAfter: OptionalFunction<T>;
+  showBefore: OptionalFunction<T> | null;
+  showAfter: OptionalAfterFunction<T> | null;
   // close: () => undefined;
   close: () => Promise<undefined>;
   /**
    * closeBefore モーダルが閉じる前に実行される関数
    * - true をreturnするとモーダルを閉じる処理は中止される
    */
-  closeBefore: OptionalFunction<T>;
-  closeAfter: OptionalFunction<T>;
+  closeBefore: OptionalFunction<T> | null;
+  closeAfter: OptionalAfterFunction<T> | null;
   // 状態管理
   isShow: boolean;
   // データ保持

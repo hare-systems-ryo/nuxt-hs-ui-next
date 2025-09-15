@@ -2,20 +2,20 @@
 /* ----------------------------------------------------------------------------
 // playground\app\pages\hs-form.vue
 // ----------------------------------------------------------------------------
-// AppPagesHsForm
-// AppPagesHsFormAppPagesHsForm
+// PagesHsForm
+// PagesHsFormPagesHsForm
 ---------------------------------------------------------------------------- */
 
 definePageMeta({
-  layout: "default",
+  layout: 'default',
 });
 useHead({
-  title: () => "Test :: Form",
+  title: () => 'Test :: Form',
 });
 const linkList = [
   //
-  { label: "home", to: "/" },
-  { label: "Form" },
+  { label: 'home', to: '/' },
+  { label: 'Form' },
 ];
 </script>
 

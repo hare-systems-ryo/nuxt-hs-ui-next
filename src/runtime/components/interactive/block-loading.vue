@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\block-loading.vue
 // ----------------------------------------------------------------------------
-// InteractiveBlockLoading
-// InteractiveBlockLoadingInteractiveBlockLoading
+// BlockLoading
+// BlockLoadingBlockLoading
 ---------------------------------------------------------------------------- */
 
 // [ NUXT ]

@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\misc\breadcrumb.vue
 // ----------------------------------------------------------------------------
-// MiscBreadcrumb
-// MiscBreadcrumbMiscBreadcrumb
+// Breadcrumb
+// BreadcrumbBreadcrumb
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]

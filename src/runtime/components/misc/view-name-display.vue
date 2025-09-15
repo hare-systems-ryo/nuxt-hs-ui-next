@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\misc\view-name-display.vue
 // ----------------------------------------------------------------------------
-// MiscViewNameDisplay
-// MiscViewNameDisplayMiscViewNameDisplay
+// ViewNameDisplay
+// ViewNameDisplayViewNameDisplay
 ---------------------------------------------------------------------------- */
 
 // [ NUXT ]

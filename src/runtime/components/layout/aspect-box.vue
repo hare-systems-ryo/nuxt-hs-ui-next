@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\layout\aspect-box.vue
 // ----------------------------------------------------------------------------
-// LayoutAspectBox
-// LayoutAspectBoxLayoutAspectBox
+// AspectBox
+// AspectBoxAspectBox
 ---------------------------------------------------------------------------- */
 // [ tailwind ]
 import { twMerge } from 'tailwind-merge';

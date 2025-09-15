@@ -12,7 +12,8 @@ import fs from 'node:fs';
 
 const dir = [
   '../src/', //
-  '../playground/', //
+  '../playground/app', //
+  '../playground/server', //
 ];
 
 // ----------------------------------------------------------------------------
@@ -137,6 +138,7 @@ const vueComponentsPlayground = (rPath, textBefore) => {
 };
 
 const vueComponentsRuntime = (rPath, textBefore) => {
+  console.log(rPath);
   const ComponentName =
     rPath
       .replace(/\/index\.vue$/g, '')
@@ -146,7 +148,7 @@ const vueComponentsRuntime = (rPath, textBefore) => {
       .map((row) => row.replace(/\.vue$/, ''))
       .map((row) => capitalizeFirst(row))
       .join('')
-      .replace(/^RuntimeComponents/, '') || '';
+      .replace(/^RuntimeComponents(Form|Interactive|Layout|Misc)/, '') || '';
 
   const header = `/* ----------------------------------------------------------------------------
 // ${rPath.replace(/\//g, '\\')}

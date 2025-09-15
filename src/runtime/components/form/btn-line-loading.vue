@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\btn-line-loading.vue
 // ----------------------------------------------------------------------------
-// FormBtnLineLoading
-// FormBtnLineLoadingFormBtnLineLoading
+// BtnLineLoading
+// BtnLineLoadingBtnLineLoading
 ---------------------------------------------------------------------------- */
 
 // [ NUXT ]

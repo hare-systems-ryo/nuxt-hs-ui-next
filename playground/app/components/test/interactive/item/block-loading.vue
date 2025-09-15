@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\item\block-loading.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractiveItemBlockLoading
-// AppComponentsTestInteractiveItemBlockLoadingAppComponentsTestInteractiveItemBlockLoading
+// TestInteractiveItemBlockLoading
+// TestInteractiveItemBlockLoadingTestInteractiveItemBlockLoading
 ---------------------------------------------------------------------------- */
 const show = ref<boolean>(false);
 </script>

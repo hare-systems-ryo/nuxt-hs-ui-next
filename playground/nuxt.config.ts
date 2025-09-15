@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     storageKey: 'nuxt-color-mode',
   },
   modules: [
-    // '@nuxtjs/color-mode',
+    '@nuxtjs/color-mode',
     '@nuxt/ui',
     '@vueuse/nuxt',
     '@pinia/nuxt',

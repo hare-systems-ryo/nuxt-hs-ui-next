@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\alert.vue
 // ----------------------------------------------------------------------------
-// InteractiveAlert
-// InteractiveAlertInteractiveAlert
+// Alert
+// AlertAlert
 ---------------------------------------------------------------------------- */
 
 // ----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ const styleMain = computed(() => {
 const classStyle = computed(() => {
   return twMerge(
     `relative block`,
-    `p-2 relative`,
+    `p-2`,
     'border border-[var(--color-border)] text-[var(--color-text)] bg-[var(--color-bg)]',
     'rounded overflow-hidden',
     ClassTypeToString(props.class)

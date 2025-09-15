@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\misc\item\breadcrumb.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestMiscItemBreadcrumb
-// AppComponentsTestMiscItemBreadcrumbAppComponentsTestMiscItemBreadcrumb
+// TestMiscItemBreadcrumb
+// TestMiscItemBreadcrumbTestMiscItemBreadcrumb
 ---------------------------------------------------------------------------- */
 
 const linkList = [

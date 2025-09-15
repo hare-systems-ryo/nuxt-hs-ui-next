@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\layout\item\card.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestLayoutItemCard
-// AppComponentsTestLayoutItemCardAppComponentsTestLayoutItemCard
+// TestLayoutItemCard
+// TestLayoutItemCardTestLayoutItemCard
 ---------------------------------------------------------------------------- */
 
 const valueA = ref<string | null>('2024-12-16');

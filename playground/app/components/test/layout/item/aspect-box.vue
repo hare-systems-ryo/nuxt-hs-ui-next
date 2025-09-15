@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\layout\item\aspect-box.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestLayoutItemAspectBox
-// AppComponentsTestLayoutItemAspectBoxAppComponentsTestLayoutItemAspectBox
+// TestLayoutItemAspectBox
+// TestLayoutItemAspectBoxTestLayoutItemAspectBox
 ---------------------------------------------------------------------------- */
 </script>
 <template>

@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\input-frame.vue
 // ----------------------------------------------------------------------------
-// FormInputFrame
-// FormInputFrameFormInputFrame
+// InputFrame
+// InputFrameInputFrame
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]
@@ -146,6 +146,7 @@ const inputClass = computed(() => {
     twMerge(
       'px-1',
       'truncate relative',
+      'flex items-center',
       //
       'w-full',
       // 'max-w-full max-h-full w-full',
@@ -228,6 +229,7 @@ const setRef = (e: HTMLElement) => {
 <style lang="scss" scoped>
 .icons {
   display: flex;
+  align-items: center;
   > * {
     position: relative;
     height: 100%;

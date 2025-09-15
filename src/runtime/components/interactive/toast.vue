@@ -2,28 +2,28 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\toast.vue
 // ----------------------------------------------------------------------------
-// InteractiveToast
-// InteractiveToastInteractiveToast
+// Toast
+// ToastToast
 ---------------------------------------------------------------------------- */
 
 // [ vue ]
-import { computed, watch } from "vue";
+import { computed, watch } from 'vue';
 // [ vueuse ]
-import { watchArray } from "@vueuse/core";
+import { watchArray } from '@vueuse/core';
 // ----------------------------------------------------------------------------
 // [ types ]
-import type { Message } from "../../types/toast";
+import type { Message } from '../../types/toast';
 // [ utils ]
-import { Int } from "../../utils/number";
+import { Int } from '../../utils/number';
 // [ composables ]
-import { useHsToast } from "../../composables/use-hs-toast";
-import { useHsMultiLang } from "../../composables/use-hs-multi-lang";
+import { useHsToast } from '../../composables/use-hs-toast';
+import { useHsMultiLang } from '../../composables/use-hs-multi-lang';
 import { useHsPinia } from '../../composables/use-pinia';
 // [ Components ]
-import Accordion from "../layout/accordion.vue";
-import Card from "../layout/card.vue";
-import CardItem from "../layout/card-item.vue";
-import Btn from "../form/btn.vue";
+import Accordion from '../layout/accordion.vue';
+import Card from '../layout/card.vue';
+import CardItem from '../layout/card-item.vue';
+import Btn from '../form/btn.vue';
 // ----------------------------------------------------------------------------
 // [ nac-Stroe ]
 const toast = useHsToast(useHsPinia());
@@ -70,22 +70,22 @@ const style = (message: Message) => {
   let d = Int(message.hideAfter);
   if (d < 0) d = 0;
   return {
-    "animation-duration": d + "ms",
+    'animation-duration': d + 'ms',
   };
 };
 
 const closeBtnStyle = [
   //
-  "bg-transparent",
-  "border-[1px]",
-  "border-white",
-  "rounded",
-  "min-h-0",
-  "w-[30px]",
-  "h-[30px]",
-  "p-0",
-  "flex-none",
-  "self-start",
+  'bg-transparent',
+  'border-[1px]',
+  'border-white',
+  'rounded',
+  'min-h-0',
+  'w-[30px]',
+  'h-[30px]',
+  'p-0',
+  'flex-none',
+  'self-start',
 ];
 
 // ----------------------------------------------------------------------------
@@ -93,10 +93,7 @@ const closeBtnStyle = [
 
 <template>
   <div class="HsUiToast-base" :style="{ 'z-index': state.zindex }">
-    <div
-      v-show="state.pendingList.length !== 0"
-      class="HsUiToast-container grid gap-1"
-    >
+    <div v-show="state.pendingList.length !== 0" class="HsUiToast-container grid gap-1">
       <template v-for="(message, index) in state.pendingList" :key="index">
         <Accordion :span="hideSpan" :open="message.isShow">
           <Card
@@ -107,20 +104,11 @@ const closeBtnStyle = [
             @mouseup.stop=""
           >
             <template v-if="!!tx(message.title).value">
-              <CardItem
-                variant="header"
-                class="items-center"
-                :class="[`theme-${message.theme}`]"
-              >
+              <CardItem variant="header" :class="[`theme-${message.theme}`, 'items-center', 'gap-1']">
                 <div class="HsUiToast-title">
                   {{ tx(message.title) }}
                 </div>
-                <Btn
-                  :class="closeBtnStyle"
-                  theme="white"
-                  type="outlined"
-                  @click="deleteMessage(message)"
-                >
+                <Btn :class="closeBtnStyle" theme="white" type="outlined" @click="deleteMessage(message)">
                   <i class="fas fa-times" />
                 </Btn>
               </CardItem>
@@ -134,10 +122,7 @@ const closeBtnStyle = [
               </CardItem>
               <CardItem
                 v-if="message.hideAfter != 0"
-                :class="[
-                  `theme-${message.theme}`,
-                  ['overflow-visible', 'p-0', 'min-h-[8px]'],
-                ]"
+                :class="[`theme-${message.theme}`, ['overflow-visible', 'p-0', 'min-h-[8px]']]"
               >
                 <div class="HsUiToast-bar-body" :class="[`${message.theme}`]">
                   <div class="HsUiToast-bar" :style="style(message)" />
@@ -145,28 +130,17 @@ const closeBtnStyle = [
               </CardItem>
             </template>
             <template v-else>
-              <CardItem
-                variant="header"
-                :class="[`theme-${message.theme}`, ['items-center']]"
-              >
+              <CardItem variant="header" :class="[`theme-${message.theme}`, 'items-center', 'gap-1']">
                 <div class="HsUiToast-message">
                   {{ tx(message.message) }}
                 </div>
-                <Btn
-                  :class="closeBtnStyle"
-                  theme="white"
-                  variant="outlined"
-                  @click="deleteMessage(message)"
-                >
+                <Btn :class="closeBtnStyle" theme="white" variant="outlined" @click="deleteMessage(message)">
                   <i class="fas fa-times" />
                 </Btn>
               </CardItem>
               <CardItem
                 v-if="message.hideAfter != 0"
-                :class="[
-                  `theme-${message.theme}`,
-                  ['overflow-visible', 'p-0', 'min-h-[8px]'],
-                ]"
+                :class="[`theme-${message.theme}`, ['overflow-visible', 'p-0', 'min-h-[8px]']]"
               >
                 <div class="HsUiToast-bar-body" :class="[`${message.theme}`]">
                   <div class="HsUiToast-bar" :style="style(message)" />
@@ -275,7 +249,7 @@ const closeBtnStyle = [
   justify-content: center;
   align-items: center;
   &::after {
-    font-family: "Font Awesome 5 Free";
+    font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: 30px;
 
@@ -283,19 +257,19 @@ const closeBtnStyle = [
       font-size: 18px;
     }
   }
-  &[data-icon="success"]::after {
-    content: "\f058";
+  &[data-icon='success']::after {
+    content: '\f058';
   }
-  &[data-icon="info"]::after {
-    content: "\f05a";
-  }
-
-  &[data-icon="warning"]::after {
-    content: "\f06a";
+  &[data-icon='info']::after {
+    content: '\f05a';
   }
 
-  &[data-icon="error"]::after {
-    content: "\f071";
+  &[data-icon='warning']::after {
+    content: '\f06a';
+  }
+
+  &[data-icon='error']::after {
+    content: '\f071';
   }
 }
 .HsUiToast-bar-body {

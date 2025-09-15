@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\misc\index.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestMisc
-// AppComponentsTestMiscAppComponentsTestMisc
+// TestMisc
+// TestMiscTestMisc
 ---------------------------------------------------------------------------- */
 const router = useRouter();
 const route = useRoute();

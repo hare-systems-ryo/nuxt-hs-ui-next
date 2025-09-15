@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\misc\item\tabulator.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestMiscItemTabulator
-// AppComponentsTestMiscItemTabulatorAppComponentsTestMiscItemTabulator
+// TestMiscItemTabulator
+// TestMiscItemTabulatorTestMiscItemTabulator
 ---------------------------------------------------------------------------- */
 
 import { ObjectCopy } from '../../../../../../src/runtime/utils/object';

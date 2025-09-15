@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\pages\index.vue
 // ----------------------------------------------------------------------------
-// AppPages
-// AppPagesAppPages
+// Pages
+// PagesPages
 ---------------------------------------------------------------------------- */
 import { CalendarDate } from '@internationalized/date';
 const hsMisc = useHsMisc(useHsPinia());

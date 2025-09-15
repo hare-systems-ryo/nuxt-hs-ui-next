@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\modal-bg.vue
 // ----------------------------------------------------------------------------
-// InteractiveModalBg
-// InteractiveModalBgInteractiveModalBg
+// ModalBg
+// ModalBgModalBg
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]

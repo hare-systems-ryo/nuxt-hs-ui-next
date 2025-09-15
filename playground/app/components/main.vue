@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\main.vue
 // ----------------------------------------------------------------------------
-// AppComponentsMain
-// AppComponentsMainAppComponentsMain
+// Main
+// MainMain
 ---------------------------------------------------------------------------- */
 
 import { useElementSize } from '@vueuse/core';

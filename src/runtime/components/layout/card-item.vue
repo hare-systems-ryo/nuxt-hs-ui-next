@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\layout\card-item.vue
 // ----------------------------------------------------------------------------
-// LayoutCardItem
-// LayoutCardItemLayoutCardItem
+// CardItem
+// CardItemCardItem
 ---------------------------------------------------------------------------- */
 
 // [ utils ]
@@ -150,7 +150,9 @@ const classTvBtn = computed(() => {
   return classTv.value.btn();
 });
 const toggleOpen = () => {
-  hsFocus.state.id = uid;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
   emit('update:open', !props.open);
   emit('toggle');
 };

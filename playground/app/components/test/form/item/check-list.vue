@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\check-list.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemCheckList
-// AppComponentsTestFormItemCheckListAppComponentsTestFormItemCheckList
+// TestFormItemCheckList
+// TestFormItemCheckListTestFormItemCheckList
 ---------------------------------------------------------------------------- */
 
 const valueA = ref<number[]>([]);

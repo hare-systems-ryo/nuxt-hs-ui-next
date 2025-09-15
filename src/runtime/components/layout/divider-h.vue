@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\layout\divider-h.vue
 // ----------------------------------------------------------------------------
-// LayoutDividerH
-// LayoutDividerHLayoutDividerH
+// DividerH
+// DividerHDividerH
 ---------------------------------------------------------------------------- */
 // [ tailwind ]
 import { twMerge } from 'tailwind-merge';

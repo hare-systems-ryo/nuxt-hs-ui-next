@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\layouts\default.vue
 // ----------------------------------------------------------------------------
-// AppLayoutsDefault
-// AppLayoutsDefaultAppLayoutsDefault
+// LayoutsDefault
+// LayoutsDefaultLayoutsDefault
 ---------------------------------------------------------------------------- */
 // const fixedHeader = "shadow-lg fixed left-0 top-0 right-0 z-50";
 // const fixedContent = "mt-[60px]";

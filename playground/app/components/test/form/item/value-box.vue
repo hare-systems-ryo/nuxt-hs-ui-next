@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\value-box.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemValueBox
-// AppComponentsTestFormItemValueBoxAppComponentsTestFormItemValueBox
+// TestFormItemValueBox
+// TestFormItemValueBoxTestFormItemValueBox
 ---------------------------------------------------------------------------- */
 
 const valueA = ref<number | null>(null);

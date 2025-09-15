@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\textarea.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemTextarea
-// AppComponentsTestFormItemTextareaAppComponentsTestFormItemTextarea
+// TestFormItemTextarea
+// TestFormItemTextareaTestFormItemTextarea
 ---------------------------------------------------------------------------- */
 
 const textA = ref('textA');

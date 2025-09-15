@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\dialog.vue
 // ----------------------------------------------------------------------------
-// InteractiveDialog
-// InteractiveDialogInteractiveDialog
+// Dialog
+// DialogDialog
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]

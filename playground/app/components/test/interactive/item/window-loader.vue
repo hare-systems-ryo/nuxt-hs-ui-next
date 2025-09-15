@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\item\window-loader.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractiveItemWindowLoader
-// AppComponentsTestInteractiveItemWindowLoaderAppComponentsTestInteractiveItemWindowLoader
+// TestInteractiveItemWindowLoader
+// TestInteractiveItemWindowLoaderTestInteractiveItemWindowLoader
 ---------------------------------------------------------------------------- */
 
 const WindowLoader = useHsWindowLoader();

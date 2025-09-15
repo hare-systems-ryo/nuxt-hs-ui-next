@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\check-box.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemCheckBox
-// AppComponentsTestFormItemCheckBoxAppComponentsTestFormItemCheckBox
+// TestFormItemCheckBox
+// TestFormItemCheckBoxTestFormItemCheckBox
 ---------------------------------------------------------------------------- */
 const valueA = ref<boolean | null>(false);
 const valueB = ref<boolean | null>(null);

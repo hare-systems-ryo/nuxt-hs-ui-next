@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\text-box.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemTextBox
-// AppComponentsTestFormItemTextBoxAppComponentsTestFormItemTextBox
+// TestFormItemTextBox
+// TestFormItemTextBoxTestFormItemTextBox
 ---------------------------------------------------------------------------- */
 const disabled = ref(false);
 const textA = ref('textA');

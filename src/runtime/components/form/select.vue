@@ -2,42 +2,49 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\select.vue
 // ----------------------------------------------------------------------------
-// FormSelect
-// FormSelectFormSelect
+// Select
+// SelectSelect
 ---------------------------------------------------------------------------- */
 
-// [ tailwind ]
 // [ NUXT ]
-import { reactive, ref, watch, computed, useId, nextTick, onMounted } from '#imports';
 
-// import { createPopper } from "@popperjs/core";
+import {
+  reactive,
+  ref, //
+  watch,
+  computed,
+  useId,
+  defineShortcuts,
+  nextTick,
+  onMounted,
+  useTemplateRef,
+} from '#imports';
 
 // [ utils ]
 import type { ClassType } from '../../utils/class-style';
-import type { SelectItem } from '../../utils/select-item';
-import { useDisplayList, type DisplaySelectItem } from '../../utils/select';
-import { ObjectCopy } from '../../utils/object';
-
 import type { MultiLang } from '../../utils/multi-lang';
+import type { SelectItem } from '../../utils/select-item';
+import { ObjectCopy } from '../../utils/object';
+import { Theme, GetColorCode } from '../../utils/theme';
+import { type ModalControl, InitModalControl, InitModals } from '../../utils/modal';
+
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
-import { useHsMultiLang } from '../../composables/use-hs-multi-lang';
-import { useHsIsMobile } from '../../composables/use-hs-is-mobile';
 import { useHsPinia } from '../../composables/use-pinia';
+import { useHsMultiLang } from '../../composables/use-hs-multi-lang';
+import { useHsScrollLock } from '../../composables/use-hs-scroll-lock';
 
 // [ Components ]
 import InputFrame from './input-frame.vue';
-import SelectImgIcon from './select-img-icon.vue';
 import Btn from '../form/btn.vue';
+import SelectItemLabel from './_select/item-label.vue';
+import SelectItemState from './_select/item-state.vue';
+import SelectHiddenItemToggle from './_select/hidden-item-toggle.vue';
+import { useHsIsMobile } from '../../composables/use-hs-is-mobile';
+import TextBox from '../form/text-box.vue';
 
 // ----------------------------------------------------------------------------
-const hsFocus = useHsFocus();
-const multiLang = useHsMultiLang(useHsPinia());
-const tx = multiLang.tx;
-const gt = multiLang.gt;
 
-// ----------------------------------------------------------------------------
-// [ Props ]
 type Props = {
   // ----------------------------------------------------------------------------
   // Input 種類別
@@ -45,19 +52,21 @@ type Props = {
   order?: boolean;
   loading?: boolean;
   nullText?: MultiLang;
-  image?: boolean;
+  img?: boolean;
+  imgMode?: 'cover' | 'contain';
   classImg?: ClassType;
   classImgTag?: ClassType;
   nullable?: boolean;
   searchable?: boolean;
   // ----------------------------------------------------------------------------
+  class?: ClassType;
+  classHeader?: ClassType;
+  classInput?: ClassType;
+  // ----------------------------------------------------------------------------
   data: IdType | null;
   diff?: IdType | null | undefined;
   tabindex?: string | undefined;
   // ----------------------------------------------------------------------------
-  class?: ClassType;
-  classHeader?: ClassType;
-  classInput?: ClassType;
   // ----------------------------------------------------------------------------
   // 状態
   //   focus?: boolean;
@@ -82,7 +91,6 @@ type Props = {
   // 設定
   size?: 's' | 'm' | 'l';
 };
-
 const props = withDefaults(defineProps<Props>(), {
   // ----------------------------------------------------------------------------
   // Input 種類別
@@ -93,18 +101,16 @@ const props = withDefaults(defineProps<Props>(), {
   image: false,
   classImg: '',
   classImgTag: '',
-  // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
+  imgMode: 'contain',
   // ----------------------------------------------------------------------------
   class: '',
   classHeader: '',
   classInput: '',
   // ----------------------------------------------------------------------------
   // 状態
-  //   focus: false,
   focusColor: 'shadow-[inset_0px_0px_1px_2px_#0d8ee4]',
-  //   change: false,
   changeColor: 'shadow-[inset_0px_0px_1px_2px_#fd9831be]',
   error: false,
   errorColor: 'shadow-[inset_0px_0px_1px_2px_#d80000dc]',
@@ -124,35 +130,122 @@ const props = withDefaults(defineProps<Props>(), {
   // 設定
   size: 'm',
 });
-// ----------------------------------------------------------------------------
-type EmitIdType = IdType extends string ? string : number;
 
 // [ emit ]
 type Emits = {
-  ref: [element: HTMLElement];
-  focus: [elm: HTMLElement];
-  blur: [elm: HTMLElement];
   // ----------------------------
-  'update:data': [value: EmitIdType | null];
-  'value-change': [after: EmitIdType | null, before: EmitIdType | null];
-  // ----------------------------
-  keydown: [event: KeyboardEvent];
-  keyup: [event: KeyboardEvent];
-  selectOpen: [uid: string];
-  selectClose: [uid: string];
+  'update:data': [value: IdType | null];
+  'value-change': [after: IdType | null, before: IdType | null];
+  focus: [];
+  blur: [];
   // ----------------------------
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
-const slots = defineSlots<{
-  default(props: { msg: string }): any;
-  overlay?(): any;
-  'right-icons'?(): any;
-  'left-icons'?(): any;
-}>();
+type ListRow = SelectItem<IdType> & {
+  _key: string;
+};
 // ----------------------------------------------------------------------------
-// [ getCurrentInstance ]
+// ----------------------------------------------------------------------------
+const multiLang = useHsMultiLang(useHsPinia());
+const tx = multiLang.tx;
+const gt = multiLang.gt;
+// const gt = multiLang.gt;
+const hsFocus = useHsFocus(useHsPinia());
+const hsIsMobile = useHsIsMobile(useHsPinia());
+// ----------------------------------------------------------------------------
 const uid = useId();
+const inputFrameElm = ref();
+const searchWord = ref('');
+// const openBtnElm = ref();
+
+const activeColorCode = GetColorCode(Theme.accent1);
+// ----------------------------------------------------------------------------
+const selectOpen = ref(false);
+const openToggle = () => {
+  if (selectOpen.value) {
+    selectOpen.value = false;
+    return;
+  }
+  if (props.disabled) return;
+  if (props.readonly) return;
+  selectOpen.value = true;
+};
+// ----------------------------------------------------------------------------
+
+const lock = computed(() => {
+  return props.disabled || props.readonly;
+});
+
+const activeValue = ref<IdType | null>(props.data);
+watch(
+  () => props.data,
+  () => {
+    activeValue.value = props.data;
+  }
+);
+// ----------------------------------------------------------------------------
+let versionCounter = 0;
+const listBase = computed<ListRow[]>(() => {
+  versionCounter++;
+  return ObjectCopy(
+    props.list.map((row) => {
+      return {
+        ...row,
+        text: gt(row.text) || '',
+        _key: `${row.id}:${versionCounter ?? 0}`,
+      };
+    })
+  );
+});
+
+const activeRow = computed(() => {
+  return listBase.value.find((row) => row.id === activeValue.value) || null;
+});
+const hiddenItemVisible = ref(false);
+const hasHiddenItem = computed(() => {
+  return (
+    props.list.filter((row) => {
+      if (row.deleted) return false;
+      if (row.hidden) return true;
+      return false;
+    }).length !== 0
+  );
+});
+
+const updateData = (value: IdType | null) => {
+  if (props.disabled === true) return false;
+  if (props.readonly === true) return false;
+  if (!value) {
+    if (!props.nullable) {
+      return;
+    } else {
+      return emit('update:data', value as null);
+    }
+  }
+
+  emit('update:data', value as IdType);
+};
+const displayList = computed(() => {
+  return ObjectCopy(
+    listBase.value
+      .filter((row) => {
+        if (row.id === props.data) return true;
+        if (row.deleted) return false;
+        if (!hiddenItemVisible.value && row.hidden) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        if (a.order === undefined || b.order === undefined) return 0;
+        if (a.order < b.order) return -1;
+        if (a.order > b.order) return 1;
+        return 0;
+      })
+  );
+});
+
 // ----------------------------------------------------------------------------
 // 更新の有無判定
 const isChangeData = computed(() => {
@@ -160,131 +253,160 @@ const isChangeData = computed(() => {
   if (props.diff !== props.data) return true;
   return false;
 });
-// [ ref ]
-
-// ----------------------------------------------------------------------------
-const displayData = ref<DisplaySelectItem<IdType> | null>(null);
-watch(displayData, (v) => {
-  const before = props.data;
-  if (v === null) {
-    if (before === null) return;
-    emit('update:data', null);
-    emit('value-change', null, before as any as EmitIdType | null);
-    return;
-  }
-  if (v.id === null) {
-    displayData.value = null;
-    return;
-  }
-  if (v.id === before) return;
-  emit('update:data', v.id as any as EmitIdType | null);
-  emit('value-change', v.id as any as EmitIdType | null, before as any as EmitIdType | null);
-});
-
-// ----------------------------------------------------------------------------
-// 不明選択肢太陽
-const unKnownSelected = ref<boolean>(false);
-const unKnownData = computed(() => {
-  if (props.data === null) return null;
-  return {
-    id: props.data,
-    text: gt({
-      ja: `無効な値が選択されています (ID=${props.data})`,
-      en: `Invalid value selected (ID=${props.data})`,
-    }),
-  };
-});
-
-// ----------------------------------------------------------------------------
-const isShowHidden = ref(false);
-/** 選択肢に非表示アイテムが含まれているかどうか */
-
-const pList = computed(() => {
-  return ObjectCopy(props.list);
-});
-const includeHidden = computed(() => {
-  return pList.value.filter((row) => row.hidden).length > 0;
-});
-// ----------------------------------------------------------------------------
-/** 選択肢 */
-const displayList = ref<DisplaySelectItem<IdType>[]>([]);
-const baseList = computed(() => {
-  return ObjectCopy(props.list).map((row) => {
-    return { ...row, text: gt(row.text) };
-  });
-});
-
-const setDisplayList = () => {
-  displayList.value = useDisplayList<IdType>({
-    list: baseList.value,
-    id: props.data,
-    order: props.order,
-    unKnownData: unKnownData.value,
-    unKnownSelected: unKnownSelected.value,
-    isShowHidden: isShowHidden.value,
-    require: props.require || !props.nullable,
-    nullText: tx(props.nullText).value,
-  });
-};
-watch(
-  () => props.list,
-  () => {
-    nextTick(() => {
-      setDisplayList();
-    });
-  },
-  { deep: true }
-);
-
-watch(
-  () => [props.list, props.list.length, props.data, isShowHidden.value, props.require, props.nullable, props.nullText],
-  () => {
-    nextTick(() => {
-      setDisplayList();
-    });
-  },
-  { immediate: true }
-);
-
-// ----------------------------------------------------------------------------
-
-const checkData = (id: IdType | null) => {
-  // console.log("checkData");
-  const ret = baseList.value.find((row) => row.id === id);
-  if (ret === undefined) {
-    // 選択肢に存在しないコード引当
-    unKnownSelected.value = true;
-    displayData.value = unKnownData.value;
-  } else {
-    unKnownSelected.value = false;
-    displayData.value = ret;
-  }
-};
-checkData(props.data);
-// const activateItem = computed(() => {
-watch(
-  () => props.data,
-  (id) => {
-    checkData(id);
-  }
-);
-watch(baseList, () => {
-  // console.log("change list");
-  nextTick(() => {
-    checkData(props.data);
-  });
-});
-// ----------------------------------------------------------------------------
 
 // [ focus, blur ]
 interface FocusState {
   isActivate: boolean;
-  isOpen: boolean;
+  openActual: boolean;
 }
 const focusState = reactive<FocusState>({
   isActivate: false,
-  isOpen: false,
+  openActual: false,
 });
+
+// const isOpen = ref(false);
+const onFocus = () => {
+  // console.log('onFocus');
+  if (props.disabled === true) return;
+  if (props.readonly === true) return;
+  focusState.isActivate = true;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
+};
+const onBlur = () => {
+  // console.log('onBlur');
+  focusState.isActivate = false;
+};
+const focusId = computed(() => hsFocus.state.id);
+watch(focusId, () => {
+  if (hsFocus.state.id !== uid) {
+    focusState.openActual = false;
+    selectOpen.value = false;
+  }
+});
+
+watch(selectOpen, (v) => {
+  if (!v) {
+    setTimeout(() => {
+      // if (!focusState.isActivate) {
+      focusState.openActual = false;
+      // }
+    }, 300);
+    // focusState.openActual = false;
+  } else {
+    focusState.openActual = true;
+    if (hsFocus.state.id !== uid) {
+      hsFocus.state.id = uid;
+    }
+  }
+  //
+});
+defineShortcuts({
+  delete: {
+    // 入力フォーカス中でも発火させたいなら true（環境によっては省略でOK）
+    usingInput: false,
+    handler: (e) => {
+      if (selectOpen.value) return; // メニュー展開中は無視（検索入力と競合するため）
+      if (!focusState.isActivate) return; // 対象以外のコントロールのデリートイベントは無視
+      e.preventDefault();
+      updateData(null); // 未選択化（undefined でも可）
+    },
+  },
+  backspace: {
+    usingInput: false,
+    handler: (e) => {
+      if (selectOpen.value) return; // メニュー展開中は無視（検索入力と競合するため）
+      if (!focusState.isActivate) return; // 対象以外のコントロールのデリートイベントは無視
+      e.preventDefault();
+      updateData(null); // 未選択化（undefined でも可）
+    },
+  },
+  enter: {
+    usingInput: false,
+    handler: () => {
+      if (selectOpen.value) return; // メニュー展開中は無視（検索入力と競合するため）
+      if (!focusState.isActivate) return; // 対象以外のコントロールのデリートイベントは無視
+      selectOpen.value = !selectOpen.value;
+    },
+  },
+});
+
+// ----------------------------------------------------------------------------
+const content = {
+  disableOutsidePointerEvents: true,
+  bodyLock: false,
+};
+const uiBase = [
+  'bg-transparent',
+  'max-w-full text-left',
+  'focus-visible:outline-none  focus:outline-none ring-0 focus:ring-0',
+  'py-0 pr-[10px]',
+  'focus-visible:ring-0 ',
+];
+// ----------------------------------------------------------------------------
+interface Modal {
+  sp: ModalControl;
+}
+const modal = reactive<Modal>({
+  sp: InitModalControl(),
+});
+onMounted(() => InitModals(modal, nextTick));
+const modalSpScrollTop = () => {
+  if (!modalSpScrollTopTarget.value) return;
+  modalSpScrollTopTarget.value?.scrollIntoView();
+};
+modal.sp.showBefore = async () => {
+  if (!activeValue.value) return modalSpScrollTop();
+  // await Sleep(300);
+  const target = spFilterList.value.find((row) => row.id === activeValue.value);
+  // console.log('showAfter', target);
+  if (target === undefined || !target.html) return modalSpScrollTop();
+  target.html.scrollIntoView();
+};
+const modalSpScrollTopTarget = useTemplateRef<HTMLElement>('modalSpScrollTopTarget');
+const scrollLock = useHsScrollLock();
+const modalElm = useTemplateRef<HTMLElement>('modalElm');
+watch(modalElm, (elm) => {
+  if (elm !== null) scrollLock.init(elm);
+});
+watch(
+  () => modal.sp.isShow,
+  (v) => {
+    if (v) {
+      scrollLock.lock();
+    } else {
+      scrollLock.unlock();
+    }
+  }
+);
+const showSpModal = () => {
+  if (props.disabled) return;
+  if (props.readonly) return;
+  modal.sp.show();
+};
+const norm = (s: any) => {
+  return s.normalize('NFKC');
+};
+
+const spFilterList = computed<(ListRow & { html: null | HTMLElement })[]>(() => {
+  return displayList.value
+    .filter((row) => {
+      if (!searchWord.value) return true;
+      if (norm(row.text).toLocaleLowerCase().includes(norm(searchWord.value).toLocaleLowerCase())) {
+        return true;
+      }
+      return false;
+    })
+    .map((row) => {
+      return {
+        ...row,
+        html: null,
+      };
+    });
+});
+
+// ----------------------------------------------------------------------------
 
 /**
  * コントロールのFocus判定
@@ -292,73 +414,33 @@ const focusState = reactive<FocusState>({
 const computedActivate = computed(() => {
   if (props.disabled === true) return false;
   if (props.readonly === true) return false;
-  if (focusState.isActivate) return true;
-  if (focusState.isOpen) return true;
+  if (selectOpen.value) return true;
+  if (modal.sp.isShow) return true;
   if (hsFocus.state.id !== uid) return false;
+  if (focusState.openActual) return true;
+  if (focusState.isActivate) return true;
   return false;
 });
-
-// ----------------------------------------------------------------------------
-// const isOpen = ref(false);
-const onFocus = () => {
-  // console.log('onFocus');
-  if (props.disabled === true) return;
-  if (props.readonly === true) return;
-  focusState.isActivate = true;
-  hsFocus.state.id = uid;
-};
-const onBlur = () => {
-  // console.log('onBlur');
-  focusState.isActivate = false;
-};
-const selectOpen = () => {
-  emit('selectOpen', uid);
-  focusState.isOpen = true;
-};
-const selectClose = () => {
-  // console.log('selectClose');
-  focusState.isOpen = false;
-  emit('selectClose', uid);
-};
-// const placement = ref("top");
-const inputElement = ref<HTMLElement | null>(null);
-// const withPopper = (dropdownList: any, component: any, { width }: any) => {
-//   dropdownList.style.width = width;
-//   const popper = createPopper(component.$refs.toggle, dropdownList, {
-//     placement: placement.value as any,
-//     modifiers: [
-//       {
-//         name: "offset",
-//         options: {
-//           offset: [0, -1],
-//         },
-//       },
-//       {
-//         name: "toggleClass",
-//         enabled: true,
-//         phase: "write",
-//         fn({ state }) {
-//           component.$el.classList.toggle("drop-up", state.placement === "top");
-//         },
-//       },
-//     ],
-//   });
-//   return () => popper.destroy();
-// };
-//       :calculate-position="withPopper"
-const isMobile = useHsIsMobile(useHsPinia());
-onMounted(() => {
-  isMobile.init();
+/**
+ * focus, blur イベント
+ */
+watch(computedActivate, (value) => {
+  if (value === true) {
+    setTimeout(() => {
+      emit('focus');
+    }, 10);
+  } else {
+    emit('blur');
+  }
 });
-// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 </script>
 
 <template>
   <InputFrame
-    :class="[props.class]"
+    :class="['HsSelect', props.class]"
     :class-header="props.classHeader"
-    :class-input="['px-0', props.classInput]"
+    :class-input="[' px-0 flex items-center flex-1', props.classInput]"
     :focus="computedActivate"
     :focus-color="props.focusColor"
     :change="isChangeData"
@@ -375,188 +457,346 @@ onMounted(() => {
     :warn-time-out="props.warnTimeOut"
     :size="props.size"
     :headerless="props.headerless"
+    @focusin="onFocus"
+    @focusout="onBlur"
+    @ref="(e) => (inputFrameElm = e)"
+    @header-label-click="openToggle()"
   >
-    <template v-if="slots['left-icons']" #left-icons>
-      <slot name="left-icons" :disabled="disabled" />
+    <!-- @click.stop="selectOpen = !selectOpen" -->
+    <!-- <ClientOnly> -->
+    <template v-if="!props.searchable">
+      <!-- :key="displayList.map((i) => i.id).join('|') + ':' + activeValue" -->
+      <USelect
+        v-model:open="selectOpen"
+        :model-value="activeValue"
+        :items="displayList"
+        value-key="id"
+        label-key="text"
+        class="w-full"
+        :trailing="false"
+        trailing-icon=""
+        :ui="{
+          base: uiBase,
+          item: ['!bg-white focus:bg-white active:bg-white p-0'],
+        }"
+        :content="{
+          reference: inputFrameElm,
+          ...content,
+        }"
+        :disabled="lock"
+        :close-on-select="false"
+        @update:model-value="(v:any) => updateData(v)"
+      >
+        <template #default="">
+          <!-- :key="activeRow?._key || 'null-' + '_base'" -->
+          <div
+            class="flex items-center w-full"
+            :class="[
+              props.disabled ? 'cursor-not-allowed' : '', //
+              props.readonly ? 'cursor-text' : '', //
+              !lock ? 'cursor-pointer' : '', //
+            ]"
+            @click.stop="openToggle()"
+          >
+            <template v-if="activeRow">
+              <SelectImgIcon
+                v-if="props.img"
+                :key="activeRow._key + '_img'"
+                class="flex-none"
+                :class="[computedActivate ? '' : '']"
+                :img-url="activeRow?.imgUrl || ''"
+                :class-img="props.classImg"
+                :class-img-tag="props.classImgTag"
+                :img-mode="props.imgMode"
+              />
+              <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+              <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+            </template>
+            <template v-else>
+              <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+            </template>
+          </div>
+        </template>
+        <template #trailing="">
+          <div class=""></div>
+        </template>
+        <template #item="{ item }">
+          <div
+            :key="item.id"
+            class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+            :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
+            :style="`--color-bg: ${activeColorCode}10;`"
+            @click="
+              updateData(item.id);
+              selectOpen = false;
+            "
+          >
+            <SelectImgIcon
+              v-if="item.imgUrl && props.img"
+              :key="item._key + 'img'"
+              class="flex-none"
+              :class="[computedActivate ? '' : '']"
+              :img-url="item.imgUrl"
+              :class-img="props.classImg"
+              :class-img-tag="props.classImgTag"
+              :img-mode="props.imgMode"
+            />
+            <SelectItemLabel :key="item._key + 'label'" :item="item" overflow />
+            <SelectItemState :key="item.id + 'state'" :item="item" :value="activeValue" />
+          </div>
+        </template>
+        <template v-if="hasHiddenItem" #content-bottom>
+          <div class="p-1" @click.stop>
+            <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
+          </div>
+        </template>
+      </USelect>
     </template>
-    <template v-if="slots['right-icons']" #right-icons>
-      <slot name="right-icons" :disabled="disabled" />
+    <template v-else-if="props.searchable && !hsIsMobile.isMobile">
+      <USelectMenu
+        v-model:serach-term="searchWord"
+        v-model:open="selectOpen"
+        :model-value="activeValue"
+        :items="displayList"
+        value-key="id"
+        label-key="text"
+        class="w-full"
+        :trailing="false"
+        trailing-icon=""
+        :ui="{
+          base: uiBase,
+          item: ['!bg-white focus:bg-white active:bg-white p-0'],
+          // item: ['hover:bg-white focus:bg-white py-0'],
+        }"
+        :content="{
+          reference: inputFrameElm,
+          ...content,
+        }"
+        :disabled="lock"
+        :close-on-select="false"
+        @update:model-value="(v:any) => updateData(v)"
+      >
+        <template #default="">
+          <div
+            :key="activeRow?._key || 'null-' + '_base'"
+            class="flex items-center w-full"
+            :class="[
+              props.disabled ? 'cursor-not-allowed' : '', //
+              props.readonly ? 'cursor-text' : '', //
+              !lock ? 'cursor-pointer' : '', //
+            ]"
+            @click.stop="openToggle()"
+          >
+            <template v-if="activeRow">
+              <SelectImgIcon
+                v-if="props.img"
+                :key="activeRow._key + '_img'"
+                class="flex-none"
+                :class="[computedActivate ? '' : '']"
+                :img-url="activeRow?.imgUrl || ''"
+                :class-img="props.classImg"
+                :class-img-tag="props.classImgTag"
+                :img-mode="props.imgMode"
+              />
+              <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+              <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+            </template>
+            <template v-else>
+              <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+            </template>
+          </div>
+        </template>
+        <template #trailing="">
+          <div class=""></div>
+        </template>
+        <template #item="{ item }">
+          <div
+            :key="item.id"
+            class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+            :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
+            :style="`--color-bg: ${activeColorCode}10;`"
+            @click="
+              updateData(item.id);
+              selectOpen = false;
+            "
+          >
+            <SelectImgIcon
+              v-if="item.imgUrl && props.img"
+              :key="item._key + '_img'"
+              class="flex-none"
+              :class="[computedActivate ? '' : '']"
+              :img-url="item.imgUrl"
+              :class-img="props.classImg"
+              :class-img-tag="props.classImgTag"
+              :img-mode="props.imgMode"
+            />
+            <SelectItemLabel :key="item._key + '_label'" :item="item" overflow />
+            <SelectItemState :key="item._key + '_state'" :item="item" :value="activeValue" />
+          </div>
+        </template>
+        <template v-if="hasHiddenItem" #content-bottom>
+          <div class="p-1">
+            <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
+          </div>
+        </template>
+      </USelectMenu>
     </template>
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
-    </template>
-    <div
-      v-if="displayData === null"
-      class="absolute inset-0 flex items-center px-1 pointer-events-none text-[0.9em]"
-      :class="[computedActivate ? 'opacity-30' : '']"
-    >
-      {{ tx(props.nullText) }}
-    </div>
-    <v-select
-      ref="inputElement"
-      v-model="displayData"
-      label="text"
-      index="id"
-      append-to-body
-      :options="displayList"
-      :loading="props.loading"
-      :searchable="!isMobile.isMobile && searchable"
-      :clearable="!props.require && props.nullable"
-      :disabled="props.disabled || props.readonly"
-      :uid="uid"
-      :class="[`size-${props.size}`, { disabled: props.disabled || props.readonly }]"
-      @open="selectOpen"
-      @close="selectClose"
-      @blur="onBlur()"
-      @focus="onFocus()"
-    >
-      <!-- :autoscroll="false" -->
-      <!--  -->
-      <!--  -->
-      <!--  -->
-      <template #selected-option="{ text, imgUrl, deleted, appendIcon }">
-        <div class="flex items-baseline w-full max-w-full min-w-0" :class="loading ? 'opacity-0' : ''">
+    <template v-else>
+      <div
+        :key="activeRow?._key || 'null-' + '_base'"
+        class="flex items-center w-full px-[10px] text-neutral-900"
+        :class="[
+          props.disabled ? 'cursor-not-allowed' : '', //
+          props.readonly ? 'cursor-text' : '', //
+          !lock ? 'cursor-pointer' : '', //
+        ]"
+        @click.stop="showSpModal()"
+      >
+        <template v-if="activeRow">
           <SelectImgIcon
-            v-if="imgUrl && props.image"
+            v-if="props.img"
+            :key="activeRow._key + '_img'"
             class="flex-none"
-            :class="[computedActivate ? 'opacity-40' : '']"
-            :img-url="imgUrl"
+            :class="[computedActivate ? '' : '']"
+            :img-url="activeRow?.imgUrl || ''"
             :class-img="props.classImg"
             :class-img-tag="props.classImgTag"
+            :img-mode="props.imgMode"
           />
-          <div class="flex-1 truncate min-w-0">{{ text }}</div>
-          <div v-if="deleted" class="text-error text-[0.7em] leading-[1em]">
-            {{ tx({ ja: '削除済', en: 'Deleted' }) }}
-          </div>
-          <!-- <div v-if="hidden" class="text-error text-[0.7em] leading-[1em]">
-            {{ tx({ ja: "非表示", en: "Hidden" }) }}
-          </div> -->
-          <div v-if="appendIcon && typeof appendIcon === 'string'" class="flex-none">
-            <i :class="appendIcon"></i>
-          </div>
-
-          <div v-else-if="appendIcon && Array.isArray(appendIcon)" class="flex-none">
-            <i v-for="(c, i) in appendIcon" :key="i" :class="c"></i>
-          </div>
-        </div>
-      </template>
-      <template #option="{ text, imgUrl, deleted, hidden, appendIcon }">
-        <div class="flex items-center">
-          <SelectImgIcon
-            v-if="props.image"
-            class="flex-none"
-            :img-url="imgUrl"
-            :class-img="props.classImg"
-            :class-img-tag="props.classImgTag"
-          />
-          <div class="flex-1 truncate">{{ text }}</div>
-          <div v-if="deleted" class="text-error text-[0.7em] leading-[1em]">
-            {{ tx({ ja: '削除済', en: 'Deleted' }) }}
-          </div>
-          <div v-if="hidden" class="text-error text-[0.7em] leading-[1em]">
-            {{ tx({ ja: '非表示', en: 'Hidden' }) }}
-          </div>
-          <span v-if="appendIcon && typeof appendIcon === 'string'">
-            <i :class="appendIcon"></i>
-          </span>
-          <span v-else-if="appendIcon && Array.isArray(appendIcon)">
-            <i v-for="(c, i) in appendIcon" :key="i" :class="c"></i>
-          </span>
-        </div>
-      </template>
-      <template v-if="includeHidden" #list-footer>
-        <li class="vs__dropdown-option v-select-hidden-toggle-switch">
-          <Btn theme="accent1" variant="outlined" class="w-full" size="xs" @click="isShowHidden = !isShowHidden">
-            <span class="me-1">Hidden options</span>
-            <i class="fas" :class="[!isShowHidden ? 'fa-eye-slash text-error' : 'fa-eye text-success']"></i>
-            <i class="fas fa-caret-right mx-1"></i>
-            <i class="fas" :class="[isShowHidden ? 'fa-eye-slash text-error' : 'fa-eye text-success']"></i>
-          </Btn>
-        </li>
-      </template>
-    </v-select>
+          <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+          <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+        </template>
+        <template v-else>
+          <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+        </template>
+      </div>
+      <Modal
+        :show="modal.sp.isShow"
+        closeable
+        @close="
+          modal.sp.close();
+          selectOpen = false;
+        "
+      >
+        <Card ref="modalElm" class="HsSelectModal w-full max-w-[500px] max-h-full">
+          <CardItem variant="header" size="s" cross @update:open="modal.sp.close()">
+            <div class="">
+              {{ tx(props.label || { ja: '選択', en: 'Please Select' }) }}
+            </div>
+          </CardItem>
+          <CardItem variant="body">
+            <div class="text-[14px] text-gray-600 leading-[1em] mb-1">{{ tx({ ja: '検索', en: 'Search' }) }}</div>
+            <TextBox v-model:data="searchWord" size="m" />
+          </CardItem>
+          <CardItem variant="body">
+            <div class="h-[1px] w-full bg-main0/50"></div>
+          </CardItem>
+          <CardItem variant="body" scroll>
+            <div ref="modalSpScrollTopTarget" class="grid gap-1">
+              <div
+                v-for="(row, index) in spFilterList"
+                :ref="(e:any) => (row.html = e)"
+                :key="index"
+                class="cursor-pointerw-full text-neutral-900 border rounded bg-white overflow-hidden"
+                :class="[row.id === activeValue ? 'border-accent1' : 'border-black/20']"
+                @click="
+                  updateData(row.id);
+                  modal.sp.close();
+                "
+              >
+                <div class="flex items-center active:bg-accent1/10 p-3">
+                  <SelectImgIcon
+                    v-if="props.img"
+                    :key="row._key + '_img'"
+                    class="flex-none"
+                    :class="[computedActivate ? '' : '']"
+                    :img-url="row?.imgUrl || ''"
+                    :class-img="props.classImg"
+                    :class-img-tag="props.classImgTag"
+                    :img-mode="props.imgMode"
+                  />
+                  <SelectItemLabel :key="row._key + '_label'" :item="row" overflow />
+                  <SelectItemState :key="row._key + '_state'" :item="row" :value="activeValue" />
+                </div>
+              </div>
+              <div
+                v-if="listBase.length !== 0 && spFilterList.length === 0"
+                class="text-error whitespace-pre-line text-center"
+              >
+                {{
+                  tx({
+                    ja: '検索条件に一致する結果は見つかりませんでした。\n他のキーワードでお試しください。',
+                    en: 'No results matched your search. \nPlease try different keywords.',
+                  })
+                }}
+              </div>
+              <div v-else-if="listBase.length === 0" class="text-error text-center">
+                {{
+                  tx({
+                    ja: '利用可能な選択肢がありません',
+                    en: 'No selectable options',
+                  })
+                }}
+              </div>
+            </div>
+          </CardItem>
+          <CardItem variant="body" class="pt-1 bg-back">
+            <SelectHiddenItemToggle v-if="hasHiddenItem" v-model:hidden-item-visible="hiddenItemVisible" />
+          </CardItem>
+        </Card>
+      </Modal>
+    </template>
+    <!-- </ClientOnly> -->
+    <template #right-icons>
+      <Btn
+        v-if="!lock && props.nullable && activeValue !== null"
+        variant="text"
+        theme="error"
+        tabindex="-1"
+        class="text-error w-[1.4em] hover:bg-accent1/10 mr-1"
+        @click.stop="updateData(null)"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </Btn>
+      <Btn
+        v-if="!lock"
+        variant="text"
+        theme="accent1"
+        tabindex="-1"
+        class="text-accent1 w-[1.4em] hover:bg-accent1/10 mr-1"
+        @click.stop="openToggle()"
+      >
+        <i class="fa-solid fa-chevron-down transition-all" :class="[selectOpen ? 'rotate-x-180' : '']"></i>
+      </Btn>
+    </template>
   </InputFrame>
 </template>
 
 <style lang="scss">
-// safari ios 勝手にスクロール対策
-
-.v-select {
-  position: relative;
-
-  > div {
-    border-width: 0 !important;
-  }
-  &:not(.vs--open).vs--single.vs--searchable .vs__selected {
-    width: 100%;
-  }
-  &.vs--open.vs--single.vs--searchable .vs__selected {
-    width: calc(100% - 0.5em);
-  }
-  .vs__selected {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    flex: 1 1 auto;
-    width: 100%;
-  }
-  .vs__selected,
-  .vs__selected-options {
-    max-width: 100%;
-    min-width: 0;
-  }
-  .vs__search {
-    margin: 0 !important;
-  }
-  .vs__clear {
-    padding: 3px;
-    border: solid 1px transparent;
-    transition: border-color 300ms;
-    border-radius: 3px;
-    &:focus {
-      // border: solid 1px rgb(38, 38, 217);
-      box-shadow: inset 0px 0px 1px 2px #0d8ee4;
+.HsSelect {
+  .icons {
+    > * {
+      height: auto;
+      height: calc(100% - 6px);
+      max-height: calc(100% - 6px);
+      min-height: 0;
+      min-width: 0;
     }
-  }
-  .vs__dropdown-toggle {
-    background-color: transparent;
-  }
-  &.size-s {
-    .vs__dropdown-toggle {
-      padding-bottom: 0 !important;
-      height: 24px !important;
-    }
-    .vs__spinner {
-      width: 3.5em;
-      height: 3.5em;
-    }
-  }
-  &.size-m {
-    .vs__dropdown-toggle {
-      padding-bottom: 0 !important;
-      height: 26px !important;
-    }
-    .vs__spinner {
-      width: 4em;
-      height: 4em;
-    }
-  }
-  &.disabled {
-    .vs__search,
-    .vs__dropdown-toggle,
-    .vs__open-indicator {
-      background-color: transparent !important;
-    }
-    .vs__clear {
+    > *:after {
       display: none;
     }
   }
 }
-.vs__dropdown-menu {
-  // position: fixed !important;
-  max-height: 250px;
+[data-highlighted] .HsSelectItem:hover {
+  background-color: var(--color-bg);
 }
-// 表示非表示の要素
-.v-select-hidden-toggle-switch {
-  pointer-events: all !important;
+[data-highlighted] .HsSelectItem:not(:hover) {
+  background-color: var(--color-bg);
+}
+[data-reka-popper-content-wrapper] > [data-dismissable-layer] {
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.58));
+}
+[data-reka-popper-content-wrapper] > [data-dismissable-layer] > span > svg {
+  fill: white;
 }
 </style>

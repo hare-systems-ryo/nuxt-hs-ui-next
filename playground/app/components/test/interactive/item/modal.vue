@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\interactive\item\modal.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestInteractiveItemModal
-// AppComponentsTestInteractiveItemModalAppComponentsTestInteractiveItemModal
+// TestInteractiveItemModal
+// TestInteractiveItemModalTestInteractiveItemModal
 ---------------------------------------------------------------------------- */
 
 import { type ModalControl, InitModalControl, InitModals } from '../../../../../../src/runtime/utils/modal';
@@ -80,11 +80,9 @@ watch(
 );
 const storeModal = useHsModal();
 
-const listNumber = [
-  { id: 1, text: 'id:1' },
-  { id: 2, text: 'id:2' },
-  { id: 3, text: 'id:3' },
-];
+const listNumber = Array.from({ length: 30 })
+  .fill(null)
+  .map((r, i) => ({ id: i, text: `id:${i}`, hidden: i == 2 }));
 const valueA = ref<string | null>('2024-12-16');
 </script>
 <template>
@@ -138,6 +136,8 @@ const valueA = ref<string | null>('2024-12-16');
           <div class="py-10">-</div>
           <div class="py-10">-</div>
           <div class="py-10">-</div>
+          <Select :data="1" :diff="1" :list="listNumber" size="s" label="基本的な使い方" searchable />
+          <Select :data="1" :diff="1" :list="listNumber" size="s" label="基本的な使い方" />
           <div class="py-10">-</div>
           <div class="py-10">-</div>
           <div class="py-10">-</div>
@@ -149,6 +149,7 @@ const valueA = ref<string | null>('2024-12-16');
           <div class="py-10">-</div>
           <div class="py-10">-</div>
           <div class="py-10">-</div>
+          <Datepicker v-model:data="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
           <Datepicker v-model:data="valueA" show-format="YYYY-MM-DD(ddd)" class="" label="ge" />
           <div class="py-10">-</div>
           <div class="py-10">-</div>
@@ -164,7 +165,6 @@ const valueA = ref<string | null>('2024-12-16');
           <div class="py-10">-</div>
           <div class="py-10">-</div>
           <div class="py-10">-</div>
-          <Select :data="1" :diff="1" :list="listNumber" size="s" label="基本的な使い方" />
           <div class="py-10">Modal</div>
           <div class="py-10">Modal</div>
           <!-- <div class="py-10">Modal</div> -->

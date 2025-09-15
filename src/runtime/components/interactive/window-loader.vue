@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\interactive\window-loader.vue
 // ----------------------------------------------------------------------------
-// InteractiveWindowLoader
-// InteractiveWindowLoaderInteractiveWindowLoader
+// WindowLoader
+// WindowLoaderWindowLoader
 ---------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------

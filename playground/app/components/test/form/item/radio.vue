@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\radio.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemRadio
-// AppComponentsTestFormItemRadioAppComponentsTestFormItemRadio
+// TestFormItemRadio
+// TestFormItemRadioTestFormItemRadio
 ---------------------------------------------------------------------------- */
 
 import type { SelectItem } from "../../../../../../src/runtime/utils/select-item";

@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\datepicker.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemDatepicker
-// AppComponentsTestFormItemDatepickerAppComponentsTestFormItemDatepicker
+// TestFormItemDatepicker
+// TestFormItemDatepickerTestFormItemDatepicker
 ---------------------------------------------------------------------------- */
 const dateValue = ref<string | null>('2024-12-16');
 const valueA = ref<string | null>(null);

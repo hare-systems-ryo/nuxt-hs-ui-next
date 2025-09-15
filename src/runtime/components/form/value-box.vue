@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\value-box.vue
 // ----------------------------------------------------------------------------
-// FormValueBox
-// FormValueBoxFormValueBox
+// ValueBox
+// ValueBoxValueBox
 ---------------------------------------------------------------------------- */
 
 // [ node_modules ]
@@ -454,7 +454,9 @@ const onFocus = () => {
   zeroFlag.value = false;
   if (props.disabled === true) return;
   if (props.readonly === true) return;
-  hsFocus.state.id = uid;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
   focusState.isActivate = true;
   if (state.inputMode === 'text') {
     // inputElement.value.select();

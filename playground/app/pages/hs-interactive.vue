@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\pages\hs-interactive.vue
 // ----------------------------------------------------------------------------
-// AppPagesHsInteractive
-// AppPagesHsInteractiveAppPagesHsInteractive
+// PagesHsInteractive
+// PagesHsInteractivePagesHsInteractive
 ---------------------------------------------------------------------------- */
 
 definePageMeta({

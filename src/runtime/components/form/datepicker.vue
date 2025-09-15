@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // src\runtime\components\form\datepicker.vue
 // ----------------------------------------------------------------------------
-// FormDatepicker
-// FormDatepickerFormDatepicker
+// Datepicker
+// DatepickerDatepicker
 ---------------------------------------------------------------------------- */
 
 // [ node-modules ]
@@ -401,7 +401,9 @@ const toggleModal = () => {
     open.value = false;
     return;
   }
-  hsFocus.state.id = uid;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
   if (dataDasyjs.value === null) {
     calendarValue.value = null;
     HH.value = null;
@@ -537,7 +539,9 @@ watch(computedActivate, (value) => {
 const openBtnFocus = () => {
   if (props.readonly) return;
   if (props.disabled) return;
-  hsFocus.state.id = uid;
+  if (hsFocus.state.id !== uid) {
+    hsFocus.state.id = uid;
+  }
   focusState.openBtn = true;
 };
 //  ---------------------------------------------------------------------------------
@@ -562,7 +566,9 @@ const manualInputfocus = () => {
   focusState.openBtn = false;
   setTimeout(() => {
     manualElm.value?.select();
-    hsFocus.state.id = uid;
+    if (hsFocus.state.id !== uid) {
+      hsFocus.state.id = uid;
+    }
     focusState.manualInput = true;
   }, 1);
 };
@@ -906,5 +912,14 @@ const posTarget = ref();
       background-color: color-mix(in oklab, var(--error-color) 50%, transparent);
     }
   }
+}
+</style>
+
+<style lang="scss">
+[data-reka-popper-content-wrapper] > [data-dismissable-layer] {
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.58));
+}
+[data-reka-popper-content-wrapper] > [data-dismissable-layer] > span > svg {
+  fill: white;
 }
 </style>

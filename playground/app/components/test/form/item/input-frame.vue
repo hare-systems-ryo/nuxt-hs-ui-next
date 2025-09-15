@@ -2,8 +2,8 @@
 /* ----------------------------------------------------------------------------
 // playground\app\components\test\form\item\input-frame.vue
 // ----------------------------------------------------------------------------
-// AppComponentsTestFormItemInputFrame
-// AppComponentsTestFormItemInputFrameAppComponentsTestFormItemInputFrame
+// TestFormItemInputFrame
+// TestFormItemInputFrameTestFormItemInputFrame
 ---------------------------------------------------------------------------- */
 
 import { dayjs } from '../../../../../../src/runtime/utils/dayjs';
