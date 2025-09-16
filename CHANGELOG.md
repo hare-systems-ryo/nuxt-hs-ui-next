@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.28
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.27...v3.0.28)
+
+### 🩹 Fixes
+
+- Corrected text alignment issue in ValueBox display ([0c97bde](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/0c97bde))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.27
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.26...v3.0.27)
