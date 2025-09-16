@@ -161,13 +161,18 @@ const activeColorCode = GetColorCode(Theme.accent1);
 // ----------------------------------------------------------------------------
 const selectOpen = ref(false);
 const openToggle = () => {
-  if (selectOpen.value) {
+  if (selectOpen.value || modal.sp.isShow) {
     selectOpen.value = false;
+    modal.sp.close();
     return;
   }
   if (props.disabled) return;
   if (props.readonly) return;
-  selectOpen.value = true;
+  if (props.searchable && hsIsMobile.isMobile) {
+    modal.sp.show();
+  } else {
+    selectOpen.value = true;
+  }
 };
 // ----------------------------------------------------------------------------
 
@@ -458,7 +463,7 @@ watch(computedActivate, (value) => {
     @focusin="onFocus"
     @focusout="onBlur"
     @ref="(e) => (inputFrameElm = e)"
-    @header-label-click="openToggle()"
+    @click="openToggle()"
   >
     <!-- @click.stop="selectOpen = !selectOpen" -->
     <!-- <ClientOnly> -->
@@ -544,7 +549,7 @@ watch(computedActivate, (value) => {
           </div>
         </template>
         <template v-if="hasHiddenItem" #content-bottom>
-          <div class="p-1" @click.stop>
+          <div class="p-1">
             <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
           </div>
         </template>

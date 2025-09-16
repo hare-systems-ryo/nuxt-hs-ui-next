@@ -196,7 +196,7 @@ const setRef = (e: HTMLElement) => {
         <div
           class="hc-input-label grow-0 shrink-1 truncate leading-[1.5em] relative"
           :title="label"
-          @click.stop="emit('header-label-click')"
+          @click="emit('header-label-click')"
         >
           <slot name="label-prepend" />{{ label }}<slot name="label-append" />
         </div>
