@@ -25,16 +25,23 @@ interface State {
 // ----------------------------------------------------------------------------
 const toastShow = (message: MultiLang, title: MultiLang, hideAfter: number, theme: Theme) => {
   const toast = useHsToast(useHsPinia());
+  const key = GenerateUniqeKey();
   const newToast: Message = {
-    key: GenerateUniqeKey(),
-    isShow: true,
+    key: key,
+    // isShow: true,
     title: title,
     message: message,
     hideAfter: hideAfter,
     barWidth: 0,
     theme: theme,
+    setEvent: false,
   };
   toast.state.pendingList.push(newToast);
+  if (newToast.hideAfter !== 0) {
+    setTimeout(() => {
+      toast.state.pendingList = toast.state.pendingList.filter((row) => row.key !== key);
+    }, newToast.hideAfter);
+  }
 };
 // ----------------------------------------------------------------------------
 export const useHsToast = defineStore('HsUiToast', {

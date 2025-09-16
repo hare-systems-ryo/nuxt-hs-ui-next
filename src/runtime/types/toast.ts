@@ -22,10 +22,11 @@ export interface Message {
   key: string;
   title: MultiLang;
   message: MultiLang;
-  isShow: boolean;
+  // isShow: boolean;
   hideAfter: number;
   barWidth: number;
   theme: Theme;
+  setEvent:boolean
 }
 
 export interface Controler {
