@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.27
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.26...v3.0.27)
+
+### 💅 Refactors
+
+- Replace v-select with Nuxt UI Select to support modal workaround for mobile display issues ([4b2b67f](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/4b2b67f))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.26
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.25...v3.0.26)
