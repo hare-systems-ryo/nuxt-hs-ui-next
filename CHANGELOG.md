@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.29
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.28...v3.0.29)
+
+### 🩹 Fixes
+
+- Enable list toggle button when search is active on mobile Select ([905f23d](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/905f23d))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.28
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.27...v3.0.28)
