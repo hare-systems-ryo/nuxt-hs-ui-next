@@ -323,7 +323,7 @@ const hankakuToZenkaku = (str: string) => {
  */
 const checkValueByInput = () => {
   const inputText = hankakuToZenkaku(state.value)
-    .replace(/ー/g, '-')
+    .replace(/[ー―－–—]/g, '-')
     .replace(/[^(0-9)|.\-+]+/g, '');
   const inputValue = FloatNullable(inputText, props.digits);
   const validCheckResult = validCheck(inputValue);
@@ -550,7 +550,7 @@ watch(
     <template v-if="slots.overlay" #overlay>
       <slot name="overlay"></slot>
     </template>
-    <div class="flex items-end justify-end">
+    <div class="flex items-end justify-end w-full">
       <div class="flex-1 relative">
         <input
           :ref="(e) => setRef(e)"
@@ -558,11 +558,7 @@ watch(
           type="text"
           :inputmode="hsIsMobile.isMobile ? 'numeric' : 'text'"
           class="pe-[4px] w-full"
-          :class="[
-            //
-            computedActivate ? 'opacity-100' : 'opacity-0',
-            // { isShow: computedActivate },
-          ]"
+          :class="[computedActivate ? 'opacity-100' : 'opacity-0']"
           maxlength="20"
           :enterkeyhint="props.enterkeyhint"
           :disabled="props.disabled"
@@ -641,7 +637,7 @@ input {
   color: #696969;
   align-items: flex-end;
   align-self: flex-end;
-  margin: 0px 0px 2px 4px;
+  margin: 0px 0px 0px 4px;
   font-size: min(0.8em, 1rem);
   -moz-user-select: none;
   -webkit-user-select: none;

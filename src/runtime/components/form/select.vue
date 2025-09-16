@@ -157,8 +157,6 @@ const hsIsMobile = useHsIsMobile(useHsPinia());
 const uid = useId();
 const inputFrameElm = ref();
 const searchWord = ref('');
-// const openBtnElm = ref();
-
 const activeColorCode = GetColorCode(Theme.accent1);
 // ----------------------------------------------------------------------------
 const selectOpen = ref(false);
@@ -487,7 +485,7 @@ watch(computedActivate, (value) => {
         :close-on-select="false"
         @update:model-value="(v:any) => updateData(v)"
       >
-        <template #default="">
+        <template #default>
           <!-- :key="activeRow?._key || 'null-' + '_base'" -->
           <div
             class="flex items-center w-full"
@@ -517,8 +515,8 @@ watch(computedActivate, (value) => {
             </template>
           </div>
         </template>
-        <template #trailing="">
-          <div class=""></div>
+        <template #trailing>
+          <div></div>
         </template>
         <template #item="{ item }">
           <div
@@ -576,7 +574,7 @@ watch(computedActivate, (value) => {
         :close-on-select="false"
         @update:model-value="(v:any) => updateData(v)"
       >
-        <template #default="">
+        <template #default>
           <div
             :key="activeRow?._key || 'null-' + '_base'"
             class="flex items-center w-full"
@@ -606,8 +604,8 @@ watch(computedActivate, (value) => {
             </template>
           </div>
         </template>
-        <template #trailing="">
-          <div class=""></div>
+        <template #trailing>
+          <div></div>
         </template>
         <template #item="{ item }">
           <div
@@ -680,7 +678,7 @@ watch(computedActivate, (value) => {
       >
         <Card ref="modalElm" class="HsSelectModal w-full max-w-[500px] max-h-full">
           <CardItem variant="header" size="s" cross @update:open="modal.sp.close()">
-            <div class="">
+            <div>
               {{ tx(props.label || { ja: '選択', en: 'Please Select' }) }}
             </div>
           </CardItem>

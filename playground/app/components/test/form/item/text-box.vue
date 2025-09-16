@@ -46,6 +46,12 @@ const list = ['a', 'b', 'c'];
       <div>datalist付き</div>
       <TextBox v-model:data="textB" size="s" label="" :datalist="list" />
       <!--  -->
+      <div>datalist付き</div>
+      <div class="flex items-start gap-2">
+        <TextBox v-model:data="textA" label="" text-align="left" />
+        <TextBox v-model:data="textA" label="" text-align="center" />
+        <TextBox v-model:data="textA" label="" text-align="right" />
+      </div>
 
       <!-- ------------------------------------------------ -->
     </CardItem>

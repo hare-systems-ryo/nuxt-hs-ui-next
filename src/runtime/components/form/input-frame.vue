@@ -150,7 +150,7 @@ const inputClass = computed(() => {
       //
       'w-full',
       // 'max-w-full max-h-full w-full',
-      props.size === 's' ? 'text-[14px]' : '',
+      props.size === 's' ? 'text-[16px]' : '',
       props.size === 'm' ? 'text-[16px]' : '',
       props.size === 'l' ? 'text-[20px]' : '',
       ClassTypeToString(props.classInput)
