@@ -17,6 +17,11 @@ const valueE = ref<number | null>(10);
     <CardItem class="" variant="header"> ValueBox </CardItem>
     <CardItem class="" variant="body">
       <!-- ------------------------------------------------ -->
+      <div>Test</div>
+      <div class="flex">
+        <ValueBox v-model:data="valueA" size="s" label="" input-size="2" />
+      </div>
+
       <div>通常</div>
       <div class="grid grid-cols-2 gap-1">
         <ValueBox v-model:data="valueA" :diff="valueB" size="s" label="" />

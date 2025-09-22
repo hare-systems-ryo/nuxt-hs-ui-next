@@ -47,6 +47,7 @@ type Props = {
   isShowBtnControl?: boolean;
   comma?: string;
   enterkeyhint?: string;
+  inputSize?: string | number;
   // ----------------------------------------------------------------------------
   data: number | null;
   diff?: number | null | undefined;
@@ -100,7 +101,7 @@ const props = withDefaults(defineProps<Props>(), {
   isShowBtnControl: false,
   comma: ',',
   enterkeyhint: undefined,
-
+  inputSize: 10,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -587,6 +588,7 @@ watch(
           :disabled="props.disabled"
           :readonly="props.readonly"
           :tabindex="tabindex"
+          :size="props.inputSize"
           @wheel="onWheel"
           @keydown="keydown"
           @keyup="(e) => emit('keyup', e)"
@@ -604,6 +606,7 @@ watch(
           :value="displayText"
           :disabled="props.disabled"
           :tabindex="-1"
+          :size="props.inputSize"
           readonly
         />
       </div>

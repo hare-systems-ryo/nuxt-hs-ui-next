@@ -34,6 +34,7 @@ type Props = {
   datalist?: string[];
   enterkeyhint?: string;
   inputmode?: 'text' | 'search' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
+  inputSize?: string | number;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -54,6 +55,7 @@ type Props = {
   disabledColor?: string;
   readonly?: boolean;
   headerless?: boolean;
+  // size: string | number;
   // ----------------------------------------------------------------------------
   // 表示
   label?: MultiLang;
@@ -76,6 +78,7 @@ const props = withDefaults(defineProps<Props>(), {
   datalist: () => [],
   enterkeyhint: undefined,
   inputmode: undefined,
+  inputSize: 10,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -345,6 +348,7 @@ const dataListId = ref(`textbox-list-${uid}`);
       :tabindex="tabindex"
       :enterkeyhint="props.enterkeyhint"
       :inputmode="props.inputmode"
+      :size="props.inputSize"
       @blur="onBlur()"
       @focus="onFocus()"
       @input="updateValue(state.value)"

@@ -14,6 +14,11 @@ const list = ['a', 'b', 'c'];
   <Card class="mt-4">
     <CardItem class="" variant="header"> TextBox </CardItem>
     <CardItem class="" variant="body">
+      <div>Test</div>
+      <div class="flex">
+        <TextBox v-model:data="textA" size="s" label="" input-size="2" />
+      </div>
+
       <div class="grid grid-cols-2 gap-2">
         <div class="flex items-center gap-1">
           <Btn theme="accent1" variant="outlined" size="xs" @click="disabled = !disabled">
@@ -25,7 +30,7 @@ const list = ['a', 'b', 'c'];
       <!-- ------------------------------------------------ -->
       <div class="p-1"></div>
       <div>通常</div>
-      <div class="flex items-start gap-2">
+      <div class="grid grid-cols-4 items-start gap-2">
         <TextBox v-model:data="textA" :diff="textB" size="s" label="" :disabled="disabled" />
         <TextBox v-model:data="textA" :diff="textB" size="s" label="ラベル付き" :disabled="disabled" />
         <TextBox v-model:data="textA" :diff="textB" size="s" label="文字数制限" :max-len="20" :disabled="disabled" />
