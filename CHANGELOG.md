@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.30
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.29...v3.0.30)
+
+### 🩹 Fixes
+
+- Ensure Form components correctly inherit slots from InputFrame ([427d0d5](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/427d0d5))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.29
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.28...v3.0.29)
