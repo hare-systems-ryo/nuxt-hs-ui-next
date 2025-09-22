@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.31
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.30...v3.0.31)
+
+### 🩹 Fixes
+
+- Support inheriting size attribute for text inputs to avoid oversized auto width ([671eba0](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/671eba0))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.30
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.29...v3.0.30)
