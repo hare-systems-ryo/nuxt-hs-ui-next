@@ -32,6 +32,12 @@ const textB = ref('textB');
       <div>文字数制限 + 行数制限</div>
       <Textarea v-model:data="textB" size="m" label="文字数制限" :max-rows="6" :max-len="30" />
       <!-- ------------------------------------------------ -->
+      <Textarea v-model:data="textB" :diff="textB" label="label">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </Textarea>
+      <!-- ------------------------------------------------ -->
     </CardItem>
   </Card>
 </template>

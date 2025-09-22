@@ -174,6 +174,9 @@ const slots = defineSlots<{
   overlay?(): any;
   'right-icons'?(): any;
   'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
 }>();
 // ----------------------------------------------------------------------------
 // [ getCurrentInstance ]
@@ -544,11 +547,31 @@ watch(
     :headerless="props.headerless"
     @click="elmFocus"
   >
+    <template v-if="slots.overlay" #overlay>
+      <slot name="overlay"></slot>
+    </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
     </template>
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template #right-icons>
+      <div v-if="props.isShowBtnControl === true" class="u-d-icon" @click.stop>
+        <div :class="[{ activate: isArrowUp && !locked }]" @click="stepValue(true)">
+          <i class="fas fa-caret-up"></i>
+        </div>
+        <div :class="[{ activate: isArrowDown && !locked }]" @click="stepValue(false)">
+          <i class="fas fa-caret-down"></i>
+        </div>
+      </div>
+      <slot name="right-icons" :disabled="disabled" />
+    </template>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
+    </template>
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="slots['header-right']" #header-right>
+      <slot name="header-right" />
     </template>
     <div class="flex items-end justify-end w-full">
       <div class="flex-1 relative">
@@ -588,17 +611,6 @@ watch(
         {{ props.unit }}
       </div>
     </div>
-    <template #right-icons>
-      <div v-if="props.isShowBtnControl === true" class="u-d-icon" @click.stop>
-        <div :class="[{ activate: isArrowUp && !locked }]" @click="stepValue(true)">
-          <i class="fas fa-caret-up"></i>
-        </div>
-        <div :class="[{ activate: isArrowDown && !locked }]" @click="stepValue(false)">
-          <i class="fas fa-caret-down"></i>
-        </div>
-      </div>
-      <slot name="right-icons" :disabled="disabled" />
-    </template>
   </InputFrame>
 </template>
 

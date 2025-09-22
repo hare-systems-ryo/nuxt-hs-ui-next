@@ -66,6 +66,11 @@ const valueE = ref<number | null>(10);
           is-show-btn-control
         />
       </div>
+      <ValueBox v-model:data="valueD" size="s" label="a">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </ValueBox>
       <!--  -->
 
       <!-- ------------------------------------------------ -->

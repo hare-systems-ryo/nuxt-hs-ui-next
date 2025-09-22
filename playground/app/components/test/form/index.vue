@@ -46,7 +46,7 @@ const list = [
 <template>
   <div class="">
     <Card class="">
-      <CardItem v-model:open="showMenu" variant="header" theme="main0" size="s" @bg-click="showMenu = !showMenu">
+      <CardItem v-model:open="showMenu" variant="header" theme="main0" size="s" @click="showMenu = !showMenu">
         Test Form [ {{ item || 'ALL' }} ]
       </CardItem>
       <CardItem class="bg-back p-2" :accordion="showMenu" variant="body">
@@ -56,7 +56,7 @@ const list = [
             :variant="item === '' ? 'flat' : 'outlined'"
             :class="item === '' ? '' : 'bg-white'"
             class="w-full"
-            @click="changeTestName('')"
+            @click.stop="changeTestName('')"
           >
             ALL
           </Btn>

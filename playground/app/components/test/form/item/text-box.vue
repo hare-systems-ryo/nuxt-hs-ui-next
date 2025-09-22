@@ -46,12 +46,18 @@ const list = ['a', 'b', 'c'];
       <div>datalist付き</div>
       <TextBox v-model:data="textB" size="s" label="" :datalist="list" />
       <!--  -->
-      <div>datalist付き</div>
+      <!-- <div>datalist付き</div>
       <div class="flex items-start gap-2">
         <TextBox v-model:data="textA" label="" text-align="left" />
         <TextBox v-model:data="textA" label="" text-align="center" />
         <TextBox v-model:data="textA" label="" text-align="right" />
-      </div>
+      </div> -->
+
+      <TextBox v-model:data="textA" :diff="textB" label="label">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </TextBox>
 
       <!-- ------------------------------------------------ -->
     </CardItem>

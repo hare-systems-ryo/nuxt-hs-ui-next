@@ -142,6 +142,16 @@ type Emits = {
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
+const slots = defineSlots<{
+  default(props: { msg: string }): any;
+  overlay?(): any;
+  'right-icons'?(): any;
+  'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
+}>();
+// ----------------------------------------------------------------------------
 type ListRow = SelectItem<IdType> & {
   _key: string;
 };
@@ -465,6 +475,44 @@ watch(computedActivate, (value) => {
     @ref="(e) => (inputFrameElm = e)"
     @click="openToggle()"
   >
+    <template v-if="slots.overlay" #overlay>
+      <slot name="overlay"></slot>
+    </template>
+    <template v-if="slots['left-icons']" #left-icons>
+      <slot name="left-icons" :disabled="disabled" />
+    </template>
+    <template #right-icons>
+      <Btn
+        v-if="!lock && props.nullable && activeValue !== null"
+        variant="text"
+        theme="error"
+        tabindex="-1"
+        class="text-error w-[1.4em] hover:bg-accent1/10 mr-1"
+        @click.stop="updateData(null)"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </Btn>
+      <Btn
+        v-if="!lock"
+        variant="text"
+        theme="accent1"
+        tabindex="-1"
+        class="text-accent1 w-[1.4em] hover:bg-accent1/10 mr-1"
+        @click.stop="openToggle()"
+      >
+        <i class="fa-solid fa-chevron-down transition-all" :class="[selectOpen ? 'rotate-x-180' : '']"></i>
+      </Btn>
+      <slot name="right-icons" :disabled="disabled" />
+    </template>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
+    </template>
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="slots['header-right']" #header-right>
+      <slot name="header-right" />
+    </template>
     <!-- @click.stop="selectOpen = !selectOpen" -->
     <!-- <ClientOnly> -->
     <template v-if="!props.searchable">
@@ -750,28 +798,6 @@ watch(computedActivate, (value) => {
       </Modal>
     </template>
     <!-- </ClientOnly> -->
-    <template #right-icons>
-      <Btn
-        v-if="!lock && props.nullable && activeValue !== null"
-        variant="text"
-        theme="error"
-        tabindex="-1"
-        class="text-error w-[1.4em] hover:bg-accent1/10 mr-1"
-        @click.stop="updateData(null)"
-      >
-        <i class="fa-solid fa-xmark"></i>
-      </Btn>
-      <Btn
-        v-if="!lock"
-        variant="text"
-        theme="accent1"
-        tabindex="-1"
-        class="text-accent1 w-[1.4em] hover:bg-accent1/10 mr-1"
-        @click.stop="openToggle()"
-      >
-        <i class="fa-solid fa-chevron-down transition-all" :class="[selectOpen ? 'rotate-x-180' : '']"></i>
-      </Btn>
-    </template>
   </InputFrame>
 </template>
 

@@ -133,6 +133,16 @@ type Emits = {
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
+const slots = defineSlots<{
+  default(props: { msg: string }): any;
+  overlay?(): any;
+  'right-icons'?(): any;
+  'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
+}>();
+// ----------------------------------------------------------------------------
 
 const multiLang = useHsMultiLang(useHsPinia());
 const tx = multiLang.tx;
@@ -385,10 +395,22 @@ const _rows = computed(() => {
     :headerless="props.headerless"
     @click="elmFocus"
   >
-    <template v-if="$slots.label" #label>
-      <slot name="label"></slot>
+    <template v-if="slots.overlay" #overlay>
+      <slot name="overlay"></slot>
     </template>
-    <template v-if="props.maxLen > 0 || props.maxRows > 0" #header-right="{ defaultClass }">
+    <template v-if="slots['left-icons']" #left-icons>
+      <slot name="left-icons" :disabled="disabled" />
+    </template>
+    <template v-if="slots['right-icons']" #right-icons>
+      <slot name="right-icons" :disabled="disabled" />
+    </template>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
+    </template>
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="props.maxLen > 0 || props.maxRows > 0 || slots['header-right']" #header-right="{ defaultClass }">
       <div v-if="props.maxLen !== 0" :class="[defaultClass, lenLabelClass]">
         {{ state.value.length }} / {{ props.maxLen }}
       </div>
@@ -396,6 +418,7 @@ const _rows = computed(() => {
         {{ state.value.split('\n').length }} / {{ props.maxRows }}
         {{ tx(props.uiText.rowsUnit) }}
       </div>
+      <slot name="header-right" />
     </template>
     <div class="nac-c-input-box" :class="[textAreaFrameClass, { isMobile: hsIsMobile.isMobile }]">
       <textarea

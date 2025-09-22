@@ -49,7 +49,7 @@ const list = [
         theme="main0"
         size="s"
         class="cursor-pointer"
-        @bg-click="showMenu = !showMenu"
+        @click="showMenu = !showMenu"
       >
         Test Interactive [ {{ item || 'ALL' }} ]
       </CardItem>

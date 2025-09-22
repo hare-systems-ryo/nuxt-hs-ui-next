@@ -139,7 +139,12 @@ const nullable = ref(false);
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" searchable nullable />
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" nullable />
       </div>
-
+      <!--  -->
+      <Select v-model:data="state.testNumber.data" label="label" :list="state.testNumber.list">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </Select>
       <!-- ------------------------------------------------ -->
 
       <!--

@@ -144,6 +144,9 @@ const slots = defineSlots<{
   overlay?(): any;
   'right-icons'?(): any;
   'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
 }>();
 // ----------------------------------------------------------------------------
 // [ getCurrentInstance ]
@@ -443,15 +446,25 @@ const inputClass = computed(() => {
     :size="props.size"
     :headerless="props.headerless"
   >
+    <template v-if="slots.overlay" #overlay>
+      <slot name="overlay"></slot>
+    </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
     </template>
     <template v-if="slots['right-icons']" #right-icons>
       <slot name="right-icons" :disabled="disabled" />
     </template>
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
     </template>
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="slots['header-right']" #header-right>
+      <slot name="header-right" />
+    </template>
+
     <div class="nac-input">
       <div
         class="radio-row"

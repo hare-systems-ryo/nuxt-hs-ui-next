@@ -57,6 +57,11 @@ const listA = [
           <div class="">{{ valueA }}</div>
         </div>
       </div>
+      <CheckList v-model:data="valueA" label="label" :list="listA">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </CheckList>
       <!--  -->
 
       <!-- ------------------------------------------------ -->

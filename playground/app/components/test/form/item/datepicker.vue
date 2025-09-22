@@ -106,6 +106,12 @@ const disabled = ref(false);
         </div>
         <div class="grid grid-cols-1 gap-1 my-1"></div>
       </div>
+      <!--  -->
+      <Datepicker v-model:data="modeTime1" mode="time" label="mode:time">
+        <template #label-prepend> prepend </template>
+        <template #label-append> append </template>
+        <template #header-right> <span class="text-main0">aaa</span> </template>
+      </Datepicker>
       <!-- ------------------------------------------------ -->
     </CardItem>
   </Card>

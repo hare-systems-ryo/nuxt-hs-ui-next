@@ -7,19 +7,19 @@
 ---------------------------------------------------------------------------- */
 
 // [ tailwind ]
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 // [ NUXT ]
-import { reactive, ref, watch, computed, nextTick, useId } from "#imports";
+import { reactive, ref, watch, computed, nextTick, useId } from '#imports';
 
 // [ utils ]
-import type { ClassType } from "../../utils/class-style";
-import type { MultiLang } from "../../utils/multi-lang";
+import type { ClassType } from '../../utils/class-style';
+import type { MultiLang } from '../../utils/multi-lang';
 // [ composables ]
-import { useHsFocus } from "../../composables/use-hs-focus";
+import { useHsFocus } from '../../composables/use-hs-focus';
 import { useHsPinia } from '../../composables/use-pinia';
 // [ Components ]
-import InputFrame from "./input-frame.vue";
+import InputFrame from './input-frame.vue';
 // ----------------------------------------------------------------------------
 const fcFocus = useHsFocus(useHsPinia());
 // ----------------------------------------------------------------------------
@@ -27,22 +27,13 @@ const fcFocus = useHsFocus(useHsPinia());
 type Props = {
   // ----------------------------------------------------------------------------
   // Input 種類別
-  type?: "email" | "number" | "password" | "tel" | "text" | "url";
-  textAlign?: "left" | "center" | "right";
+  type?: 'email' | 'number' | 'password' | 'tel' | 'text' | 'url';
+  textAlign?: 'left' | 'center' | 'right';
   maxLen?: number;
   autocomplete?: string;
   datalist?: string[];
   enterkeyhint?: string;
-  inputmode?:
-    | "text"
-    | "search"
-    | "none"
-    | "tel"
-    | "url"
-    | "email"
-    | "numeric"
-    | "decimal"
-    | undefined;
+  inputmode?: 'text' | 'search' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -73,15 +64,15 @@ type Props = {
   warnTimeOut?: number;
   // ----------------------------------------------------------------------------
   // 設定
-  size?: "s" | "m" | "l";
+  size?: 's' | 'm' | 'l';
 };
 const props = withDefaults(defineProps<Props>(), {
   // ----------------------------------------------------------------------------
   // Input 種類別
-  type: "text",
-  textAlign: "left",
+  type: 'text',
+  textAlign: 'left',
   maxLen: 0,
-  autocomplete: "off",
+  autocomplete: 'off',
   datalist: () => [],
   enterkeyhint: undefined,
   inputmode: undefined,
@@ -89,32 +80,32 @@ const props = withDefaults(defineProps<Props>(), {
   diff: undefined,
   tabindex: undefined,
   // ----------------------------------------------------------------------------
-  class: "",
-  classHeader: "",
-  classInput: "",
+  class: '',
+  classHeader: '',
+  classInput: '',
   // ----------------------------------------------------------------------------
   // 状態
   //   focus: false,
-  focusColor: "shadow-[inset_0px_0px_1px_2px_#0d8ee4]",
+  focusColor: 'shadow-[inset_0px_0px_1px_2px_#0d8ee4]',
   //   change: false,
-  changeColor: "shadow-[inset_0px_0px_1px_2px_#fd9831be]",
+  changeColor: 'shadow-[inset_0px_0px_1px_2px_#fd9831be]',
   error: false,
-  errorColor: "shadow-[inset_0px_0px_1px_2px_#d80000dc]",
+  errorColor: 'shadow-[inset_0px_0px_1px_2px_#d80000dc]',
   disabled: false,
-  disabledColor: "",
+  disabledColor: '',
   readonly: false,
   headerless: false,
   // ----------------------------------------------------------------------------
   // 表示
-  label: "",
+  label: '',
   // 表示-副情報
   require: false,
-  requireText: () => ({ ja: "必須", en: "Required" }),
-  warn: "",
+  requireText: () => ({ ja: '必須', en: 'Required' }),
+  warn: '',
   warnTimeOut: 3000,
   // ----------------------------------------------------------------------------
   // 設定
-  size: "m",
+  size: 'm',
 });
 // ----------------------------------------------------------------------------
 // [ emit ]
@@ -123,8 +114,8 @@ type Emits = {
   focus: [elm: HTMLElement];
   blur: [elm: HTMLElement];
   // ----------------------------
-  "update:data": [value: string];
-  "value-change": [after: string, before: string | null];
+  'update:data': [value: string];
+  'value-change': [after: string, before: string | null];
   // ----------------------------
   keydown: [event: KeyboardEvent];
   keyup: [event: KeyboardEvent];
@@ -135,8 +126,11 @@ const emit = defineEmits<Emits>();
 const slots = defineSlots<{
   default(props: { msg: string }): any;
   overlay?(): any;
-  "right-icons"?(): any;
-  "left-icons"?(): any;
+  'right-icons'?(): any;
+  'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
 }>();
 // ----------------------------------------------------------------------------
 // [ getCurrentInstance ]
@@ -148,7 +142,7 @@ interface State {
   value: string;
 }
 const state = reactive<State>({
-  value: "",
+  value: '',
 });
 // ----------------------------------------------------------------------------
 watch(
@@ -161,29 +155,29 @@ watch(
 // 更新を親コンポーネントに伝える
 const updateValue = async (text: string | null) => {
   const before = props.data;
-  let setText = "";
+  let setText = '';
   if (text === null) {
-    setText = "";
+    setText = '';
   } else if (props.maxLen === 0 || text.length <= props.maxLen) {
     setText = text;
   } else {
-    const CutLen = (text: string, len: number, addWard = "") => {
-      if (text === null) return "";
+    const CutLen = (text: string, len: number, addWard = '') => {
+      if (text === null) return '';
       if (len === 0) return text;
       return text.substring(0, len) + addWard;
     };
-    setText = CutLen(text, props.maxLen, "");
+    setText = CutLen(text, props.maxLen, '');
   }
   state.value = setText;
-  emit("update:data", setText);
+  emit('update:data', setText);
   await nextTick();
-  emit("value-change", setText, before);
+  emit('value-change', setText, before);
 };
 
 const setValue = (text: string | null) => {
   // console.log({ text });
   if (text === null) {
-    state.value = "";
+    state.value = '';
     return;
   }
   if (props.maxLen === 0 || text.length <= props.maxLen) {
@@ -200,7 +194,7 @@ setValue(props.data);
 const inputElement = ref();
 const setRef = (elm: any) => {
   inputElement.value = elm;
-  emit("ref", elm);
+  emit('ref', elm);
 };
 
 /**
@@ -241,10 +235,10 @@ const computedActivate = computed(() => {
 watch(computedActivate, (value) => {
   if (value === true) {
     setTimeout(() => {
-      emit("focus", inputElement.value);
+      emit('focus', inputElement.value);
     }, 10);
   } else {
-    emit("blur", inputElement.value);
+    emit('blur', inputElement.value);
   }
 });
 
@@ -261,8 +255,8 @@ const onBlur = () => {
 // 更新の有無判定
 const isChangeData = computed(() => {
   if (props.diff === undefined) return false;
-  if (props.diff === null && props.data === "") return false;
-  if (props.diff === "" && props.data === null) return false;
+  if (props.diff === null && props.data === '') return false;
+  if (props.diff === '' && props.data === null) return false;
   if (props.diff !== props.data) return true;
   return false;
 });
@@ -277,10 +271,10 @@ const tabindex = computed(() => {
 const lenLabelClass = computed(() => {
   return [
     twMerge(
-      "text-white bg-[#2fa412]",
-      props.maxLen - state.value.length < 9 ? "bg-[#fdc90d]" : "",
-      props.maxLen - state.value.length < 6 ? "bg-[#fd750d]" : "",
-      props.maxLen - state.value.length < 3 ? "bg-[#fa541d]" : ""
+      'text-white bg-[#2fa412]',
+      props.maxLen - state.value.length < 9 ? 'bg-[#fdc90d]' : '',
+      props.maxLen - state.value.length < 6 ? 'bg-[#fd750d]' : '',
+      props.maxLen - state.value.length < 3 ? 'bg-[#fa541d]' : ''
     ),
   ];
 });
@@ -312,25 +306,28 @@ const dataListId = ref(`textbox-list-${uid}`);
     :headerless="props.headerless"
     @click="elmFocus"
   >
+    <template v-if="slots.overlay" #overlay>
+      <slot name="overlay"></slot>
+    </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
     </template>
     <template v-if="slots['right-icons']" #right-icons>
       <slot name="right-icons" :disabled="disabled" />
     </template>
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
     </template>
-    <template v-if="props.maxLen > 0" #header-right="{ defaultClass }">
-      <div :class="[defaultClass, lenLabelClass]">
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="props.maxLen > 0 || slots['header-right']" #header-right="{ defaultClass }">
+      <slot name="header-right" />
+      <div v-if="props.maxLen > 0" :class="[defaultClass, lenLabelClass]">
         {{ state.value.length }} / {{ props.maxLen }}
       </div>
     </template>
-    <div
-      v-if="props.disabled"
-      class="input-d"
-      :style="`text-align:${props.textAlign};`"
-    >
+    <div v-if="props.disabled" class="input-d" :style="`text-align:${props.textAlign};`">
       {{ state.value }}
     </div>
     <input

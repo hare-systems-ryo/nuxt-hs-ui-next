@@ -193,6 +193,9 @@ const slots = defineSlots<{
   overlay?(): any;
   'right-icons'?(): any;
   'left-icons'?(): any;
+  'label-prepend'?(): any;
+  'label-append'?(): any;
+  'header-right'?(): any;
 }>();
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -664,11 +667,12 @@ const posTarget = ref();
     <template v-if="slots.overlay" #overlay>
       <slot name="overlay"></slot>
     </template>
-    <template v-if="!props.readonly" #left-icons>
+    <template v-if="!props.readonly || slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
       <!-- <UButton label="" color="neutral" variant="subtle" /> -->
 
       <button
+        v-if="!props.readonly"
         ref="openBtn"
         data-sep="right"
         data-icon="calendar"
@@ -681,14 +685,6 @@ const posTarget = ref();
         @blur="focusState.openBtn = false"
         @click.stop="toggleModal"
       >
-        <!-- @click.stop="toggleModal" -->
-        <!-- -->
-        <!---->
-
-        <!-- -->
-        <!--  -->
-        <!-- @click.stop="datePickerToggle()" -->
-
         <div
           class="absolute inset-[4px] border-main2 border pointer-events-none transition-all rounded-sm"
           :class="computedIsFocusOpenBtn ? 'opacity-100' : 'opacity-0'"
@@ -696,6 +692,28 @@ const posTarget = ref();
         <i :class="props.mode === 'time' ? 'fa-regular fa-clock' : 'fa-solid fa-calendar-days'"></i>
       </button>
     </template>
+    <template #right-icons>
+      <template v-if="!props.hideDeleteBtn && !props.readonly">
+        <button
+          :class="!disabled ? 'text-error cursor-pointer hover:bg-error/[0.1] active:bg-error/[0.2]' : ''"
+          tabindex="-1"
+          @click.stop="iconEventDelete()"
+        >
+          <i class="fa-solid fa-delete-left"></i>
+        </button>
+      </template>
+      <slot name="right-icons" :disabled="disabled" />
+    </template>
+    <template v-if="slots['label-prepend']" #label-prepend>
+      <slot name="label-prepend" />
+    </template>
+    <template v-if="slots['label-append']" #label-append>
+      <slot name="label-append" />
+    </template>
+    <template v-if="slots['header-right']" #header-right>
+      <slot name="header-right" />
+    </template>
+
     <div
       class="nac-c-input-p relative min-h-[20px]"
       :class="[{ disabled: props.disabled, readonly: props.readonly }, inputBoxClass]"
@@ -724,18 +742,6 @@ const posTarget = ref();
         {{ props.mode === 'time' ? 'Now' : 'Today' }}
       </span>
     </div>
-    <template #right-icons>
-      <template v-if="!props.hideDeleteBtn && !props.readonly">
-        <button
-          :class="!disabled ? 'text-error cursor-pointer hover:bg-error/[0.1] active:bg-error/[0.2]' : ''"
-          tabindex="-1"
-          @click.stop="iconEventDelete()"
-        >
-          <i class="fa-solid fa-delete-left"></i>
-        </button>
-      </template>
-      <slot name="right-icons" :disabled="disabled" />
-    </template>
   </InputFrame>
   <ClientOnly>
     <UPopover
