@@ -19,7 +19,8 @@ import { useHsPinia } from '../../composables/use-pinia';
 // ----------------------------------------------------------------------------
 // [ Props ]
 interface Props {
-  componentName: MultiLang;
+  // componentName: MultiLang;
+  label: MultiLang;
   offset?: number;
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -60,7 +61,7 @@ const styleVisibleTarget = computed(() => {
     <div class="view-name-display flex items-center justify-center" :class="{ isShow: !targetIsVisible && isMounted }">
       <div class="view-name elevation-4 cursor-pointer bg-white" @click.stop="scroll()">
         <div class="hover:bg-orange-700/10 min-h-full min-w-full px-2 py-1">
-          {{ tx(props.componentName).value }}
+          {{ tx(props.label).value }}
         </div>
       </div>
     </div>

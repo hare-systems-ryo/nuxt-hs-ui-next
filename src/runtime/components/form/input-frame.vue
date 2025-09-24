@@ -259,8 +259,4 @@ const setRef = (e: HTMLElement) => {
 .right-icons > *::after {
   inset: 2px auto 2px 0;
 }
-
-.hc-ui-input-frame {
-  min-width: 100px;
-}
 </style>
