@@ -26,11 +26,11 @@ const disabled = ref(false);
       <!-- ------------------------------------------------ -->
       <div>サイズ</div>
       <div class="grid grid-cols-3 gap-1">
-        <div class="flex flex-start gap-1">
+        <div class="flex flex-start gap-1 items-start">
           <InputFrame size="s"> s = small</InputFrame>
           <div class="w-8 h-[44px] bg-red-300 flex items-center justify-center text-sm">44px</div>
         </div>
-        <div class="flex flex-start gap-1">
+        <div class="flex flex-start gap-1 items-start">
           <InputFrame size="m"> m = middle</InputFrame>
           <div class="w-8 h-[48px] bg-red-300 flex items-center justify-center text-sm">48px</div>
         </div>
