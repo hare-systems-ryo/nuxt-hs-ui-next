@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v3.0.34
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.33...v3.0.34)
+
 ## v3.0.33
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.32...v3.0.33)
