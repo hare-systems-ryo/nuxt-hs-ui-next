@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.0.32
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.31...v3.0.32)
+
+### 🩹 Fixes
+
+- Apply minimum size to input components without using !important in Tailwind ([863b189](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/863b189))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.31
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.30...v3.0.31)
