@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.1.2
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.1.1...v3.1.2)
+
+### 🩹 Fixes
+
+- Prevent overlap between placeholder and unit in valuebox ([df7880d](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/df7880d))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.1.1
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.1.0...v3.1.1)
