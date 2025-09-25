@@ -16,7 +16,8 @@ const list = ['a', 'b', 'c'];
     <CardItem class="" variant="body">
       <div>Test</div>
       <div class="flex">
-        <TextBox v-model:data="textA" size="s" label="" input-size="2" />
+        <TextBox :data="''" size="s" label="" input-size="2" placeholder="placeholderplaceholder" />
+        <TextBox v-model:data="textA" size="s" label="" input-size="2" placeholder="placeholderplaceholder" />
       </div>
 
       <div class="grid grid-cols-2 gap-2">

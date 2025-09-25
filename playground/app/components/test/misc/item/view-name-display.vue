@@ -8,7 +8,7 @@
 </script>
 <template>
   <Card class="mt-4">
-    <ViewNameDisplay component-name="View Name" />
+    <ViewNameDisplay label="View Name" />
     <CardItem class="" variant="header"> ViewNameDisplay </CardItem>
     <CardItem class="" variant="body">
       <div class="py-20"></div>

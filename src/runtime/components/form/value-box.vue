@@ -31,6 +31,7 @@ const hsIsMobile = useHsIsMobile(useHsPinia());
 const hsFocus = useHsFocus(useHsPinia());
 const Toast = useHsToast(useHsPinia());
 const multiLang = useHsMultiLang(useHsPinia());
+const tx = multiLang.tx;
 const gt = multiLang.gt;
 
 // ----------------------------------------------------------------------------
@@ -48,6 +49,7 @@ type Props = {
   comma?: string;
   enterkeyhint?: string;
   inputSize?: string | number;
+  placeholder?: MultiLang;
   // ----------------------------------------------------------------------------
   data: number | null;
   diff?: number | null | undefined;
@@ -102,6 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
   comma: ',',
   enterkeyhint: undefined,
   inputSize: 10,
+  placeholder: '',
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -407,12 +410,12 @@ const setRef = (elm: any) => {
   emit('ref', elm as HTMLInputElement);
 };
 
-/**
- * 強制focus
- */
-const elmFocus = () => {
-  inputElement.value.focus();
-};
+// /**
+//  * 強制focus
+//  */
+// const elmFocus = () => {
+//   inputElement.value.focus();
+// };
 
 // [ focus, blur ]
 
@@ -522,6 +525,7 @@ watch(
     setValueByPropsData();
   }
 );
+const placeholder = computed(() => tx(props.placeholder).value);
 // ----------------------------------------------------------------------------
 </script>
 
@@ -546,10 +550,9 @@ watch(
     :warn-time-out="props.warnTimeOut"
     :size="props.size"
     :headerless="props.headerless"
-    @click="elmFocus"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
@@ -574,46 +577,57 @@ watch(
     <template v-if="slots['header-right']" #header-right>
       <slot name="header-right" />
     </template>
-    <div class="flex items-end justify-end w-full">
-      <div class="flex-1 relative">
-        <input
-          :ref="(e) => setRef(e)"
-          v-model="state.value"
-          type="text"
-          :inputmode="hsIsMobile.isMobile ? 'numeric' : 'text'"
-          class="pe-[4px] w-full"
-          :class="[computedActivate ? 'opacity-100' : 'opacity-0']"
-          maxlength="20"
-          :enterkeyhint="props.enterkeyhint"
-          :disabled="props.disabled"
-          :readonly="props.readonly"
-          :tabindex="tabindex"
-          :size="props.inputSize"
-          @wheel="onWheel"
-          @keydown="keydown"
-          @keyup="(e) => emit('keyup', e)"
-          @blur="onBlur()"
-          @focus="onFocus()"
-        />
-        <input
-          type="text"
-          class="displayText pe-[4px] w-full"
-          :class="[
-            //
-            computedActivate ? 'opacity-0' : 'opacity-100',
-            { readonly: props.readonly },
-          ]"
-          :value="displayText"
-          :disabled="props.disabled"
-          :tabindex="-1"
-          :size="props.inputSize"
-          readonly
-        />
+    <template #default="{ focus }">
+      <span
+        v-if="placeholder"
+        class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
+        :class="focus || !!state.value ? 'opacity-0' : ''"
+      >
+        <div class="truncate w-full">
+          {{ placeholder }}
+        </div>
+      </span>
+      <div class="flex items-end justify-end w-full">
+        <div class="flex-1 relative">
+          <input
+            :ref="(e) => setRef(e)"
+            v-model="state.value"
+            type="text"
+            :inputmode="hsIsMobile.isMobile ? 'numeric' : 'text'"
+            class="pe-[4px] w-full"
+            :class="[computedActivate ? 'opacity-100' : 'opacity-0']"
+            maxlength="20"
+            :enterkeyhint="props.enterkeyhint"
+            :disabled="props.disabled"
+            :readonly="props.readonly"
+            :tabindex="tabindex"
+            :size="props.inputSize"
+            @wheel="onWheel"
+            @keydown="keydown"
+            @keyup="(e) => emit('keyup', e)"
+            @blur="onBlur()"
+            @focus="onFocus()"
+          />
+          <input
+            type="text"
+            class="displayText pe-[4px] w-full"
+            :class="[
+              //
+              computedActivate ? 'opacity-0' : 'opacity-100',
+              { readonly: props.readonly },
+            ]"
+            :value="displayText"
+            :disabled="props.disabled"
+            :tabindex="-1"
+            :size="props.inputSize"
+            readonly
+          />
+        </div>
+        <div v-if="props.unit.length !== 0" class="flex-none unit">
+          {{ props.unit }}
+        </div>
       </div>
-      <div v-if="props.unit.length !== 0" class="flex-none unit">
-        {{ props.unit }}
-      </div>
-    </div>
+    </template>
   </InputFrame>
 </template>
 

@@ -210,7 +210,7 @@ const setRef = (e: HTMLElement) => {
         </div>
       </div>
       <div class="hc-input-body flex-1 flex flex-col justify-center relative">
-        <div :class="inputClass"><slot /></div>
+        <div :class="inputClass"><slot name="default" :focus="props.focus" :change="props.change" /></div>
       </div>
     </div>
     <div
@@ -223,7 +223,7 @@ const setRef = (e: HTMLElement) => {
         <i class="fa-solid fa-triangle-exclamation text-error cursor-pointer"></i>
       </div>
     </div>
-    <slot name="overlay"></slot>
+    <slot name="overlay" :focus="props.focus" :change="props.change"></slot>
   </div>
 </template>
 

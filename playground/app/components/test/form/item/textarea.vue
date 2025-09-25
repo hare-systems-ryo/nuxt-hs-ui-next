@@ -16,8 +16,23 @@ const textB = ref('textB');
       <!-- ------------------------------------------------ -->
       <div>通常</div>
       <div class="grid grid-cols-2 gap-1">
-        <Textarea v-model:data="textA" :diff="textB" size="m" label="autosize" rows="3" autosize />
-        <Textarea v-model:data="textA" :diff="textB" size="m" label="ラベル付き" rows="3" />
+        <Textarea
+          v-model:data="textA"
+          :diff="textB"
+          size="m"
+          label=""
+          rows="3"
+          autosize
+          placeholder="あいうえおplaceholderplaceholder"
+        />
+        <Textarea
+          v-model:data="textA"
+          :diff="textB"
+          size="m"
+          label=""
+          rows="3"
+          placeholder="placeholderplaceholder"
+        />
       </div>
       <!-- ------------------------------------------------ -->
       <div class="p-1"></div>

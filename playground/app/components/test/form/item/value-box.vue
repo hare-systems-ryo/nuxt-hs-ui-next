@@ -18,8 +18,21 @@ const valueE = ref<number | null>(10);
     <CardItem class="" variant="body">
       <!-- ------------------------------------------------ -->
       <div>Test</div>
-      <div class="flex">
-        <ValueBox v-model:data="valueA" size="s" label="" input-size="2" />
+      <div class="flex flex-col">
+        <ValueBox
+          :data="null"
+          size="s"
+          input-size="2"
+          label="ラベル付き"
+          placeholder="placeholderplaceholder"
+        />
+        <ValueBox
+          :data="null"
+          size="s"
+          input-size="2"
+          label="ラベル付き"
+          placeholder="placeholderplaceholder"
+        />
       </div>
 
       <div>通常</div>

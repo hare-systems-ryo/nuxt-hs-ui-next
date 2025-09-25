@@ -446,8 +446,8 @@ const inputClass = computed(() => {
     :size="props.size"
     :headerless="props.headerless"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />

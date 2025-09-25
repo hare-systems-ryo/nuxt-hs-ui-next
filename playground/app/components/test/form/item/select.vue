@@ -78,9 +78,9 @@ const nullable = ref(false);
     <CardItem class="grid gap-4" variant="body">
       <!-- ------------------------------------------------ -->
       <div class="">
-        <CheckBox v-model:data="disabled" label="disabled" />
-        <CheckBox v-model:data="readonly" label="readonly" />
-        <CheckBox v-model:data="nullable" label="nullable" />
+        <CheckBox v-model:data="disabled" label="disabled" placeholder="placeholderplaceholder" />
+        <CheckBox v-model:data="readonly" label="readonly" placeholder="placeholderplaceholder" />
+        <CheckBox v-model:data="nullable" label="nullable" placeholder="placeholderplaceholder" />
       </div>
       <div class="">
         <TextBox v-model:data="state.testString.label" label="label" />

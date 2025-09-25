@@ -37,6 +37,7 @@ type Props = {
   maxRows?: number;
   maxLen?: number;
   autosize?: boolean;
+  placeholder?: MultiLang;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -80,6 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxRows: 0,
   maxLen: 0,
   autosize: false,
+  placeholder: '',
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -370,6 +372,7 @@ const _rows = computed(() => {
   if (!props.autosize) return props.rows;
   return Math.max(state.value.split('\n').length, Int(props.rows));
 });
+const placeholder = computed(() => tx(props.placeholder).value);
 </script>
 
 <template>
@@ -395,8 +398,8 @@ const _rows = computed(() => {
     :headerless="props.headerless"
     @click="elmFocus"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
@@ -420,24 +423,35 @@ const _rows = computed(() => {
       </div>
       <slot name="header-right" />
     </template>
-    <div class="nac-c-input-box" :class="[textAreaFrameClass, { isMobile: hsIsMobile.isMobile }]">
-      <textarea
-        :ref="(e) => setRef(e)"
-        v-model="state.value"
-        type="text"
-        :class="textAreaClass"
-        :rows="_rows"
-        :disabled="props.disabled || props.readonly"
-        :tabindex="tabindex"
-        @blur="onBlur()"
-        @focus="onFocus()"
-        @mousedown="onMousedown"
-        @mouseup="onMouseup"
-        @input="updateValue(state.value)"
-        @keydown="(e: KeyboardEvent) => emit('keydown', e)"
-        @keyup="(e: KeyboardEvent) => emit('keyup', e)"
-      ></textarea>
-    </div>
+    <template #default="{ focus }">
+      <span
+        v-if="placeholder"
+        class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
+        :class="focus || !!state.value ? 'opacity-0' : ''"
+      >
+        <div class="truncate w-full">
+          {{ placeholder }}
+        </div>
+      </span>
+      <div class="nac-c-input-box" :class="[textAreaFrameClass, { isMobile: hsIsMobile.isMobile }]">
+        <textarea
+          :ref="(e) => setRef(e)"
+          v-model="state.value"
+          type="text"
+          :class="textAreaClass"
+          :rows="_rows"
+          :disabled="props.disabled || props.readonly"
+          :tabindex="tabindex"
+          @blur="onBlur()"
+          @focus="onFocus()"
+          @mousedown="onMousedown"
+          @mouseup="onMouseup"
+          @input="updateValue(state.value)"
+          @keydown="(e: KeyboardEvent) => emit('keydown', e)"
+          @keyup="(e: KeyboardEvent) => emit('keyup', e)"
+        ></textarea>
+      </div>
+    </template>
   </InputFrame>
 </template>
 

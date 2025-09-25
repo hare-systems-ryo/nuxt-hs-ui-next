@@ -475,8 +475,8 @@ watch(computedActivate, (value) => {
     @ref="(e) => (inputFrameElm = e)"
     @click="openToggle()"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
@@ -515,287 +515,289 @@ watch(computedActivate, (value) => {
     </template>
     <!-- @click.stop="selectOpen = !selectOpen" -->
     <!-- <ClientOnly> -->
-    <template v-if="!props.searchable">
-      <!-- :key="displayList.map((i) => i.id).join('|') + ':' + activeValue" -->
-      <USelect
-        v-model:open="selectOpen"
-        :model-value="activeValue"
-        :items="displayList"
-        value-key="id"
-        label-key="text"
-        class="w-full"
-        :trailing="false"
-        trailing-icon=""
-        :ui="{
-          base: uiBase,
-          item: ['!bg-white focus:bg-white active:bg-white p-0'],
-        }"
-        :content="{
-          reference: inputFrameElm,
-          ...content,
-        }"
-        :disabled="lock"
-        :close-on-select="false"
-        @update:model-value="(v:any) => updateData(v)"
-      >
-        <template #default>
-          <!-- :key="activeRow?._key || 'null-' + '_base'" -->
-          <div
-            class="flex items-center w-full"
-            :class="[
-              props.disabled ? 'cursor-not-allowed' : '', //
-              props.readonly ? 'cursor-text' : '', //
-              !lock ? 'cursor-pointer' : '', //
-            ]"
-            @click.stop="openToggle()"
-          >
-            <template v-if="activeRow">
-              <SelectImgIcon
-                v-if="props.img"
-                :key="activeRow._key + '_img'"
-                class="flex-none"
-                :class="[computedActivate ? '' : '']"
-                :img-url="activeRow?.imgUrl || ''"
-                :class-img="props.classImg"
-                :class-img-tag="props.classImgTag"
-                :img-mode="props.imgMode"
-              />
-              <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
-              <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
-            </template>
-            <template v-else>
-              <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
-            </template>
-          </div>
-        </template>
-        <template #trailing>
-          <div></div>
-        </template>
-        <template #item="{ item }">
-          <div
-            :key="item.id"
-            class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
-            :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
-            :style="`--color-bg: ${activeColorCode}10;`"
-            @click="
-              updateData(item.id);
-              selectOpen = false;
-            "
-          >
-            <SelectImgIcon
-              v-if="item.imgUrl && props.img"
-              :key="item._key + 'img'"
-              class="flex-none"
-              :class="[computedActivate ? '' : '']"
-              :img-url="item.imgUrl"
-              :class-img="props.classImg"
-              :class-img-tag="props.classImgTag"
-              :img-mode="props.imgMode"
-            />
-            <SelectItemLabel :key="item._key + 'label'" :item="item" overflow />
-            <SelectItemState :key="item.id + 'state'" :item="item" :value="activeValue" />
-          </div>
-        </template>
-        <template v-if="hasHiddenItem" #content-bottom>
-          <div class="p-1">
-            <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
-          </div>
-        </template>
-      </USelect>
-    </template>
-    <template v-else-if="props.searchable && !hsIsMobile.isMobile">
-      <USelectMenu
-        v-model:serach-term="searchWord"
-        v-model:open="selectOpen"
-        :model-value="activeValue"
-        :items="displayList"
-        value-key="id"
-        label-key="text"
-        class="w-full"
-        :trailing="false"
-        trailing-icon=""
-        :ui="{
-          base: uiBase,
-          item: ['!bg-white focus:bg-white active:bg-white p-0'],
-          // item: ['hover:bg-white focus:bg-white py-0'],
-        }"
-        :content="{
-          reference: inputFrameElm,
-          ...content,
-        }"
-        :disabled="lock"
-        :close-on-select="false"
-        @update:model-value="(v:any) => updateData(v)"
-      >
-        <template #default>
-          <div
-            :key="activeRow?._key || 'null-' + '_base'"
-            class="flex items-center w-full"
-            :class="[
-              props.disabled ? 'cursor-not-allowed' : '', //
-              props.readonly ? 'cursor-text' : '', //
-              !lock ? 'cursor-pointer' : '', //
-            ]"
-            @click.stop="openToggle()"
-          >
-            <template v-if="activeRow">
-              <SelectImgIcon
-                v-if="props.img"
-                :key="activeRow._key + '_img'"
-                class="flex-none"
-                :class="[computedActivate ? '' : '']"
-                :img-url="activeRow?.imgUrl || ''"
-                :class-img="props.classImg"
-                :class-img-tag="props.classImgTag"
-                :img-mode="props.imgMode"
-              />
-              <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
-              <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
-            </template>
-            <template v-else>
-              <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
-            </template>
-          </div>
-        </template>
-        <template #trailing>
-          <div></div>
-        </template>
-        <template #item="{ item }">
-          <div
-            :key="item.id"
-            class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
-            :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
-            :style="`--color-bg: ${activeColorCode}10;`"
-            @click="
-              updateData(item.id);
-              selectOpen = false;
-            "
-          >
-            <SelectImgIcon
-              v-if="item.imgUrl && props.img"
-              :key="item._key + '_img'"
-              class="flex-none"
-              :class="[computedActivate ? '' : '']"
-              :img-url="item.imgUrl"
-              :class-img="props.classImg"
-              :class-img-tag="props.classImgTag"
-              :img-mode="props.imgMode"
-            />
-            <SelectItemLabel :key="item._key + '_label'" :item="item" overflow />
-            <SelectItemState :key="item._key + '_state'" :item="item" :value="activeValue" />
-          </div>
-        </template>
-        <template v-if="hasHiddenItem" #content-bottom>
-          <div class="p-1">
-            <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
-          </div>
-        </template>
-      </USelectMenu>
-    </template>
-    <template v-else>
-      <div
-        :key="activeRow?._key || 'null-' + '_base'"
-        class="flex items-center w-full px-[10px] text-neutral-900"
-        :class="[
-          props.disabled ? 'cursor-not-allowed' : '', //
-          props.readonly ? 'cursor-text' : '', //
-          !lock ? 'cursor-pointer' : '', //
-        ]"
-        @click.stop="showSpModal()"
-      >
-        <template v-if="activeRow">
-          <SelectImgIcon
-            v-if="props.img"
-            :key="activeRow._key + '_img'"
-            class="flex-none"
-            :class="[computedActivate ? '' : '']"
-            :img-url="activeRow?.imgUrl || ''"
-            :class-img="props.classImg"
-            :class-img-tag="props.classImgTag"
-            :img-mode="props.imgMode"
-          />
-          <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
-          <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
-        </template>
-        <template v-else>
-          <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
-        </template>
-      </div>
-      <Modal
-        :show="modal.sp.isShow"
-        closeable
-        @close="
-          modal.sp.close();
-          selectOpen = false;
-        "
-      >
-        <Card ref="modalElm" class="HsSelectModal w-full max-w-[500px] max-h-full">
-          <CardItem variant="header" size="s" cross @update:open="modal.sp.close()">
-            <div>
-              {{ tx(props.label || { ja: '選択', en: 'Please Select' }) }}
+    <template #default>
+      <template v-if="!props.searchable">
+        <!-- :key="displayList.map((i) => i.id).join('|') + ':' + activeValue" -->
+        <USelect
+          v-model:open="selectOpen"
+          :model-value="activeValue"
+          :items="displayList"
+          value-key="id"
+          label-key="text"
+          class="w-full"
+          :trailing="false"
+          trailing-icon=""
+          :ui="{
+            base: uiBase,
+            item: ['!bg-white focus:bg-white active:bg-white p-0'],
+          }"
+          :content="{
+            reference: inputFrameElm,
+            ...content,
+          }"
+          :disabled="lock"
+          :close-on-select="false"
+          @update:model-value="(v:any) => updateData(v)"
+        >
+          <template #default>
+            <!-- :key="activeRow?._key || 'null-' + '_base'" -->
+            <div
+              class="flex items-center w-full"
+              :class="[
+                props.disabled ? 'cursor-not-allowed' : '', //
+                props.readonly ? 'cursor-text' : '', //
+                !lock ? 'cursor-pointer' : '', //
+              ]"
+              @click.stop="openToggle()"
+            >
+              <template v-if="activeRow">
+                <SelectImgIcon
+                  v-if="props.img"
+                  :key="activeRow._key + '_img'"
+                  class="flex-none"
+                  :class="[computedActivate ? '' : '']"
+                  :img-url="activeRow?.imgUrl || ''"
+                  :class-img="props.classImg"
+                  :class-img-tag="props.classImgTag"
+                  :img-mode="props.imgMode"
+                />
+                <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+                <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+              </template>
+              <template v-else>
+                <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+              </template>
             </div>
-          </CardItem>
-          <CardItem variant="body">
-            <div class="text-[14px] text-gray-600 leading-[1em] mb-1">{{ tx({ ja: '検索', en: 'Search' }) }}</div>
-            <TextBox v-model:data="searchWord" size="m" />
-          </CardItem>
-          <CardItem variant="body">
-            <div class="h-[1px] w-full bg-main0/50"></div>
-          </CardItem>
-          <CardItem variant="body" scroll>
-            <div ref="modalSpScrollTopTarget" class="grid gap-1">
-              <div
-                v-for="(row, index) in spFilterList"
-                :ref="(e:any) => (row.html = e)"
-                :key="index"
-                class="cursor-pointerw-full text-neutral-900 border rounded bg-white overflow-hidden"
-                :class="[row.id === activeValue ? 'border-accent1' : 'border-black/20']"
-                @click="
-                  updateData(row.id);
-                  modal.sp.close();
-                "
-              >
-                <div class="flex items-center active:bg-accent1/10 p-3">
-                  <SelectImgIcon
-                    v-if="props.img"
-                    :key="row._key + '_img'"
-                    class="flex-none"
-                    :class="[computedActivate ? '' : '']"
-                    :img-url="row?.imgUrl || ''"
-                    :class-img="props.classImg"
-                    :class-img-tag="props.classImgTag"
-                    :img-mode="props.imgMode"
-                  />
-                  <SelectItemLabel :key="row._key + '_label'" :item="row" overflow />
-                  <SelectItemState :key="row._key + '_state'" :item="row" :value="activeValue" />
+          </template>
+          <template #trailing>
+            <div></div>
+          </template>
+          <template #item="{ item }">
+            <div
+              :key="item.id"
+              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+              :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
+              :style="`--color-bg: ${activeColorCode}10;`"
+              @click="
+                updateData(item.id);
+                selectOpen = false;
+              "
+            >
+              <SelectImgIcon
+                v-if="item.imgUrl && props.img"
+                :key="item._key + 'img'"
+                class="flex-none"
+                :class="[computedActivate ? '' : '']"
+                :img-url="item.imgUrl"
+                :class-img="props.classImg"
+                :class-img-tag="props.classImgTag"
+                :img-mode="props.imgMode"
+              />
+              <SelectItemLabel :key="item._key + 'label'" :item="item" overflow />
+              <SelectItemState :key="item.id + 'state'" :item="item" :value="activeValue" />
+            </div>
+          </template>
+          <template v-if="hasHiddenItem" #content-bottom>
+            <div class="p-1">
+              <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
+            </div>
+          </template>
+        </USelect>
+      </template>
+      <template v-else-if="props.searchable && !hsIsMobile.isMobile">
+        <USelectMenu
+          v-model:serach-term="searchWord"
+          v-model:open="selectOpen"
+          :model-value="activeValue"
+          :items="displayList"
+          value-key="id"
+          label-key="text"
+          class="w-full"
+          :trailing="false"
+          trailing-icon=""
+          :ui="{
+            base: uiBase,
+            item: ['!bg-white focus:bg-white active:bg-white p-0'],
+            // item: ['hover:bg-white focus:bg-white py-0'],
+          }"
+          :content="{
+            reference: inputFrameElm,
+            ...content,
+          }"
+          :disabled="lock"
+          :close-on-select="false"
+          @update:model-value="(v:any) => updateData(v)"
+        >
+          <template #default>
+            <div
+              :key="activeRow?._key || 'null-' + '_base'"
+              class="flex items-center w-full"
+              :class="[
+                props.disabled ? 'cursor-not-allowed' : '', //
+                props.readonly ? 'cursor-text' : '', //
+                !lock ? 'cursor-pointer' : '', //
+              ]"
+              @click.stop="openToggle()"
+            >
+              <template v-if="activeRow">
+                <SelectImgIcon
+                  v-if="props.img"
+                  :key="activeRow._key + '_img'"
+                  class="flex-none"
+                  :class="[computedActivate ? '' : '']"
+                  :img-url="activeRow?.imgUrl || ''"
+                  :class-img="props.classImg"
+                  :class-img-tag="props.classImgTag"
+                  :img-mode="props.imgMode"
+                />
+                <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+                <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+              </template>
+              <template v-else>
+                <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+              </template>
+            </div>
+          </template>
+          <template #trailing>
+            <div></div>
+          </template>
+          <template #item="{ item }">
+            <div
+              :key="item.id"
+              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+              :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
+              :style="`--color-bg: ${activeColorCode}10;`"
+              @click="
+                updateData(item.id);
+                selectOpen = false;
+              "
+            >
+              <SelectImgIcon
+                v-if="item.imgUrl && props.img"
+                :key="item._key + '_img'"
+                class="flex-none"
+                :class="[computedActivate ? '' : '']"
+                :img-url="item.imgUrl"
+                :class-img="props.classImg"
+                :class-img-tag="props.classImgTag"
+                :img-mode="props.imgMode"
+              />
+              <SelectItemLabel :key="item._key + '_label'" :item="item" overflow />
+              <SelectItemState :key="item._key + '_state'" :item="item" :value="activeValue" />
+            </div>
+          </template>
+          <template v-if="hasHiddenItem" #content-bottom>
+            <div class="p-1">
+              <SelectHiddenItemToggle v-model:hidden-item-visible="hiddenItemVisible" />
+            </div>
+          </template>
+        </USelectMenu>
+      </template>
+      <template v-else>
+        <div
+          :key="activeRow?._key || 'null-' + '_base'"
+          class="flex items-center w-full px-[10px] text-neutral-900"
+          :class="[
+            props.disabled ? 'cursor-not-allowed' : '', //
+            props.readonly ? 'cursor-text' : '', //
+            !lock ? 'cursor-pointer' : '', //
+          ]"
+          @click.stop="showSpModal()"
+        >
+          <template v-if="activeRow">
+            <SelectImgIcon
+              v-if="props.img"
+              :key="activeRow._key + '_img'"
+              class="flex-none"
+              :class="[computedActivate ? '' : '']"
+              :img-url="activeRow?.imgUrl || ''"
+              :class-img="props.classImg"
+              :class-img-tag="props.classImgTag"
+              :img-mode="props.imgMode"
+            />
+            <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+            <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
+          </template>
+          <template v-else>
+            <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+          </template>
+        </div>
+        <Modal
+          :show="modal.sp.isShow"
+          closeable
+          @close="
+            modal.sp.close();
+            selectOpen = false;
+          "
+        >
+          <Card ref="modalElm" class="HsSelectModal w-full max-w-[500px] max-h-full">
+            <CardItem variant="header" size="s" cross @update:open="modal.sp.close()">
+              <div>
+                {{ tx(props.label || { ja: '選択', en: 'Please Select' }) }}
+              </div>
+            </CardItem>
+            <CardItem variant="body">
+              <div class="text-[14px] text-gray-600 leading-[1em] mb-1">{{ tx({ ja: '検索', en: 'Search' }) }}</div>
+              <TextBox v-model:data="searchWord" size="m" />
+            </CardItem>
+            <CardItem variant="body">
+              <div class="h-[1px] w-full bg-main0/50"></div>
+            </CardItem>
+            <CardItem variant="body" scroll>
+              <div ref="modalSpScrollTopTarget" class="grid gap-1">
+                <div
+                  v-for="(row, index) in spFilterList"
+                  :ref="(e:any) => (row.html = e)"
+                  :key="index"
+                  class="cursor-pointerw-full text-neutral-900 border rounded bg-white overflow-hidden"
+                  :class="[row.id === activeValue ? 'border-accent1' : 'border-black/20']"
+                  @click="
+                    updateData(row.id);
+                    modal.sp.close();
+                  "
+                >
+                  <div class="flex items-center active:bg-accent1/10 p-3">
+                    <SelectImgIcon
+                      v-if="props.img"
+                      :key="row._key + '_img'"
+                      class="flex-none"
+                      :class="[computedActivate ? '' : '']"
+                      :img-url="row?.imgUrl || ''"
+                      :class-img="props.classImg"
+                      :class-img-tag="props.classImgTag"
+                      :img-mode="props.imgMode"
+                    />
+                    <SelectItemLabel :key="row._key + '_label'" :item="row" overflow />
+                    <SelectItemState :key="row._key + '_state'" :item="row" :value="activeValue" />
+                  </div>
+                </div>
+                <div
+                  v-if="listBase.length !== 0 && spFilterList.length === 0"
+                  class="text-error whitespace-pre-line text-center"
+                >
+                  {{
+                    tx({
+                      ja: '検索条件に一致する結果は見つかりませんでした。\n他のキーワードでお試しください。',
+                      en: 'No results matched your search. \nPlease try different keywords.',
+                    })
+                  }}
+                </div>
+                <div v-else-if="listBase.length === 0" class="text-error text-center">
+                  {{
+                    tx({
+                      ja: '利用可能な選択肢がありません',
+                      en: 'No selectable options',
+                    })
+                  }}
                 </div>
               </div>
-              <div
-                v-if="listBase.length !== 0 && spFilterList.length === 0"
-                class="text-error whitespace-pre-line text-center"
-              >
-                {{
-                  tx({
-                    ja: '検索条件に一致する結果は見つかりませんでした。\n他のキーワードでお試しください。',
-                    en: 'No results matched your search. \nPlease try different keywords.',
-                  })
-                }}
-              </div>
-              <div v-else-if="listBase.length === 0" class="text-error text-center">
-                {{
-                  tx({
-                    ja: '利用可能な選択肢がありません',
-                    en: 'No selectable options',
-                  })
-                }}
-              </div>
-            </div>
-          </CardItem>
-          <CardItem variant="body" class="pt-1 bg-back">
-            <SelectHiddenItemToggle v-if="hasHiddenItem" v-model:hidden-item-visible="hiddenItemVisible" />
-          </CardItem>
-        </Card>
-      </Modal>
+            </CardItem>
+            <CardItem variant="body" class="pt-1 bg-back">
+              <SelectHiddenItemToggle v-if="hasHiddenItem" v-model:hidden-item-visible="hiddenItemVisible" />
+            </CardItem>
+          </Card>
+        </Modal>
+      </template>
     </template>
     <!-- </ClientOnly> -->
   </InputFrame>

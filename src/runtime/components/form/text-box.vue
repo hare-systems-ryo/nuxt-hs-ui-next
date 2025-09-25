@@ -18,6 +18,7 @@ import type { MultiLang } from '../../utils/multi-lang';
 // [ composables ]
 import { useHsFocus } from '../../composables/use-hs-focus';
 import { useHsPinia } from '../../composables/use-pinia';
+import { useHsMultiLang } from '../../composables/use-hs-multi-lang';
 // [ Components ]
 import InputFrame from './input-frame.vue';
 // ----------------------------------------------------------------------------
@@ -35,6 +36,7 @@ type Props = {
   enterkeyhint?: string;
   inputmode?: 'text' | 'search' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
   inputSize?: string | number;
+  placeholder?: MultiLang;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -79,6 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
   enterkeyhint: undefined,
   inputmode: undefined,
   inputSize: 10,
+  placeholder: '',
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -138,6 +141,8 @@ const slots = defineSlots<{
 // ----------------------------------------------------------------------------
 // [ getCurrentInstance ]
 const uid = useId();
+const multiLang = useHsMultiLang(useHsPinia());
+const tx = multiLang.tx;
 // ----------------------------------------------------------------------------
 
 // [ reactive ]
@@ -200,14 +205,14 @@ const setRef = (elm: any) => {
   emit('ref', elm);
 };
 
-/**
- * 強制focus
- */
-const elmFocus = () => {
-  if (props.disabled === true) return;
-  if (props.readonly === true) return;
-  inputElement.value.focus();
-};
+// /**
+//  * 強制focus
+//  */
+// const elmFocus = () => {
+//   if (props.disabled === true) return;
+//   if (props.readonly === true) return;
+//   inputElement.value.focus();
+// };
 
 // [ focus, blur ]
 interface FocusState {
@@ -283,6 +288,8 @@ const lenLabelClass = computed(() => {
 });
 
 const dataListId = ref(`textbox-list-${uid}`);
+const placeholder = computed(() => tx(props.placeholder).value);
+
 // ----------------------------------------------------------------------------
 </script>
 
@@ -307,10 +314,10 @@ const dataListId = ref(`textbox-list-${uid}`);
     :warn-time-out="props.warnTimeOut"
     :size="props.size"
     :headerless="props.headerless"
-    @click="elmFocus"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <!-- @click="elmFocus" -->
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
@@ -330,37 +337,48 @@ const dataListId = ref(`textbox-list-${uid}`);
         {{ state.value.length }} / {{ props.maxLen }}
       </div>
     </template>
-    <div v-if="props.disabled" class="input-d" :style="`text-align:${props.textAlign};`">
-      {{ state.value }}
-    </div>
-    <input
-      v-else
-      :ref="(e) => setRef(e)"
-      v-model="state.value"
-      :list="props.datalist.length > 0 ? dataListId : undefined"
-      :type="props.type"
-      :autocomplete="props.autocomplete"
-      style="ime-mode: active"
-      :style="`text-align:${props.textAlign};`"
-      class="w-full"
-      :disabled="props.disabled"
-      :readonly="props.readonly"
-      :tabindex="tabindex"
-      :enterkeyhint="props.enterkeyhint"
-      :inputmode="props.inputmode"
-      :size="props.inputSize"
-      @blur="onBlur()"
-      @focus="onFocus()"
-      @input="updateValue(state.value)"
-      @keydown="(e: KeyboardEvent) => emit('keydown', e)"
-      @keyup="(e: KeyboardEvent) => emit('keyup', e)"
-      @click.stop=""
-    />
-    <datalist v-if="props.datalist.length !== 0" :id="dataListId">
-      <template v-for="(row, index) in props.datalist" :key="index">
-        <option :value="row" />
-      </template>
-    </datalist>
+    <template #default="{ focus }">
+      <span
+        v-if="placeholder"
+        class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
+        :class="focus || !!state.value ? 'opacity-0' : ''"
+      >
+        <div class="truncate w-full">
+          {{ placeholder }}
+        </div>
+      </span>
+      <div v-if="props.disabled" class="input-d" :style="`text-align:${props.textAlign};`">
+        {{ state.value }}
+      </div>
+      <input
+        v-else
+        :ref="(e) => setRef(e)"
+        v-model="state.value"
+        :list="props.datalist.length > 0 ? dataListId : undefined"
+        :type="props.type"
+        :autocomplete="props.autocomplete"
+        style="ime-mode: active"
+        :style="`text-align:${props.textAlign};`"
+        class="w-full"
+        :disabled="props.disabled"
+        :readonly="props.readonly"
+        :tabindex="tabindex"
+        :enterkeyhint="props.enterkeyhint"
+        :inputmode="props.inputmode"
+        :size="props.inputSize"
+        @blur="onBlur()"
+        @focus="onFocus()"
+        @input="updateValue(state.value)"
+        @keydown="(e: KeyboardEvent) => emit('keydown', e)"
+        @keyup="(e: KeyboardEvent) => emit('keyup', e)"
+        @click.stop=""
+      />
+      <datalist v-if="props.datalist.length !== 0" :id="dataListId">
+        <template v-for="(row, index) in props.datalist" :key="index">
+          <option :value="row" />
+        </template>
+      </datalist>
+    </template>
   </InputFrame>
 </template>
 

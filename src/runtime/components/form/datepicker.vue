@@ -664,8 +664,8 @@ const posTarget = ref();
     :headerless="props.headerless"
     @ref="(e) => (posTarget = e)"
   >
-    <template v-if="slots.overlay" #overlay>
-      <slot name="overlay"></slot>
+    <template v-if="slots.overlay" #overlay="{ focus, change }">
+      <slot name="overlay" :focus="focus" :change="change"></slot>
     </template>
     <template v-if="!props.readonly || slots['left-icons']" #left-icons>
       <slot name="left-icons" :disabled="disabled" />
