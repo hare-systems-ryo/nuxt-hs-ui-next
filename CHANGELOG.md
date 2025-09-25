@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.1.0
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.34...v3.1.0)
+
+### 🚀 Enhancements
+
+- Add placeholder support to textbox components ([08f890a](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/08f890a))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.0.34
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.33...v3.0.34)
