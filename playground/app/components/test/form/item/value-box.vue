@@ -26,8 +26,16 @@ const valueE = ref<number | null>(10);
           label="ラベル付き"
           placeholder="placeholderplaceholder"
           text-align="center"
+          unit="円"
         />
-        <ValueBox :data="null" size="s" input-size="2" label="ラベル付き" placeholder="placeholderplaceholder" />
+        <ValueBox
+          :data="null"
+          size="s"
+          input-size="2"
+          label="ラベル付き"
+          placeholder="1234"
+          unit="円"
+        />
       </div>
 
       <div>通常</div>

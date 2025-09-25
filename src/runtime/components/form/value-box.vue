@@ -584,17 +584,17 @@ const placeholder = computed(() => tx(props.placeholder).value);
       <slot name="header-right" />
     </template>
     <template #default="{ focus }">
-      <span
-        v-if="placeholder"
-        class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
-        :class="focus || !!state.value ? 'opacity-0' : ''"
-      >
-        <div class="truncate w-full" :style="`text-align:${props.textAlign};`">
-          {{ placeholder }}
-        </div>
-      </span>
-      <div class="flex items-end justify-end w-full">
+      <div class="flex items-end justify-end w-full relative">
         <div class="flex-1 relative">
+          <span
+            v-if="placeholder"
+            class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
+            :class="focus || !!state.value ? 'opacity-0' : ''"
+          >
+            <div class="truncate w-full" :style="`text-align:${props.textAlign};`">
+              {{ placeholder }}
+            </div>
+          </span>
           <input
             :ref="(e) => setRef(e)"
             v-model="state.value"
