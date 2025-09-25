@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.1.1
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.1.0...v3.1.1)
+
+### 🩹 Fixes
+
+- Align placeholder position with text input alignment ([56aa623](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/56aa623))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.1.0
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.0.34...v3.1.0)
