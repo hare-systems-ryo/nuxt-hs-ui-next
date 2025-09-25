@@ -25,19 +25,14 @@ const valueE = ref<number | null>(10);
           input-size="2"
           label="ラベル付き"
           placeholder="placeholderplaceholder"
+          text-align="center"
         />
-        <ValueBox
-          :data="null"
-          size="s"
-          input-size="2"
-          label="ラベル付き"
-          placeholder="placeholderplaceholder"
-        />
+        <ValueBox :data="null" size="s" input-size="2" label="ラベル付き" placeholder="placeholderplaceholder" />
       </div>
 
       <div>通常</div>
       <div class="grid grid-cols-2 gap-1">
-        <ValueBox v-model:data="valueA" :diff="valueB" size="s" label="" />
+        <ValueBox v-model:data="valueA" :diff="valueB" size="s" comma="" />
         <ValueBox v-model:data="valueA" :diff="valueB" size="s" label="ラベル付き" />
       </div>
       <!-- ------------------------------------------------ -->

@@ -343,7 +343,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
         class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
         :class="focus || !!state.value ? 'opacity-0' : ''"
       >
-        <div class="truncate w-full">
+        <div class="truncate w-full" :style="`text-align:${props.textAlign};`">
           {{ placeholder }}
         </div>
       </span>

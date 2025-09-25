@@ -50,6 +50,7 @@ type Props = {
   enterkeyhint?: string;
   inputSize?: string | number;
   placeholder?: MultiLang;
+  textAlign?: 'left' | 'center' | 'right';
   // ----------------------------------------------------------------------------
   data: number | null;
   diff?: number | null | undefined;
@@ -105,6 +106,7 @@ const props = withDefaults(defineProps<Props>(), {
   enterkeyhint: undefined,
   inputSize: 10,
   placeholder: '',
+  textAlign: 'right',
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -267,6 +269,10 @@ const updateData = async (val: number | null, f = true) => {
   emit('update:data', updateValue);
   await nextTick();
   if (f) emit('value-change', updateValue, before);
+  await nextTick();
+  if (props.data !== val) {
+    state.value = String(before ?? '');
+  }
 };
 
 /**
@@ -583,7 +589,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
         class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
         :class="focus || !!state.value ? 'opacity-0' : ''"
       >
-        <div class="truncate w-full">
+        <div class="truncate w-full" :style="`text-align:${props.textAlign};`">
           {{ placeholder }}
         </div>
       </span>
@@ -596,6 +602,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
             :inputmode="hsIsMobile.isMobile ? 'numeric' : 'text'"
             class="pe-[4px] w-full"
             :class="[computedActivate ? 'opacity-100' : 'opacity-0']"
+            :style="`text-align:${props.textAlign};`"
             maxlength="20"
             :enterkeyhint="props.enterkeyhint"
             :disabled="props.disabled"
@@ -616,6 +623,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
               computedActivate ? 'opacity-0' : 'opacity-100',
               { readonly: props.readonly },
             ]"
+            :style="`text-align:${props.textAlign};`"
             :value="displayText"
             :disabled="props.disabled"
             :tabindex="-1"
@@ -639,7 +647,7 @@ input {
   appearance: none;
   border: 0px;
   outline: none;
-  text-align: right;
+  // text-align: right;
   color: inherit;
   &[type='number']::-webkit-outer-spin-button,
   &[type='number']::-webkit-inner-spin-button {
