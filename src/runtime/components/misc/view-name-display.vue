@@ -7,7 +7,7 @@
 ---------------------------------------------------------------------------- */
 
 // [ NUXT ]
-import { ref, computed, onMounted } from '#imports';
+import { ref, computed, onMounted, watch } from '#imports';
 // [ vueuse ]
 import { useElementVisibility } from '@vueuse/core';
 // ----------------------------------------------------------------------------
@@ -26,12 +26,20 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   offset: 10,
 });
+type Emits = {
+  ref: [element: HTMLElement];
+};
+const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
 // [ MultiLang ]
 const hsMultiLang = useHsMultiLang(useHsPinia());
 const tx = hsMultiLang.tx;
 // ----------------------------------------------------------------------------
 const targetScrollElm = ref<HTMLElement | null>(null);
+watch(targetScrollElm, (e) => () => {
+  if (!e) return;
+  emit('ref', e);
+});
 const targetVisibleElm = ref<HTMLElement | null>(null);
 const targetIsVisible = useElementVisibility(targetVisibleElm);
 // ----------------------------------------------------------------------------
