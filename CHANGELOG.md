@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.0
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.1.2...v3.2.0)
+
+### 🚀 Enhancements
+
+- Emit scroll target HTMLElement for external reference ([613f395](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/613f395))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.1.2
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.1.1...v3.1.2)
