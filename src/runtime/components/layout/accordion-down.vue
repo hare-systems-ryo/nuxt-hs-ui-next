@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// src\runtime\components\layout\accordion.vue
+// src\runtime\components\layout\accordion-down.vue
 // ----------------------------------------------------------------------------
-// Accordion
-// AccordionAccordion
+// AccordionDown
+// AccordionDownAccordionDown
 ---------------------------------------------------------------------------- */
 
 // [ NUXT ]

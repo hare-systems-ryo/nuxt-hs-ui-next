@@ -15,11 +15,19 @@ const c = () => {
 };
 const loading = ref(false);
 const disabled = ref(true);
+const test = () => {
+  console.log('test');
+};
 </script>
 <template>
   <Card class="mt-4">
     <CardItem class="" variant="header"> Btn </CardItem>
     <CardItem class="" variant="body">
+      <div class="grid grid-cols-3 gap-2">
+        <Btn theme="accent1" variant="outlined" class="bg-white mb-2" :disabled="disabled" @click="test()"> test </Btn>
+        <Btn theme="accent1" variant="outlined" class="bg-white mb-2" @click="test()"> test </Btn>
+        <Btn theme="accent1" variant="outlined" class="bg-white mb-2" @click="test()"> test </Btn>
+      </div>
       <!-- ------------------------------------------------ -->
       <div class="grid grid-cols-2 gap-2">
         <div class="flex items-center gap-1">

@@ -294,6 +294,11 @@ type Emits = {
   ref: [element: HTMLElement];
   focus: [e: InputFocusEventArg];
   blur: [e: InputFocusEventArg];
+  click: [e: Event];
+};
+const onClick = (e: Event) => {
+  if (disabled.value) return;
+  emit('click', e);
 };
 const emit = defineEmits<Emits>();
 // ----------------------------------------------------------------------------
@@ -450,6 +455,8 @@ const btnTvOverlay = computed(() => {
     @touchcancel="pushOff"
     @keydown.enter="pushOn"
     @keyup.enter="pushOff"
+    @click="onClick"
+    @keydown.enter.prevent.stop="onClick"
   >
     <div :class="btnTvIndicator"></div>
     <div :class="btnTvBody">
@@ -476,6 +483,8 @@ const btnTvOverlay = computed(() => {
     @touchcancel="pushOff"
     @keydown.enter="pushOn"
     @keyup.enter="pushOff"
+    @click="onClick"
+    @keydown.enter.prevent.stop="onClick"
   >
     <div :class="btnTvIndicator"></div>
     <div :class="btnTvOverlay"></div>

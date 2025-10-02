@@ -19,7 +19,6 @@ import { useHsPinia } from '../../composables/use-pinia';
 // ----------------------------------------------------------------------------
 // [ Props ]
 interface Props {
-  // componentName: MultiLang;
   label: MultiLang;
   offset?: number;
 }
@@ -63,7 +62,7 @@ const styleVisibleTarget = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="absolute">
     <div ref="targetScrollElm" class="absolute top-0 pointer-events-none" :style="styleScrollTarget"></div>
     <div ref="targetVisibleElm" class="absolute top-0 pointer-events-none" :style="styleVisibleTarget"></div>
     <div class="view-name-display flex items-center justify-center" :class="{ isShow: !targetIsVisible && isMounted }">
