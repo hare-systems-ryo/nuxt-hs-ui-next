@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v3.2.2
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.0...v3.2.2)
+
+### 🏡 Chore
+
+- **release:** V3.2.1 ([94aef95](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/94aef95))
+
+### 🎨 Styles
+
+- Clarify text color for readonly select component ([ca74a80](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/ca74a80))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.1
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.0...v3.2.1)
