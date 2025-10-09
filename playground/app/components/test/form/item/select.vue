@@ -82,6 +82,14 @@ const nullable = ref(false);
         <CheckBox v-model:data="readonly" label="readonly" placeholder="placeholderplaceholder" />
         <CheckBox v-model:data="nullable" label="nullable" placeholder="placeholderplaceholder" />
       </div>
+      <div class="grid grid-cols-4 gap-2">
+        <TextBox :data="'選択してください'" label="text" readonly />
+        <Select v-model:data="state.testString.data" :list="state.testString.list" readonly label="readonly" />
+
+        <Select v-model:data="state.testString.data" :list="state.testString.list" disabled label="disabled" />
+
+        <Select v-model:data="state.testString.data" :list="state.testString.list" label="none" />
+      </div>
       <div class="">
         <TextBox v-model:data="state.testString.label" label="label" />
       </div>

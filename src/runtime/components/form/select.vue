@@ -561,11 +561,21 @@ watch(computedActivate, (value) => {
                   :class-img-tag="props.classImgTag"
                   :img-mode="props.imgMode"
                 />
-                <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
+                <SelectItemLabel
+                  :key="activeRow._key + '_label'"
+                  :item="activeRow"
+                  :disabled="props.disabled"
+                  :readonly="props.readonly"
+                />
                 <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
               </template>
               <template v-else>
-                <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+                <div
+                  class="min-w-0 truncate flex-1 text-[1rem]"
+                  :class="[!props.disabled ? 'text-gray-700' : '', props.disabled ? 'text-gray-600 ' : '']"
+                >
+                  {{ tx(props.nullText) }}
+                </div>
               </template>
             </div>
           </template>

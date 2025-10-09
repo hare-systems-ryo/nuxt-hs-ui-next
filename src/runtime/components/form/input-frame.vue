@@ -148,7 +148,9 @@ const inputClass = computed(() => {
       'px-1',
       'truncate relative',
       'flex items-center',
-      //
+      'text-black',
+      props.disabled ? 'text-gray-600 ' : '',
+      // props.readonly ? 'text-black' : '',
       'w-full',
       // 'max-w-full max-h-full w-full',
       props.size === 's' ? 'text-[16px]' : '',
@@ -227,36 +229,38 @@ const setRef = (e: HTMLElement) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.icons {
-  display: flex;
-  align-items: center;
-  > * {
-    position: relative;
-    height: 100%;
-    min-width: 2em;
+<style lang="scss">
+.hc-ui-input-frame {
+  .icons {
     display: flex;
-    justify-content: center;
     align-items: center;
-    // color: theme('colors.accent1');
-    &::after {
-      content: '';
-      width: 1px;
-      position: absolute;
-      background-color: #9faab3;
-      // background-color: #687a8a;
+    > * {
+      position: relative;
+      height: 100%;
+      min-width: 2em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // color: theme('colors.accent1');
+      &::after {
+        content: '';
+        width: 1px;
+        position: absolute;
+        background-color: #9faab3;
+        // background-color: #687a8a;
+      }
+    }
+    &.disabled > * {
+      color: #224466;
     }
   }
-  &.disabled > * {
-    color: #224466;
+
+  .left-icons > *::after {
+    inset: 2px 0 2px auto;
   }
-}
 
-.left-icons > *::after {
-  inset: 2px 0 2px auto;
-}
-
-.right-icons > *::after {
-  inset: 2px auto 2px 0;
+  .right-icons > *::after {
+    inset: 2px auto 2px 0;
+  }
 }
 </style>
