@@ -346,6 +346,7 @@ const computedActivate = computed(() => {
 
 //  focus, blur Event
 const imputElm = ref<HTMLElement | null>(null);
+defineExpose({ el: imputElm });
 const setRef = (e: any) => {
   imputElm.value = e;
   emit('ref', e);

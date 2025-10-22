@@ -14,6 +14,11 @@ const textB = ref('textB');
     <CardItem class="" variant="header"> Textarea </CardItem>
     <CardItem class="" variant="body">
       <!-- ------------------------------------------------ -->
+      <div class="grid grid-cols-2 gap-1">
+        <!-- <Textarea v-model:data="textA" size="m" label="" :max-len="30" autosize /> -->
+        <Textarea v-model:data="textB" size="m" :placeholder="textA" :max-len="30" autosize />
+      </div>
+
       <div>通常</div>
       <div class="grid grid-cols-2 gap-1">
         <Textarea
@@ -25,14 +30,7 @@ const textB = ref('textB');
           autosize
           placeholder="あいうえおplaceholderplaceholder"
         />
-        <Textarea
-          v-model:data="textA"
-          :diff="textB"
-          size="m"
-          label=""
-          rows="3"
-          placeholder="placeholderplaceholder"
-        />
+        <Textarea v-model:data="textA" :diff="textB" size="m" label="" rows="3" placeholder="placeholderplaceholder" />
       </div>
       <!-- ------------------------------------------------ -->
       <div class="p-1"></div>

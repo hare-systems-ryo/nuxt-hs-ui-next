@@ -411,6 +411,7 @@ const onWheel = (e: WheelEvent) => {
 
 // [ ref ]
 const inputElement = ref();
+defineExpose({ el: inputElement });
 const setRef = (elm: any) => {
   inputElement.value = elm;
   emit('ref', elm as HTMLInputElement);

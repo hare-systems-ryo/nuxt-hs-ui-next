@@ -234,7 +234,7 @@ const updateValue = async (text: string | null) => {
 
 // [ ref ]
 const inputElement = ref();
-
+defineExpose({ el: inputElement });
 const setRef = (elm: any) => {
   inputElement.value = elm;
   emit('ref', elm as HTMLInputElement);
@@ -370,7 +370,8 @@ const textAreaClass = computed(() => {
 
 const _rows = computed(() => {
   if (!props.autosize) return props.rows;
-  return Math.max(state.value.split('\n').length, Int(props.rows));
+  const placeholder = tx(props.placeholder).value;
+  return Math.max(state.value.split('\n').length, placeholder.split('\n').length, Int(props.rows));
 });
 const placeholder = computed(() => tx(props.placeholder).value);
 </script>
@@ -429,7 +430,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
         class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
         :class="focus || !!state.value ? 'opacity-0' : ''"
       >
-        <div class="truncate w-full">
+        <div class="whitespace-pre-wrap w-full">
           {{ placeholder }}
         </div>
       </span>

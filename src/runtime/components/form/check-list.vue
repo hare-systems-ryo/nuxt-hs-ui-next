@@ -192,6 +192,7 @@ const valueChange = async (id: number) => {
 // ----------------------------------------------------------------------------
 // [ ref ]
 const inputElement = ref();
+defineExpose({ el: inputElement });
 const setRef = (elm: any, index: number) => {
   if (index === 0) {
     inputElement.value = elm;
@@ -355,7 +356,7 @@ const itemClass = computed(() => {
               :class-img-tag="props.classImgTag"
               :image="props.image"
               :img-url="row.imgUrl"
-              :tabindex="tabindex"
+              :tabindex="tabindex === undefined ? undefined : String(tabindex)"
               :disabled="props.disabled"
               @value-change="(value) => valueChange(row.id)"
               @focus="() => onFocus(row)"

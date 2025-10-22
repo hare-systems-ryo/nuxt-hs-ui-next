@@ -200,6 +200,7 @@ setValue(props.data);
 
 // [ ref ]
 const inputElement = ref();
+defineExpose({ el: inputElement });
 const setRef = (elm: any) => {
   inputElement.value = elm;
   emit('ref', elm);

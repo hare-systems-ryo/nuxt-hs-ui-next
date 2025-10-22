@@ -339,6 +339,7 @@ const iconEventDelete = () => {
 
 // [ ref ]
 const inputElement = ref();
+defineExpose({ el: inputElement });
 onMounted(() => {
   emit('ref', inputElement.value as HTMLInputElement);
 });
