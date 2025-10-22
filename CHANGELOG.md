@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.3
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.2...v3.2.3)
+
+### 🩹 Fixes
+
+- Allow multiline placeholder in Textarea component ([ecb9f4f](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/ecb9f4f))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.2
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.0...v3.2.2)
