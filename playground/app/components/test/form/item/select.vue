@@ -71,6 +71,9 @@ const state = ref<{
 const disabled = ref(false);
 const readonly = ref(false);
 const nullable = ref(false);
+const dataChange = (v: string | null) => {
+  console.log('dataChange', v);
+};
 </script>
 <template>
   <Card class="mt-4">
@@ -82,11 +85,24 @@ const nullable = ref(false);
         <CheckBox v-model:data="readonly" label="readonly" placeholder="placeholderplaceholder" />
         <CheckBox v-model:data="nullable" label="nullable" placeholder="placeholderplaceholder" />
       </div>
+
+      <div class="grid grid-cols-4 gap-2">
+        <Select :data="state.testString.data" :list="state.testString.list" @update:data="(v:any) => dataChange(v)" />
+        {{ { d: state.testString.data } }}
+        <Select v-model:data="state.testString.data" :list="state.testString.list" />
+      </div>
+      <!-- updateData(item.id); -->
+      <!-- 
+
       <div class="grid grid-cols-4 gap-2">
         <TextBox :data="'選択してください'" label="text" readonly />
-        <Select v-model:data="state.testString.data" :list="state.testString.list" readonly label="readonly" />
+        <Select
+          v-model:data="state.testString.data"
+          :list="state.testString.list"
+          label="readonly"
+          @update:data="(v:any) => dataChange(v)"
+        />
 
-        <Select v-model:data="state.testString.data" :list="state.testString.list" disabled label="disabled" />
 
         <Select v-model:data="state.testString.data" :list="state.testString.list" label="none" />
       </div>
@@ -133,13 +149,6 @@ const nullable = ref(false);
         </div>
         <div class="">
           <div class="">Select</div>
-          <!-- <Select
-            v-model:data="state.testString.data"
-            :list="state.testString.list"
-            size="s"
-            label="Select"
-            searchable
-          /> -->
           <div class="">value = {{ state.testString.data }}</div>
         </div>
       </div>
@@ -147,13 +156,17 @@ const nullable = ref(false);
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" searchable nullable />
         <Select v-model:data="state.testNumber.data" :list="state.testNumber.list" size="s" nullable />
       </div>
-      <!--  -->
       <Select v-model:data="state.testNumber.data" label="label" :list="state.testNumber.list">
         <template #label-prepend> prepend </template>
         <template #label-append> append </template>
         <template #header-right> <span class="text-main0">aaa</span> </template>
       </Select>
-      <!-- ------------------------------------------------ -->
+
+      
+      
+      
+      
+      -->
 
       <!--
       
