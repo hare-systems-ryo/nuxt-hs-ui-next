@@ -430,7 +430,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
         class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
         :class="focus || !!state.value ? 'opacity-0' : ''"
       >
-        <div class="whitespace-pre-wrap w-full">
+        <div class="whitespace-pre-wrap w-full leading-[1.20em] mt-[4px]">
           {{ placeholder }}
         </div>
       </span>

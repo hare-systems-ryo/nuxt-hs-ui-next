@@ -16,7 +16,8 @@ const textB = ref('textB');
       <!-- ------------------------------------------------ -->
       <div class="grid grid-cols-2 gap-1">
         <!-- <Textarea v-model:data="textA" size="m" label="" :max-len="30" autosize /> -->
-        <Textarea v-model:data="textB" size="m" :placeholder="textA" :max-len="30" autosize />
+        <Textarea v-model:data="textA" size="m"  autosize />
+        <Textarea :data="''" size="m" :placeholder="textA" autosize />
       </div>
 
       <div>通常</div>
