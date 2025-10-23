@@ -11,6 +11,8 @@ const valueB = ref<number | null>(0.1);
 const valueC = ref<number | null>(0);
 const valueD = ref<number | null>(10);
 const valueE = ref<number | null>(10);
+const digits = ref<number | null>(3);
+const test = ref<number | null>(2);
 </script>
 <template>
   <Card class="mt-4">
@@ -19,23 +21,9 @@ const valueE = ref<number | null>(10);
       <!-- ------------------------------------------------ -->
       <div>Test</div>
       <div class="flex flex-col">
-        <ValueBox
-          :data="null"
-          size="s"
-          input-size="2"
-          label="ラベル付き"
-          placeholder="placeholderplaceholder"
-          text-align="center"
-          unit="円"
-        />
-        <ValueBox
-          :data="null"
-          size="s"
-          input-size="2"
-          label="ラベル付き"
-          placeholder="1234"
-          unit="円"
-        />
+        <ValueBox v-model:data="test" size="s" label="" unit="円" :digits="digits" />
+        <ValueBox v-model:data="test" size="s" label="" unit="円" :digits="digits" digits-auto />
+        <ValueBox v-model:data="digits" size="s" unit="円" :min="0" is-show-btn-control />
       </div>
 
       <div>通常</div>

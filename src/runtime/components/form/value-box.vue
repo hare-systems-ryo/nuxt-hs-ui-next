@@ -45,6 +45,8 @@ type Props = {
   min?: number;
   max?: number;
   digits?: number;
+  /** 小数点以下で末端のゼロを非表示 */
+  digitsAuto?: boolean;
   isShowBtnControl?: boolean;
   comma?: string;
   enterkeyhint?: string;
@@ -101,6 +103,7 @@ const props = withDefaults(defineProps<Props>(), {
   min: -9999999999,
   max: 9999999999,
   digits: 0,
+  digitsAuto: false,
   isShowBtnControl: false,
   comma: ',',
   enterkeyhint: undefined,
@@ -209,13 +212,22 @@ watch(
   }
 );
 
+/** 小数点以下を設定に従って省略する市内を判定、文字列を返却する */
+const convertText = (srt: string) => {
+  if (props.digitsAuto) {
+    return srt.replace(/0*$/g, '').replace(/\.$/g, '');
+  } else {
+    return srt;
+  }
+};
 // ----------------------------------------------------------------------------
 /**
  * 表示（カンマ表示）
  */
 const displayText = computed(() => {
   if (props.data === null) return '';
-  return InsertComma(props.data, props.digits, '0', props.comma);
+  const ret = InsertComma(props.data, props.digits, '0', props.comma);
+  return convertText(ret);
 });
 
 /**
@@ -271,7 +283,8 @@ const updateData = async (val: number | null, f = true) => {
   if (f) emit('value-change', updateValue, before);
   await nextTick();
   if (props.data !== val) {
-    state.value = String(before ?? '');
+    setValueByPropsData();
+    // state.value = String(before ?? '');
   }
 };
 
@@ -345,7 +358,8 @@ const checkValueByInput = () => {
   if (validCheckResult.value === null) {
     state.value = '';
   } else {
-    state.value = validCheckResult.value.toFixed(props.digits);
+    console.log(validCheckResult.value.toFixed(props.digits));
+    state.value = convertText(validCheckResult.value.toFixed(props.digits));
   }
   if (props.data !== validCheckResult.value) {
     updateData(validCheckResult.value);
@@ -370,7 +384,7 @@ const setValueByPropsData = () => {
     if (validCheckResult.value === null) {
       state.value = '';
     } else {
-      state.value = validCheckResult.value.toFixed(props.digits);
+      state.value = convertText(validCheckResult.value.toFixed(props.digits));
     }
   } else {
     updateData(validCheckResult.value, false);
