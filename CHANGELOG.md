@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.4
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.3...v3.2.4)
+
+### 🩹 Fixes
+
+- Adjust alignment between textarea and input text ([2346130](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/2346130))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.3
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.2...v3.2.3)
