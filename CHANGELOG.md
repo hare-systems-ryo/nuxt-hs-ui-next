@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v3.2.6
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.5...v3.2.6)
+
+### 🩹 Fixes
+
+- Trim trailing zeros after decimal in ValueBox display ([db905fb](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/db905fb))
+- Prevent double emission of 'update:data' in select component ([f4be362](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/f4be362))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.5
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.4...v3.2.5)
