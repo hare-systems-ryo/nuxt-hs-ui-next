@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.7
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.6...v3.2.7)
+
+### 🩹 Fixes
+
+- Unify remaining character count color between Textbox and Textarea ([d03c29b](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/d03c29b))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.6
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.5...v3.2.6)
