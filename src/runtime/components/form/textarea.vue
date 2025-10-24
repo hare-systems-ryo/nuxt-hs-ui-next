@@ -322,26 +322,33 @@ const isChangeData = computed(() => {
   return false;
 });
 //  ---------------------------------------------------------------------------------
+const lastLen = computed(() => {
+  return props.maxLen - state.value.length;
+});
+const lastRow = computed(() => {
+  return props.maxRows - state.value.split('\n').length;
+});
+
 // ----------------------------------------------------------------------------
 const lenLabelClass = computed(() => {
-  const last = props.maxLen - state.value.length;
+  // const last = props.maxLen - state.value.length;
   return [
     twMerge(
       'text-white bg-[#2fa412]',
-      last < 6 ? 'bg-[#fdc90d]' : '',
-      last < 5 ? 'bg-[#fd750d]' : '',
-      last < 2 ? 'bg-[#fa541d]' : ''
+      lastLen.value < 9 ? 'bg-[#fdc90d]' : '',
+      lastLen.value < 6 ? 'bg-[#fd750d]' : '',
+      lastLen.value < 3 ? 'bg-[#fa541d]' : ''
     ),
   ];
 });
 const rowLabelClass = computed(() => {
-  const last = props.maxRows - state.value.split('\n').length;
+  // const last = props.maxRows - state.value.split('\n').length;
   return [
     twMerge(
       'text-white bg-[#2fa412]',
-      last < 9 ? 'bg-[#fdc90d]' : '',
-      last < 6 ? 'bg-[#fd750d]' : '',
-      last < 3 ? 'bg-[#fa541d]' : ''
+      lastRow.value < 6 ? 'bg-[#fdc90d]' : '',
+      lastRow.value < 5 ? 'bg-[#fd750d]' : '',
+      lastRow.value < 2 ? 'bg-[#fa541d]' : ''
     ),
   ];
 });
@@ -415,10 +422,10 @@ const placeholder = computed(() => tx(props.placeholder).value);
       <slot name="label-append" />
     </template>
     <template v-if="props.maxLen > 0 || props.maxRows > 0 || slots['header-right']" #header-right="{ defaultClass }">
-      <div v-if="props.maxLen !== 0" :class="[defaultClass, lenLabelClass]">
+      <div v-if="props.maxLen !== 0 && lastLen < 15" :class="[defaultClass, lenLabelClass]">
         {{ state.value.length }} / {{ props.maxLen }}
       </div>
-      <div v-if="props.maxRows !== 0" :class="[defaultClass, rowLabelClass]">
+      <div v-if="props.maxRows !== 0 && lastRow < 9" :class="[defaultClass, rowLabelClass]">
         {{ state.value.split('\n').length }} / {{ props.maxRows }}
         {{ tx(props.uiText.rowsUnit) }}
       </div>

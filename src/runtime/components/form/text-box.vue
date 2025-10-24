@@ -276,14 +276,18 @@ const tabindex = computed(() => {
   return props.tabindex;
 });
 
+const lastLen = computed(() => {
+  return props.maxLen - state.value.length;
+});
+
 // ----------------------------------------------------------------------------
 const lenLabelClass = computed(() => {
   return [
     twMerge(
       'text-white bg-[#2fa412]',
-      props.maxLen - state.value.length < 9 ? 'bg-[#fdc90d]' : '',
-      props.maxLen - state.value.length < 6 ? 'bg-[#fd750d]' : '',
-      props.maxLen - state.value.length < 3 ? 'bg-[#fa541d]' : ''
+      lastLen.value < 9 ? 'bg-[#fdc90d]' : '',
+      lastLen.value < 6 ? 'bg-[#fd750d]' : '',
+      lastLen.value < 3 ? 'bg-[#fa541d]' : ''
     ),
   ];
 });
@@ -334,7 +338,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
     </template>
     <template v-if="props.maxLen > 0 || slots['header-right']" #header-right="{ defaultClass }">
       <slot name="header-right" />
-      <div v-if="props.maxLen > 0" :class="[defaultClass, lenLabelClass]">
+      <div v-if="props.maxLen > 0 && lastLen < 15" :class="[defaultClass, lenLabelClass]">
         {{ state.value.length }} / {{ props.maxLen }}
       </div>
     </template>
