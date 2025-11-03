@@ -12,7 +12,7 @@ const valueC = ref<number | null>(0);
 const valueD = ref<number | null>(10);
 const valueE = ref<number | null>(10);
 const digits = ref<number | null>(3);
-const test = ref<number | null>(2);
+const test = ref<number | null>(18541.411);
 </script>
 <template>
   <Card class="mt-4">
@@ -21,9 +21,19 @@ const test = ref<number | null>(2);
       <!-- ------------------------------------------------ -->
       <div>Test</div>
       <div class="flex flex-col">
-        <ValueBox v-model:data="test" size="s" label="" unit="円" :digits="digits" />
-        <ValueBox v-model:data="test" size="s" label="" unit="円" :digits="digits" digits-auto />
-        <ValueBox v-model:data="digits" size="s" unit="円" :min="0" is-show-btn-control />
+        <ValueBox v-model:data="test" size="s" label="" unit="円" digits-point-small digits-auto :digits="digits" />
+        <ValueBox
+          v-model:data="test"
+          size="s"
+          label=""
+          unit="円"
+          digits-point-small
+          digits-auto
+          :digits="digits"
+          readonly
+        />
+        <!-- <ValueBox v-model:data="test" size="s" label="" unit="円" :digits="digits" digits-auto /> -->
+        <!-- <ValueBox v-model:data="digits" size="s" unit="円" :min="0" is-show-btn-control /> -->
       </div>
 
       <div>通常</div>

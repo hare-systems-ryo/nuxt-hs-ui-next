@@ -53,6 +53,7 @@ type Props = {
   inputSize?: string | number;
   placeholder?: MultiLang;
   textAlign?: 'left' | 'center' | 'right';
+  digitsPointSmall?: boolean;
   // ----------------------------------------------------------------------------
   data: number | null;
   diff?: number | null | undefined;
@@ -110,6 +111,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputSize: 10,
   placeholder: '',
   textAlign: 'right',
+  digitsPointSmall: false,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -358,7 +360,7 @@ const checkValueByInput = () => {
   if (validCheckResult.value === null) {
     state.value = '';
   } else {
-    console.log(validCheckResult.value.toFixed(props.digits));
+    // console.log(validCheckResult.value.toFixed(props.digits));
     state.value = convertText(validCheckResult.value.toFixed(props.digits));
   }
   if (props.data !== validCheckResult.value) {
@@ -547,6 +549,16 @@ watch(
   }
 );
 const placeholder = computed(() => tx(props.placeholder).value);
+
+const displayTextArr = computed(() => {
+  const text = displayText.value;
+  if (props.digits === 0) return [text, ''];
+  if (!text) return [text, ''];
+  if (!/\./.test(text)) return [text, ''];
+  const top = displayText.value.replace(/(\.\d*)$/, '');
+  const bottom = displayText.value.replace(/.*(\.\d*)$/, '$1');
+  return [top ?? '', bottom ?? ''];
+});
 // ----------------------------------------------------------------------------
 </script>
 
@@ -610,6 +622,9 @@ const placeholder = computed(() => tx(props.placeholder).value);
               {{ placeholder }}
             </div>
           </span>
+          <div class="absolute left-0 top-0">
+            {{ displayText }}
+          </div>
           <input
             :ref="(e) => setRef(e)"
             v-model="state.value"
@@ -630,7 +645,27 @@ const placeholder = computed(() => tx(props.placeholder).value);
             @blur="onBlur()"
             @focus="onFocus()"
           />
-          <input
+          <div
+            class="displayText pe-[4px] w-full"
+            :class="[
+              //
+              computedActivate ? 'opacity-0' : 'opacity-100',
+              { readonly: props.readonly },
+            ]"
+            :style="`justify-content:${
+              props.textAlign === 'right' ? 'end' : props.textAlign === 'center' ? 'center' : 'start'
+            };`"
+            readonly
+          >
+            <div v-if="props.digitsPointSmall" class=" ">
+              <span class="font-semibold">{{ displayTextArr[0] }}</span>
+              <span class="text-[0.8em] text-[#333] font-normal">{{ displayTextArr[1] }}</span>
+            </div>
+            <template v-else>
+              {{ displayText }}
+            </template>
+          </div>
+          <!-- <input
             type="text"
             class="displayText pe-[4px] w-full"
             :class="[
@@ -644,7 +679,7 @@ const placeholder = computed(() => tx(props.placeholder).value);
             :tabindex="-1"
             :size="props.inputSize"
             readonly
-          />
+          /> -->
         </div>
         <div v-if="props.unit.length !== 0" class="flex-none unit">
           {{ props.unit }}
@@ -679,9 +714,26 @@ input {
     margin-top: auto;
     margin-bottom: auto;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+
     &.readonly {
       pointer-events: all;
     }
+  }
+}
+
+.displayText {
+  position: absolute;
+  inset: 0 0 0 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+
+  &.readonly {
+    pointer-events: all;
   }
 }
 
