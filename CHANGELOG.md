@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.8
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.7...v3.2.8)
+
+### 🎨 Styles
+
+- Improve decimal visibility in Valuebox display mode ([07de6ae](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/07de6ae))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.7
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.6...v3.2.7)
