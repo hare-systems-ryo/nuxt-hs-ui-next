@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.10
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.9...v3.2.10)
+
+### 🩹 Fixes
+
+- Preserve trailing zeros in integer part when decimals are omitted in ValueBox ([7387d28](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/7387d28))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.9
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.8...v3.2.9)
