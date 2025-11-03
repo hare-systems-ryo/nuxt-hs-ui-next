@@ -217,7 +217,10 @@ watch(
 /** 小数点以下を設定に従って省略する市内を判定、文字列を返却する */
 const convertText = (srt: string) => {
   if (props.digitsAuto) {
-    return srt.replace(/0*$/g, '').replace(/\.$/g, '');
+    if (/\./.test(srt)) {
+      return srt.replace(/0*$/g, '').replace(/\.$/g, '');
+    }
+    return srt;
   } else {
     return srt;
   }
@@ -622,9 +625,6 @@ const displayTextArr = computed(() => {
               {{ placeholder }}
             </div>
           </span>
-          <div class="absolute left-0 top-0">
-            {{ displayText }}
-          </div>
           <input
             :ref="(e) => setRef(e)"
             v-model="state.value"
