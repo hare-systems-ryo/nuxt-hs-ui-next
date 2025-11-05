@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.2.12
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.11...v3.2.12)
+
+### 🩹 Fixes
+
+- Ensure value of 0 is displayed correctly in Valuebox ([380a4e1](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/380a4e1))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.11
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.10...v3.2.11)
