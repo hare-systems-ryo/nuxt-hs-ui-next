@@ -215,14 +215,15 @@ watch(
 );
 
 /** 小数点以下を設定に従って省略する市内を判定、文字列を返却する */
-const convertText = (srt: string) => {
+const convertText = (str: string) => {
+  // console.log('convertText', str);
   if (props.digitsAuto) {
-    if (/\./.test(srt)) {
-      return srt.replace(/0*$/g, '').replace(/\.$/g, '');
+    if (/\./.test(str)) {
+      return str.replace(/0*$/g, '').replace(/\.$/g, '');
     }
-    return srt;
+    return str;
   } else {
-    return srt;
+    return str;
   }
 };
 // ----------------------------------------------------------------------------
@@ -232,6 +233,7 @@ const convertText = (srt: string) => {
 const displayText = computed(() => {
   if (props.data === null) return '';
   const ret = InsertComma(props.data, props.digits, '0', props.comma);
+  // console.log('displayText', ret, convertText(ret));
   return convertText(ret);
 });
 
@@ -558,8 +560,18 @@ const displayTextArr = computed(() => {
   if (props.digits === 0) return [text, ''];
   if (!text) return [text, ''];
   if (!/\./.test(text)) return [text, ''];
-  const top = displayText.value.replace(/(\.\d*)$/, '');
-  const bottom = displayText.value.replace(/.*(\.\d*)$/, '$1');
+  const top = text.replace(/(\.\d*)$/, '');
+  const bottom = text.replace(/.*(\.\d*)$/, '$1');
+  return [top ?? '', bottom ?? ''];
+});
+
+const pHolder = computed(() => {
+  const text = placeholder.value;
+  if (props.digits === 0) return [text, ''];
+  if (!text) return [text, ''];
+  if (!/\./.test(text)) return [text, ''];
+  const top = text.replace(/(\.\d*)$/, '');
+  const bottom = text.replace(/.*(\.\d*)$/, '$1');
   return [top ?? '', bottom ?? ''];
 });
 // ----------------------------------------------------------------------------
@@ -619,10 +631,16 @@ const displayTextArr = computed(() => {
           <span
             v-if="placeholder"
             class="text-black/50 pointer-events-none select-none px-1 absolute inset-0 items-center transition-opacity truncate"
-            :class="focus || !!state.value ? 'opacity-0' : ''"
+            :class="focus || !!state.value || !!displayText ? 'opacity-0' : ''"
           >
             <div class="truncate w-full" :style="`text-align:${props.textAlign};`">
-              {{ placeholder }}
+              <div v-if="props.digitsPointSmall">
+                <span class="font-semibold">{{ pHolder[0] }}</span>
+                <span class="text-[0.8em] text-[#333] font-normal">{{ pHolder[1] }}</span>
+              </div>
+              <template v-else>
+                {{ placeholder }}
+              </template>
             </div>
           </span>
           <input
@@ -646,10 +664,11 @@ const displayTextArr = computed(() => {
             @focus="onFocus()"
           />
           <div
+            v-if="props.data !== null"
             class="displayText pe-[4px] w-full"
             :class="[
               //
-              computedActivate ? 'opacity-0' : 'opacity-100',
+              focus || computedActivate ? 'opacity-0' : 'opacity-100',
               { readonly: props.readonly },
             ]"
             :style="`justify-content:${
