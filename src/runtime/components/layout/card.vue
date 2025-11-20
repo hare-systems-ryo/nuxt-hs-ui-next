@@ -21,6 +21,11 @@ const props = withDefaults(defineProps<Props>(), {
   class: '',
 });
 
+type Emits = {
+  ref: [element: HTMLElement];
+};
+const emit = defineEmits<Emits>();
+
 const baseClass = [
   //
   'relative',
@@ -36,7 +41,7 @@ const classStyle = computed(() => {
 </script>
 
 <template>
-  <div :class="classStyle">
+  <div :ref="(e:any) => emit('ref', e)" :class="classStyle">
     <slot />
   </div>
 </template>
