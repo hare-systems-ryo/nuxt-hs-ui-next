@@ -25,6 +25,8 @@ import InputFrame from './input-frame.vue';
 const fcFocus = useHsFocus(useHsPinia());
 // ----------------------------------------------------------------------------
 // [ Props ]
+type Enterkeyhint = 'done' | 'search' | 'enter' | 'go' | 'next' | 'previous' | 'send';
+
 type Props = {
   // ----------------------------------------------------------------------------
   // Input 種類別
@@ -33,7 +35,7 @@ type Props = {
   maxLen?: number;
   autocomplete?: string;
   datalist?: string[];
-  enterkeyhint?: string;
+  enterkeyhint?: Enterkeyhint | undefined;
   inputmode?: 'text' | 'search' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
   inputSize?: string | number;
   placeholder?: MultiLang;

@@ -33,15 +33,15 @@ const state = ref<{
     list: [
       {
         id: `beige`,
-        text: 'beige  \n beige \nigebeigebeigebeigebeigebeige',
+        text: 'beige',
         imgUrl: '/assets/code-color-group/beige.png',
       },
       {
         id: `gold`,
-        text: 'gold goldgoldgoldgoldgoldgoldgoldgoldgoldgoldgoldgoldgold',
+        text: 'gold',
         imgUrl: '/assets/code-color-group/gold.png',
       },
-      { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
+      // { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
     ],
     label: 'Select',
   },
@@ -74,6 +74,12 @@ const nullable = ref(false);
 const dataChange = (v: string | null) => {
   console.log('dataChange', v);
 };
+
+const selectedText = computed(() => {
+  const ret = state.value.testStringB.list.find((row) => row.id === state.value.testString.data);
+  if (!ret) return '';
+  return ret.text;
+});
 </script>
 <template>
   <Card class="mt-4">
@@ -86,10 +92,33 @@ const dataChange = (v: string | null) => {
         <CheckBox v-model:data="nullable" label="nullable" placeholder="placeholderplaceholder" />
       </div>
 
-      <div class="grid grid-cols-4 gap-2">
-        <Select :data="state.testString.data" :list="state.testString.list" @update:data="(v:any) => dataChange(v)" />
-        {{ { d: state.testString.data } }}
-        <Select v-model:data="state.testString.data" :list="state.testString.list" />
+      <div class="grid grid-cols-1 gap-2">
+        <Select
+          v-model:data="state.testString.data"
+          :list="state.testString.list"
+          :unknown-text="selectedText"
+          nullable
+          @update:data="(v:any) => dataChange(v)"
+        />
+        <div class="">
+          {{ { data: state.testString.data } }}
+        </div>
+        <Select v-model:data="state.testString.data" :list="state.testStringB.list" nullable />
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <Select
+          v-model:data="state.testString.data"
+          :list="state.testString.list"
+          :unknown-text="selectedText"
+          nullable
+          searchable
+          @update:data="(v:any) => dataChange(v)"
+        />
+        <div class="">
+          {{ { data: state.testString.data } }}
+        </div>
+        <Select v-model:data="state.testString.data" :list="state.testStringB.list" nullable searchable />
       </div>
       <!-- updateData(item.id); -->
       <!-- 

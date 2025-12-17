@@ -52,6 +52,7 @@ type Props = {
   order?: boolean;
   loading?: boolean;
   nullText?: MultiLang;
+  unknownText?: MultiLang;
   img?: boolean;
   imgMode?: 'cover' | 'contain';
   classImg?: ClassType;
@@ -97,6 +98,10 @@ const props = withDefaults(defineProps<Props>(), {
   order: false,
   loading: false,
   nullText: () => ({ ja: '選択してください', en: 'Select...' }),
+  unknownText: () => ({
+    ja: '無効な選択が設定されています',
+    en: 'An invalid selection has been made',
+  }),
   nullable: false,
   image: false,
   classImg: '',
@@ -160,7 +165,6 @@ type ListRow = SelectItem<IdType> & {
 const multiLang = useHsMultiLang(useHsPinia());
 const tx = multiLang.tx;
 const gt = multiLang.gt;
-// const gt = multiLang.gt;
 const hsFocus = useHsFocus(useHsPinia());
 const hsIsMobile = useHsIsMobile(useHsPinia());
 // ----------------------------------------------------------------------------
@@ -230,13 +234,9 @@ const updateData = (value: IdType | null) => {
   if (props.disabled === true) return false;
   if (props.readonly === true) return false;
   if (!value) {
-    if (!props.nullable) {
-      return;
-    } else {
-      return emit('update:data', value as null);
-    }
+    if (!props.nullable) return;
+    return emit('update:data', value as null);
   }
-
   emit('update:data', value as IdType);
 };
 const displayList = computed(() => {
@@ -483,7 +483,7 @@ watch(computedActivate, (value) => {
     </template>
     <template #right-icons>
       <Btn
-        v-if="!lock && props.nullable && activeValue !== null"
+        v-if="!lock && props.nullable && props.data !== null"
         variant="text"
         theme="error"
         tabindex="-1"
@@ -513,11 +513,8 @@ watch(computedActivate, (value) => {
     <template v-if="slots['header-right']" #header-right>
       <slot name="header-right" />
     </template>
-    <!-- @click.stop="selectOpen = !selectOpen" -->
-    <!-- <ClientOnly> -->
     <template #default>
       <template v-if="!props.searchable">
-        <!-- :key="displayList.map((i) => i.id).join('|') + ':' + activeValue" -->
         <USelect
           v-model:open="selectOpen"
           :model-value="activeValue"
@@ -540,7 +537,6 @@ watch(computedActivate, (value) => {
           @update:model-value="(v:any) => updateData(v)"
         >
           <template #default>
-            <!-- :key="activeRow?._key || 'null-' + '_base'" -->
             <div
               class="flex items-center w-full"
               :class="[
@@ -569,11 +565,13 @@ watch(computedActivate, (value) => {
                 />
                 <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
               </template>
+              <template v-else-if="!!props.data">
+                <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
+                  {{ tx(props.unknownText) }}
+                </div>
+              </template>
               <template v-else>
-                <div
-                  class="min-w-0 truncate flex-1 text-[1rem]"
-                  :class="[!props.disabled ? 'text-gray-700' : '', props.disabled ? 'text-gray-600 ' : '']"
-                >
+                <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-gray-700' : '']">
                   {{ tx(props.nullText) }}
                 </div>
               </template>
@@ -585,7 +583,7 @@ watch(computedActivate, (value) => {
           <template #item="{ item }">
             <div
               :key="item.id"
-              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-px"
               :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
               :style="`--color-bg: ${activeColorCode}10;`"
               @click="selectOpen = false"
@@ -625,7 +623,6 @@ watch(computedActivate, (value) => {
           :ui="{
             base: uiBase,
             item: ['!bg-white focus:bg-white active:bg-white p-0'],
-            // item: ['hover:bg-white focus:bg-white py-0'],
           }"
           :content="{
             reference: inputFrameElm,
@@ -660,8 +657,15 @@ watch(computedActivate, (value) => {
                 <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
                 <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
               </template>
+              <template v-else-if="!!props.data">
+                <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
+                  {{ tx(props.unknownText) }}
+                </div>
+              </template>
               <template v-else>
-                <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+                <div class="min-w-0 truncate flex-1" :class="[!props.disabled ? 'text-gray-700' : '']">
+                  {{ tx(props.nullText) }}
+                </div>
               </template>
             </div>
           </template>
@@ -671,7 +675,7 @@ watch(computedActivate, (value) => {
           <template #item="{ item }">
             <div
               :key="item.id"
-              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-[1px]"
+              class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-px"
               :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
               :style="`--color-bg: ${activeColorCode}10;`"
               @click="
@@ -703,7 +707,7 @@ watch(computedActivate, (value) => {
       <template v-else>
         <div
           :key="activeRow?._key || 'null-' + '_base'"
-          class="flex items-center w-full px-[10px] text-neutral-900"
+          class="flex items-center w-full px-2.5 text-neutral-900"
           :class="[
             props.disabled ? 'cursor-not-allowed' : '', //
             props.readonly ? 'cursor-text' : '', //
@@ -725,8 +729,15 @@ watch(computedActivate, (value) => {
             <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
             <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
           </template>
+          <template v-else-if="!!props.data">
+            <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
+              {{ tx(props.unknownText) }}
+            </div>
+          </template>
           <template v-else>
-            <div class="min-w-0 truncate flex-1">{{ tx(props.nullText) }}</div>
+            <div class="min-w-0 truncate flex-1" :class="[!props.disabled ? 'text-gray-700' : '']">
+              {{ tx(props.nullText) }}
+            </div>
           </template>
         </div>
         <Modal
@@ -737,7 +748,7 @@ watch(computedActivate, (value) => {
             selectOpen = false;
           "
         >
-          <Card ref="modalElm" class="HsSelectModal w-full max-w-[500px] max-h-full">
+          <Card ref="modalElm" class="HsSelectModal w-full max-w-125 max-h-full">
             <CardItem variant="header" size="s" cross @update:open="modal.sp.close()">
               <div>
                 {{ tx(props.label || { ja: '選択', en: 'Please Select' }) }}
@@ -748,7 +759,7 @@ watch(computedActivate, (value) => {
               <TextBox v-model:data="searchWord" size="m" />
             </CardItem>
             <CardItem variant="body">
-              <div class="h-[1px] w-full bg-main0/50"></div>
+              <div class="h-px w-full bg-main0/50"></div>
             </CardItem>
             <CardItem variant="body" scroll>
               <div ref="modalSpScrollTopTarget" class="grid gap-1">

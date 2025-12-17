@@ -36,6 +36,7 @@ const gt = multiLang.gt;
 
 // ----------------------------------------------------------------------------
 // [ Props ]
+type Enterkeyhint = 'done' | 'search' | 'enter' | 'go' | 'next' | 'previous' | 'send';
 type Props = {
   // ----------------------------------------------------------------------------
   // Input 種類別
@@ -49,7 +50,7 @@ type Props = {
   digitsAuto?: boolean;
   isShowBtnControl?: boolean;
   comma?: string;
-  enterkeyhint?: string;
+  enterkeyhint?: Enterkeyhint | undefined;
   inputSize?: string | number;
   placeholder?: MultiLang;
   textAlign?: 'left' | 'center' | 'right';
@@ -648,7 +649,7 @@ const pHolder = computed(() => {
             v-model="state.value"
             type="text"
             :inputmode="hsIsMobile.isMobile ? 'numeric' : 'text'"
-            class="pe-[4px] w-full"
+            class="pe-1 w-full"
             :class="[computedActivate ? 'opacity-100' : 'opacity-0']"
             :style="`text-align:${props.textAlign};`"
             maxlength="20"
@@ -665,7 +666,7 @@ const pHolder = computed(() => {
           />
           <div
             v-if="props.data !== null"
-            class="displayText pe-[4px] w-full"
+            class="displayText pe-1 w-full"
             :class="[
               //
               focus || computedActivate ? 'opacity-0' : 'opacity-100',
@@ -684,21 +685,6 @@ const pHolder = computed(() => {
               {{ displayText }}
             </template>
           </div>
-          <!-- <input
-            type="text"
-            class="displayText pe-[4px] w-full"
-            :class="[
-              //
-              computedActivate ? 'opacity-0' : 'opacity-100',
-              { readonly: props.readonly },
-            ]"
-            :style="`text-align:${props.textAlign};`"
-            :value="displayText"
-            :disabled="props.disabled"
-            :tabindex="-1"
-            :size="props.inputSize"
-            readonly
-          /> -->
         </div>
         <div v-if="props.unit.length !== 0" class="flex-none unit">
           {{ props.unit }}
