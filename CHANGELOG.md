@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.3.0
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.13...v3.3.0)
+
+### 🚀 Enhancements
+
+- Update Nuxt packages and add fallback text prop to Select component ([034c92e](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/034c92e))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.2.13
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.12...v3.2.13)
