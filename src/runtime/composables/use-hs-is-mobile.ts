@@ -43,8 +43,10 @@ export const useHsIsMobile = defineStore(
       const isAndroid = /android|mobile/i.test(ua);
       isMobile.value = isOldIPad || isIpad || isiOS || isAndroid;
     };
-
+    const isInit = ref(false);
     const init = () => {
+      if (isInit.value) return;
+      isInit.value = true;
       checkIsMobile();
       checkIsIPhone();
     };

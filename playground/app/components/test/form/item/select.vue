@@ -74,7 +74,11 @@ const nullable = ref(false);
 const dataChange = (v: string | null) => {
   console.log('dataChange', v);
 };
-
+onMounted(() => {
+  for (let i = 0; i < 20; i++) {
+    state.value.testString.list.push({ id: `${i}`, text: `${i}` });
+  }
+});
 const selectedText = computed(() => {
   const ret = state.value.testStringB.list.find((row) => row.id === state.value.testString.data);
   if (!ret) return '';
@@ -98,7 +102,21 @@ const selectedText = computed(() => {
           :list="state.testString.list"
           :unknown-text="selectedText"
           nullable
-          @update:data="(v:any) => dataChange(v)"
+          searchable
+          @value-change="(v:any) => dataChange(v)"
+        />
+        <Select
+          v-model:data="state.testString.data"
+          :list="state.testString.list"
+          :unknown-text="selectedText"
+          nullable
+          @value-change="(v:any) => dataChange(v)"
+        />
+        <Select
+          v-model:data="state.testString.data"
+          :list="state.testString.list"
+          :unknown-text="selectedText"
+          @value-change="(v:any) => dataChange(v)"
         />
         <div class="">
           {{ { data: state.testString.data } }}

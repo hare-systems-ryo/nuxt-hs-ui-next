@@ -167,6 +167,9 @@ const tx = multiLang.tx;
 const gt = multiLang.gt;
 const hsFocus = useHsFocus(useHsPinia());
 const hsIsMobile = useHsIsMobile(useHsPinia());
+onMounted(() => {
+  hsIsMobile.init();
+});
 // ----------------------------------------------------------------------------
 const uid = useId();
 const inputFrameElm = ref();
@@ -203,9 +206,12 @@ watch(
 );
 // ----------------------------------------------------------------------------
 let versionCounter = 0;
+const nullItem = computed(() => {
+  return { id: null, text: props.nullText } as any;
+});
 const listBase = computed<ListRow[]>(() => {
   versionCounter++;
-  return ObjectCopy(
+  const ret = ObjectCopy(
     props.list.map((row) => {
       return {
         ...row,
@@ -214,6 +220,10 @@ const listBase = computed<ListRow[]>(() => {
       };
     })
   );
+  if (props.nullable) {
+    ret.unshift(nullItem.value);
+  }
+  return ret;
 });
 
 const activeRow = computed(() => {
@@ -233,11 +243,15 @@ const hasHiddenItem = computed(() => {
 const updateData = (value: IdType | null) => {
   if (props.disabled === true) return false;
   if (props.readonly === true) return false;
+  const before = props.data;
   if (!value) {
     if (!props.nullable) return;
-    return emit('update:data', value as null);
+    emit('update:data', value as null);
+    emit('value-change', value, before);
+    return;
   }
   emit('update:data', value as IdType);
+  emit('value-change', value, before);
 };
 const displayList = computed(() => {
   return ObjectCopy(
@@ -446,6 +460,7 @@ watch(computedActivate, (value) => {
     emit('blur');
   }
 });
+
 // ----------------------------------------------------------------------------
 </script>
 
@@ -517,7 +532,7 @@ watch(computedActivate, (value) => {
       <template v-if="!props.searchable">
         <USelect
           v-model:open="selectOpen"
-          :model-value="activeValue"
+          :model-value="activeValue as any"
           :items="displayList"
           value-key="id"
           label-key="text"
@@ -613,7 +628,7 @@ watch(computedActivate, (value) => {
         <USelectMenu
           v-model:serach-term="searchWord"
           v-model:open="selectOpen"
-          :model-value="activeValue"
+          :model-value="activeValue as any"
           :items="displayList"
           value-key="id"
           label-key="text"
@@ -672,6 +687,7 @@ watch(computedActivate, (value) => {
           <template #trailing>
             <div></div>
           </template>
+
           <template #item="{ item }">
             <div
               :key="item.id"
@@ -836,6 +852,10 @@ watch(computedActivate, (value) => {
     }
   }
 }
+.HsSelectItem:not(.active):hover {
+  background-color: var(--color-bg);
+}
+
 [data-highlighted] .HsSelectItem:hover {
   background-color: var(--color-bg);
 }
