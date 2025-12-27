@@ -694,10 +694,7 @@ watch(computedActivate, (value) => {
               class="HsSelectItem cursor-pointer flex items-center w-full p-2 rounded border mb-px"
               :class="[item.id === activeValue ? ' border-accent1' : 'border-transparent']"
               :style="`--color-bg: ${activeColorCode}10;`"
-              @click="
-                updateData(item.id);
-                selectOpen = false;
-              "
+              @click="selectOpen = false"
             >
               <SelectImgIcon
                 v-if="item.imgUrl && props.img"
