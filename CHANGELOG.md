@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.3.2
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.1...v3.3.2)
+
+### 🩹 Fixes
+
+- Prevent duplicate selection events in Select component when searchable is enabled ([5ac13cf](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/5ac13cf))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.3.1
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.0...v3.3.1)
