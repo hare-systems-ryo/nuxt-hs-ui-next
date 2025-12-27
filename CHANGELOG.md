@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.3.1
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.0...v3.3.1)
+
+### 🩹 Fixes
+
+- Emit 'value-change' event correctly in Select component ([26fa82e](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/26fa82e))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.3.0
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.2.13...v3.3.0)
