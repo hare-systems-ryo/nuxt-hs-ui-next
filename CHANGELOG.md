@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.3.3
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.2...v3.3.3)
+
+### 🩹 Fixes
+
+- Ensure appendIcon prop is correctly applied in Select component ([e3ae700](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/e3ae700))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.3.2
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.1...v3.3.2)
