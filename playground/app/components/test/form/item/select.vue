@@ -35,11 +35,13 @@ const state = ref<{
         id: `beige`,
         text: 'beige',
         imgUrl: '/assets/code-color-group/beige.png',
+        appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
       },
       {
         id: `gold`,
         text: 'gold',
         imgUrl: '/assets/code-color-group/gold.png',
+        appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
       },
       // { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
     ],
@@ -49,9 +51,25 @@ const state = ref<{
     data: null,
     diff: null,
     list: [
-      { id: `beige`, text: 'beige', imgUrl: '/assets/code-color-group/beige.png', hidden: true },
-      { id: `gold`, text: 'gold', imgUrl: '/assets/code-color-group/gold.png' },
-      { id: `pink`, text: 'pink', imgUrl: '/assets/code-color-group/pink.png' },
+      {
+        id: `beige`,
+        text: 'beige',
+        imgUrl: '/assets/code-color-group/beige.png',
+        hidden: true,
+        appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
+      },
+      {
+        id: `gold`,
+        text: 'gold',
+        imgUrl: '/assets/code-color-group/gold.png',
+        // appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
+      },
+      {
+        id: `pink`,
+        text: 'pink',
+        imgUrl: '/assets/code-color-group/pink.png',
+        appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
+      },
     ],
     label: 'Select',
   },
@@ -60,7 +78,12 @@ const state = ref<{
     diff: null,
     list: Array.from({ length: 30 })
       .fill(null)
-      .map((r, i) => ({ id: i, text: `id:${i}`, hidden: i == 2 })),
+      .map((r, i) => ({
+        id: i,
+        text: `id:${i}`,
+        hidden: i == 2,
+        appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
+      })),
     // [
     //   { id: 1, text: 'id:1' },
     //   { id: 2, text: 'id:2' },
@@ -76,7 +99,11 @@ const dataChange = (v: string | null) => {
 };
 onMounted(() => {
   for (let i = 0; i < 20; i++) {
-    state.value.testString.list.push({ id: `${i}`, text: `${i}` });
+    state.value.testString.list.push({
+      id: `${i}`,
+      text: `${i}`,
+      appendIcon: 'fa-solid fa-arrow-down-short-wide w-[1em] text-center',
+    });
   }
 });
 const selectedText = computed(() => {

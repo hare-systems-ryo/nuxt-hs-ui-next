@@ -37,11 +37,10 @@ import { useHsScrollLock } from '../../composables/use-hs-scroll-lock';
 // [ Components ]
 import InputFrame from './input-frame.vue';
 import Btn from '../form/btn.vue';
-import SelectItemLabel from './_select/item-label.vue';
-import SelectItemState from './_select/item-state.vue';
 import SelectHiddenItemToggle from './_select/hidden-item-toggle.vue';
 import { useHsIsMobile } from '../../composables/use-hs-is-mobile';
 import TextBox from '../form/text-box.vue';
+import SelectItemContainer from './_select/item-container.vue';
 
 // ----------------------------------------------------------------------------
 
@@ -562,23 +561,18 @@ watch(computedActivate, (value) => {
               @click.stop="openToggle()"
             >
               <template v-if="activeRow">
-                <SelectImgIcon
-                  v-if="props.img"
-                  :key="activeRow._key + '_img'"
-                  class="flex-none"
-                  :class="[computedActivate ? '' : '']"
-                  :img-url="activeRow?.imgUrl || ''"
+                <SelectItemContainer
+                  :item="activeRow"
+                  :value="activeValue"
+                  :img="props.img"
+                  :activated="props.img"
                   :class-img="props.classImg"
                   :class-img-tag="props.classImgTag"
                   :img-mode="props.imgMode"
-                />
-                <SelectItemLabel
-                  :key="activeRow._key + '_label'"
-                  :item="activeRow"
                   :disabled="props.disabled"
                   :readonly="props.readonly"
+                  type="display"
                 />
-                <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
               </template>
               <template v-else-if="!!props.data">
                 <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
@@ -603,18 +597,18 @@ watch(computedActivate, (value) => {
               :style="`--color-bg: ${activeColorCode}10;`"
               @click="selectOpen = false"
             >
-              <SelectImgIcon
-                v-if="item.imgUrl && props.img"
-                :key="item._key + 'img'"
-                class="flex-none"
-                :class="[computedActivate ? '' : '']"
-                :img-url="item.imgUrl"
+              <SelectItemContainer
+                :item="item"
+                :value="activeValue"
+                :img="props.img"
+                :activated="props.img"
                 :class-img="props.classImg"
                 :class-img-tag="props.classImgTag"
                 :img-mode="props.imgMode"
+                :disabled="props.disabled"
+                :readonly="props.readonly"
+                type="item"
               />
-              <SelectItemLabel :key="item._key + 'label'" :item="item" overflow />
-              <SelectItemState :key="item.id + 'state'" :item="item" :value="activeValue" />
             </div>
           </template>
           <template v-if="hasHiddenItem" #content-bottom>
@@ -659,18 +653,18 @@ watch(computedActivate, (value) => {
               @click.stop="openToggle()"
             >
               <template v-if="activeRow">
-                <SelectImgIcon
-                  v-if="props.img"
-                  :key="activeRow._key + '_img'"
-                  class="flex-none"
-                  :class="[computedActivate ? '' : '']"
-                  :img-url="activeRow?.imgUrl || ''"
+                <SelectItemContainer
+                  :item="activeRow"
+                  :value="activeValue"
+                  :img="props.img"
+                  :activated="props.img"
                   :class-img="props.classImg"
                   :class-img-tag="props.classImgTag"
                   :img-mode="props.imgMode"
+                  :disabled="props.disabled"
+                  :readonly="props.readonly"
+                  type="display"
                 />
-                <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
-                <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
               </template>
               <template v-else-if="!!props.data">
                 <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
@@ -687,7 +681,6 @@ watch(computedActivate, (value) => {
           <template #trailing>
             <div></div>
           </template>
-
           <template #item="{ item }">
             <div
               :key="item.id"
@@ -696,18 +689,18 @@ watch(computedActivate, (value) => {
               :style="`--color-bg: ${activeColorCode}10;`"
               @click="selectOpen = false"
             >
-              <SelectImgIcon
-                v-if="item.imgUrl && props.img"
-                :key="item._key + '_img'"
-                class="flex-none"
-                :class="[computedActivate ? '' : '']"
-                :img-url="item.imgUrl"
+              <SelectItemContainer
+                :item="item"
+                :value="activeValue"
+                :img="props.img"
+                :activated="props.img"
                 :class-img="props.classImg"
                 :class-img-tag="props.classImgTag"
                 :img-mode="props.imgMode"
+                :disabled="props.disabled"
+                :readonly="props.readonly"
+                type="item"
               />
-              <SelectItemLabel :key="item._key + '_label'" :item="item" overflow />
-              <SelectItemState :key="item._key + '_state'" :item="item" :value="activeValue" />
             </div>
           </template>
           <template v-if="hasHiddenItem" #content-bottom>
@@ -729,18 +722,18 @@ watch(computedActivate, (value) => {
           @click.stop="showSpModal()"
         >
           <template v-if="activeRow">
-            <SelectImgIcon
-              v-if="props.img"
-              :key="activeRow._key + '_img'"
-              class="flex-none"
-              :class="[computedActivate ? '' : '']"
-              :img-url="activeRow?.imgUrl || ''"
+            <SelectItemContainer
+              :item="activeRow"
+              :value="activeValue"
+              :img="props.img"
+              :activated="props.img"
               :class-img="props.classImg"
               :class-img-tag="props.classImgTag"
               :img-mode="props.imgMode"
+              :disabled="props.disabled"
+              :readonly="props.readonly"
+              type="display"
             />
-            <SelectItemLabel :key="activeRow._key + '_label'" :item="activeRow" />
-            <SelectItemState :key="activeRow._key + '_state'" :item="activeRow" />
           </template>
           <template v-else-if="!!props.data">
             <div class="min-w-0 truncate flex-1 text-[1rem]" :class="[!props.disabled ? 'text-error' : '']">
@@ -788,18 +781,18 @@ watch(computedActivate, (value) => {
                   "
                 >
                   <div class="flex items-center active:bg-accent1/10 p-3">
-                    <SelectImgIcon
-                      v-if="props.img"
-                      :key="row._key + '_img'"
-                      class="flex-none"
-                      :class="[computedActivate ? '' : '']"
-                      :img-url="row?.imgUrl || ''"
+                    <SelectItemContainer
+                      :item="row"
+                      :value="activeValue"
+                      :img="props.img"
+                      :activated="props.img"
                       :class-img="props.classImg"
                       :class-img-tag="props.classImgTag"
                       :img-mode="props.imgMode"
+                      :disabled="props.disabled"
+                      :readonly="props.readonly"
+                      type="item"
                     />
-                    <SelectItemLabel :key="row._key + '_label'" :item="row" overflow />
-                    <SelectItemState :key="row._key + '_state'" :item="row" :value="activeValue" />
                   </div>
                 </div>
                 <div
@@ -830,7 +823,6 @@ watch(computedActivate, (value) => {
         </Modal>
       </template>
     </template>
-    <!-- </ClientOnly> -->
   </InputFrame>
 </template>
 
