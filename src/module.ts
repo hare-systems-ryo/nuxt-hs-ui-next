@@ -10,7 +10,6 @@ import { AddCss } from './module-lib/css';
 
 import {
   defineNuxtModule, //
-  addPlugin,
   createResolver,
   addComponentsDir,
   addImportsDir,
@@ -99,7 +98,6 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolve('runtime/composables'));
     // -------------------------
     AddCss(nuxt, resolve, { mode: 'bundle' });
-    addPlugin(resolve('runtime/plugin/v-select'));
     // -------------------------
   },
 });

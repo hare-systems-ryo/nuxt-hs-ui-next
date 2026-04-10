@@ -39,6 +39,8 @@ type Props = {
   inputmode?: 'text' | 'search' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
   inputSize?: string | number;
   placeholder?: MultiLang;
+  pattern?: string;
+  lang?: string;
   // ----------------------------------------------------------------------------
   data: string | null;
   diff?: string | null | undefined;
@@ -84,6 +86,8 @@ const props = withDefaults(defineProps<Props>(), {
   inputmode: undefined,
   inputSize: 10,
   placeholder: '',
+  pattern: undefined,
+  lang: undefined,
   // ----------------------------------------------------------------------------
   diff: undefined,
   tabindex: undefined,
@@ -373,6 +377,8 @@ const placeholder = computed(() => tx(props.placeholder).value);
         :enterkeyhint="props.enterkeyhint"
         :inputmode="props.inputmode"
         :size="props.inputSize"
+        :lang="props.lang"
+        :pattern="props.pattern"
         @blur="onBlur()"
         @focus="onFocus()"
         @input="updateValue(state.value)"
