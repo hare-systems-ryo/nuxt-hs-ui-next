@@ -24,9 +24,9 @@ const state = ref<{
     data: 'b',
     diff: null,
     list: [
-      { id: `a`, text: 'id:a' },
-      { id: `b`, text: 'id:b' },
-      { id: `c`, text: 'id:c' },
+      { id: `a`, text: { ja: 'id:えー', en: 'id:a' } },
+      { id: `b`, text: { ja: 'id:びー', en: 'id:b' } },
+      { id: `c`, text: { ja: 'id:しー', en: 'id:c' } },
     ],
   },
   testNumber: {
@@ -106,7 +106,17 @@ onMounted(() => {
         <!-- --------------- -->
         <div class="">
           <div class="">IDキー:文字列</div>
-          <Radio v-model:data="state.testString.data" :list="state.testString.list" size="s" label="listA:valueA" />
+          <Radio
+            v-model:data="state.testString.data"
+            :list="state.testString.list"
+            size="s"
+            label="listA:valueA"
+            :null-text="{
+              ja: '全て',
+              en: 'All',
+            }"
+            nullable
+          />
           <div class="flex gap-1" @click="state.testString.data = null">
             <div class="">
               state.testString.data:{{ state.testString.data === null ? 'null' : state.testString.data }}

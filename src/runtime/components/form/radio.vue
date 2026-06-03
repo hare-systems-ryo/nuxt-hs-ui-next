@@ -256,6 +256,7 @@ watch(
     props.nullText,
     unKnownSelected.value,
     displayData.value,
+    multiLang.lang,
   ],
   () => {
     nextTick(() => {
