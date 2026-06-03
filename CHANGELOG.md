@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v3.3.5
+
+[compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.4...v3.3.5)
+
+### 🩹 Fixes
+
+- Update Radio localization display for List and NullText ([c0b58eb](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/commit/c0b58eb))
+
+### ❤️ Contributors
+
+- Hare-systems-ryo ([@hare-systems-ryo](https://github.com/hare-systems-ryo))
+
 ## v3.3.4
 
 [compare changes](https://github.com/hare-systems-ryo/nuxt-hs-ui-next/compare/v3.3.3...v3.3.4)
