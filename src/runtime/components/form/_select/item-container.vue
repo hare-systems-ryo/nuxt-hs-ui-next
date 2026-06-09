@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /* ----------------------------------------------------------------------------
-// src\runtime\components\form\_select\item-state.vue
+// src\runtime\components\form\_select\item-container.vue
 // ----------------------------------------------------------------------------
-// _selectItemState
-// _selectItemState_selectItemState
+// _selectItemContainer
+// _selectItemContainer_selectItemContainer
 ---------------------------------------------------------------------------- */
 
 import { computed } from '#imports';
